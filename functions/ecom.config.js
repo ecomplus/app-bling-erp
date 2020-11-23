@@ -7,8 +7,8 @@
 
 const app = {
   app_id: 114142,
-  title: 'My Awesome E-Com Plus App',
-  slug: 'my-awesome-app',
+  title: 'Bling ERP',
+  slug: 'bling-erp',
   type: 'external',
   state: 'active',
   authentication: true,
@@ -54,9 +54,9 @@ const app = {
       'POST'           // Create procedures to receive webhooks
     ],
     products: [
-      // 'GET',           // Read products with public and private fields
-      // 'POST',          // Create products
-      // 'PATCH',         // Edit products
+      'GET',           // Read products with public and private fields
+      'POST',          // Create products
+      'PATCH',         // Edit products
       // 'PUT',           // Overwrite products
       // 'DELETE',        // Delete products
     ],
@@ -82,9 +82,9 @@ const app = {
       // 'DELETE',        // Delete customers
     ],
     orders: [
-      // 'GET',           // List/read orders with public and private fields
-      // 'POST',          // Create orders
-      // 'PATCH',         // Edit orders
+      'GET',           // List/read orders with public and private fields
+      'POST',          // Create orders
+      'PATCH',         // Edit orders
       // 'PUT',           // Overwrite orders
       // 'DELETE',        // Delete orders
     ],
@@ -100,13 +100,13 @@ const app = {
      * Prefer using 'fulfillments' and 'payment_history' subresources to manipulate update order status.
      */
     'orders/fulfillments': [
-      // 'GET',           // List/read order fulfillment and tracking events
-      // 'POST',          // Create fulfillment event with new status
+      'GET',           // List/read order fulfillment and tracking events
+      'POST',          // Create fulfillment event with new status
       // 'DELETE',        // Delete fulfillment event
     ],
     'orders/payments_history': [
-      // 'GET',           // List/read order payments history events
-      // 'POST',          // Create payments history entry with new status
+      'GET',           // List/read order payments history events
+      'POST',          // Create payments history entry with new status
       // 'DELETE',        // Delete payments history entry
     ],
 
@@ -116,11 +116,11 @@ const app = {
      */
     'products/quantity': [
       // 'GET',           // Read product available quantity
-      // 'PUT',           // Set product stock quantity
+      'PUT',           // Set product stock quantity
     ],
     'products/variations/quantity': [
       // 'GET',           // Read variaton available quantity
-      // 'PUT',           // Set variation stock quantity
+      'PUT',           // Set variation stock quantity
     ],
     'products/price': [
       // 'GET',           // Read product current sale price
@@ -135,6 +135,210 @@ const app = {
      * You can also set any other valid resource/subresource combination.
      * Ref.: https://developers.e-com.plus/docs/api/#/store/
      */
+  },
+
+  admin_settings: {
+    bling_api_token: {
+      schema: {
+        type: 'string',
+        maxLength: 255,
+        title: 'Chave da API Bling',
+        description: 'API key de um "usuário API" em https://www.bling.com.br/usuarios.php'
+      },
+      hide: true
+    },
+    new_orders: {
+      schema: {
+        type: 'boolean',
+        default: true,
+        title: 'Exportar novos pedidos',
+        description: 'Criar novos pedidos no Bling automaticamente'
+      },
+      hide: true
+    },
+    new_products: {
+      schema: {
+        type: 'boolean',
+        default: false,
+        title: 'Exportar novos produtos',
+        description: 'Criar novos produtos no Bling automaticamente'
+      },
+      hide: true
+    },
+    import_quantity: {
+      schema: {
+        type: 'boolean',
+        default: true,
+        title: 'Importar estoques',
+        description: 'Atualizar estoques na plataforma, necessário cadastrar o "Callback de estoque" no Bling'
+      },
+      hide: true
+    },
+    export_quantity: {
+      schema: {
+        type: 'boolean',
+        default: false,
+        title: 'Exportar estoques',
+        description: 'Atualizar estoques no Bling automaticamente'
+      },
+      hide: true
+    },
+    export_price: {
+      schema: {
+        type: 'boolean',
+        default: false,
+        title: 'Exportar preços',
+        description: 'Atualizar preços no Bling automaticamente'
+      },
+      hide: true
+    },
+    exportation: {
+      schema: {
+        title: 'Exportação manual',
+        description: 'Fila a exportar para o Bling, serão removidos automaticamente após exportação',
+        type: 'object',
+        properties: {
+          product_ids: {
+            title: 'Produtos a exportar',
+            type: 'array',
+            items: {
+              type: 'string',
+              pattern: '^[a-f0-9]{24}$',
+              title: 'ID do produto'
+            }
+          },
+          order_ids: {
+            title: 'Pedidos a exportar',
+            type: 'array',
+            items: {
+              type: 'string',
+              pattern: '^[a-f0-9]{24}$',
+              title: 'ID do pedido'
+            }
+          }
+        }
+      },
+      hide: false
+    },
+    importation: {
+      schema: {
+        title: 'Importação manual',
+        description: 'Fila a importar do Bling, serão removidos automaticamente após importação',
+        type: 'object',
+        properties: {
+          skus: {
+            title: 'Produtos a importar',
+            type: 'array',
+            items: {
+              type: 'string',
+              title: 'SKU do produto ou variação',
+              description: 'O estoque do produto será atualizado na plataforma se já existir com o mesmo SKU'
+            }
+          },
+          order_numbers: {
+            title: 'Pedidos a importar',
+            type: 'array',
+            items: {
+              type: 'string',
+              title: 'Número do pedido no Bling',
+              description: 'Número único do pedido de venda no Bling'
+            }
+          }
+        }
+      },
+      hide: false
+    },
+    bling_order_data: {
+      schema: {
+        title: 'Configuração para novos pedidos no Bling',
+        description: 'Predefinições para pedidos exportados da plataforma para o Bling',
+        type: 'object',
+        properties: {
+          id_ecommerce: {
+            type: 'integer',
+            minimum: 1,
+            maximum: 999999,
+            title: 'ID do e-commerce cadastrado no Tiny'
+          },
+          id_vendedor: {
+            type: 'integer',
+            minimum: 1,
+            maximum: 999999,
+            title: 'ID do vendedor cadastrado no Tiny'
+          },
+          nome_vendedor: {
+            type: 'string',
+            maxLength: 50,
+            title: 'Nome do vendedor'
+          },
+          valor_frete: {
+            type: 'number',
+            minimum: 0,
+            maximum: 999999,
+            title: 'Fixar valor do frete',
+            description: 'Por padrão será enviado o frete original de cada pedido'
+          },
+          frete_por_conta: {
+            type: 'string',
+            enum: ['R', 'D'],
+            title: 'Frete por conta',
+            description: '"R"-Remetente, "D"-Destinatário'
+          },
+          valor_desconto: {
+            type: 'number',
+            minimum: 0,
+            maximum: 999999,
+            title: 'Fixar valor do desconto',
+            description: 'Por padrão será enviado o desconto original de cada pedido'
+          }
+        }
+      },
+      hide: true
+    },
+    logs: {
+      schema: {
+        title: 'Logs',
+        type: 'array',
+        maxItems: 300,
+        items: {
+          title: 'Registro de log',
+          type: 'object',
+          properties: {
+            resource: {
+              type: 'string',
+              maxLength: 255,
+              title: 'Recurso'
+            },
+            resource_id: {
+              type: 'string',
+              pattern: '^[a-f0-9]{24}$',
+              title: 'ID do recurso'
+            },
+            bling_id: {
+              type: 'string',
+              maxLength: 255,
+              title: 'ID do recurso no Bling'
+            },
+            timestamp: {
+              type: 'string',
+              format: 'date-time',
+              title: 'Horário'
+            },
+            success: {
+              type: 'boolean',
+              default: true,
+              title: 'Sucesso'
+            },
+            notes: {
+              type: 'string',
+              maxLength: 5000,
+              title: 'Notas'
+            }
+          }
+        }
+      },
+      hide: true
+    }
   }
 }
 
@@ -147,6 +351,7 @@ const procedures = []
 
 /**
  * Uncomment and edit code above to configure `triggers` and receive respective `webhooks`:
+ */
 
 const { baseUri } = require('./__env')
 
@@ -170,7 +375,16 @@ procedures.push({
       field: 'fulfillment_status',
     },
 
-    // Receive notifications when products/variations stock quantity changes:
+    // Receive notifications when products/variations prices or quantities changes:
+    {
+      resource: 'products',
+      field: 'price',
+    },
+    {
+      resource: 'products',
+      subresource: 'variations',
+      field: 'price',
+    },
     {
       resource: 'products',
       field: 'quantity',
@@ -178,10 +392,16 @@ procedures.push({
     {
       resource: 'products',
       subresource: 'variations',
-      field: 'quantity'
+      field: 'quantity',
     },
 
-    // Receive notifications when cart is edited:
+    // Receive notifications when new product is created:
+    {
+      resource: 'products',
+      action: 'create',
+    },
+
+    /* Receive notifications when cart is edited:
     {
       resource: 'carts',
       action: 'change',
@@ -194,6 +414,7 @@ procedures.push({
     },
 
     // Feel free to create custom combinations with any Store API resource, subresource, action and field.
+    */
   ],
 
   webhooks: [
@@ -208,6 +429,7 @@ procedures.push({
   ]
 })
 
+/*
  * You may also edit `routes/ecom/webhook.js` to treat notifications properly.
  */
 
