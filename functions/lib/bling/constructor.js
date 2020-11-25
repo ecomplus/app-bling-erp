@@ -9,29 +9,55 @@ module.exports = function (apikey) {
     params: { apikey }
   })
 
-  this.get = (url, options) => {
-    if (url.indexOf('/json/') === -1) {
-      url += '/json/'
-    }
-    return instance.get(url, options)
-  }
-
-  this.post = (url, body, options) => {
-    let xml
-    if (body) {
-      const root = Object.keys(body)[0]
-      if (root) {
-        xml = js2xmlparser.parse(root, body[root])
+  const request = (method, options) => instance({
+    method,
+    ...options
+  }).then(({ data }) => {
+    if (data) {
+      const { retorno } = data
+      if (retorno) {
+        return retorno
       }
     }
-    return instance.post(url, { xml, apikey }, {
-      timeout: 30000,
-      ...options
-    })
+    return data
+  })
+
+  const parseUrl = url => {
+    if (url.indexOf('/json/') === -1) {
+      if (url.slice(-1) !== '/') {
+        url += '/'
+      }
+      return url + 'json/'
+    }
+    return url
   }
 
+  this.get = (url, options) => {
+    url = parseUrl(url)
+    return request('get', { url, ...options })
+  }
+
+  ;['post', 'put'].forEach(method => {
+    this[method] = (url, body, options) => {
+      url = parseUrl(url)
+      let xml
+      if (body) {
+        const root = Object.keys(body)[0]
+        if (root) {
+          xml = js2xmlparser.parse(root, body[root])
+        }
+      }
+      return request(method, {
+        url,
+        data: { xml, apikey },
+        timeout: 30000,
+        ...options
+      })
+    }
+  })
+
   this.delete = (url, options) => {
-    return instance.delete(url, options)
+    return request('delete', { url, ...options })
   }
 
   return this
