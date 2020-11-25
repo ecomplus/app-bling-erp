@@ -147,6 +147,15 @@ const app = {
       },
       hide: true
     },
+    bling_store: {
+      schema: {
+        type: 'string',
+        maxLength: 255,
+        title: 'Código da loja no Bling',
+        description: 'Opcional para multiloja no Bling'
+      },
+      hide: true
+    },
     new_orders: {
       schema: {
         type: 'boolean',
@@ -387,11 +396,6 @@ procedures.push({
     },
     {
       resource: 'products',
-      field: 'quantity',
-    },
-    {
-      resource: 'products',
-      subresource: 'variations',
       field: 'quantity',
     },
 
