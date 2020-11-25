@@ -151,6 +151,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
             console.log(`> Webhook #${storeId} ${resourceId} [${trigger.resource}]`)
 
             const blingToken = appData.bling_api_token
+            const blingStore = appData.bling_store
             if (typeof blingToken === 'string' && blingToken) {
               let integrationConfig
               let canCreateNew = false
@@ -229,6 +230,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
                           return handler(
                             { appSdk, storeId, auth },
                             blingToken,
+                            blingStore,
                             queueEntry,
                             appData,
                             canCreateNew,
