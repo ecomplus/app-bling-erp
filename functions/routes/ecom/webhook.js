@@ -168,7 +168,10 @@ exports.post = ({ appSdk, admin }, req, res) => {
                         break
                       }
                       canCreateNew = true
-                    } else if (!trigger.body.price || !appData.update_price) {
+                    } else if (
+                      (!trigger.body.price || !appData.export_price) &&
+                      (!trigger.body.quantity || !appData.export_quantity)
+                    ) {
                       break
                     }
                     integrationConfig = {

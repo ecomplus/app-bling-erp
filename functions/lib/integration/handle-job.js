@@ -1,4 +1,4 @@
-const getAppData = require('./../../lib/store-api/get-app-data')
+const getAppData = require('../store-api/get-app-data')
 const updateAppData = require('../store-api/update-app-data')
 
 const queueRetry = (appSession, { action, queue, nextId }, appData, response) => {
