@@ -1,4 +1,5 @@
 const axios = require('axios')
+const qs = require('querystring')
 const js2xmlparser = require('js2xmlparser')
 
 module.exports = function (apikey) {
@@ -44,12 +45,15 @@ module.exports = function (apikey) {
       if (body) {
         const root = Object.keys(body)[0]
         if (root) {
-          xml = js2xmlparser.parse(root, body[root])
+          xml = encodeURIComponent(js2xmlparser.parse(root, body[root]))
         }
       }
       return request(method, {
         url,
-        data: { xml, apikey },
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data: qs.stringify({ xml, apikey }),
         timeout: 30000,
         ...options
       })
