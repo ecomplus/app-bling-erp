@@ -14,7 +14,7 @@ module.exports = ({ appSdk, storeId }, blingToken, blingStore, queueEntry, appDa
 
     .then(({ data }) => {
       const product = data
-      let blingProductCode
+      let blingProductCode, originalBlingProduct
       if (product.metafields) {
         const metafield = product.metafields.find(({ field }) => field === 'bling:codigo')
         if (metafield) {
@@ -40,7 +40,6 @@ module.exports = ({ appSdk, storeId }, blingToken, blingStore, queueEntry, appDa
         })
 
         .then(({ produtos }) => {
-          let originalBlingProduct
           if (Array.isArray(produtos)) {
             originalBlingProduct = produtos.find(({ produto }) => product.sku === String(produto.codigo))
             if (originalBlingProduct) {
@@ -49,35 +48,36 @@ module.exports = ({ appSdk, storeId }, blingToken, blingStore, queueEntry, appDa
               return null
             }
           }
-
-          if (canCreateNew) {
+          if (canCreateNew || appData.export_quantity || !blingStore) {
             const blingProduct = parseProduct(product, originalBlingProduct, blingProductCode, blingStore, appData)
             if (blingProduct) {
               const data = { produto: blingProduct }
               const endpoint = originalBlingProduct ? `/produto/${blingProductCode}` : '/produto'
-              return bling.post(endpoint, data).then(response => {
-                if (blingStore && (!originalBlingProduct || !originalBlingProduct.produtoLoja)) {
-                  const method = originalBlingProduct ? 'put' : 'post'
-                  const data = {
-                    produtosLoja: {
-                      produtoLoja: {
-                        idLojaVirtual: product._id,
-                        preco: {
-                          preco: ecomUtils.price(product)
-                        }
-                      }
-                    }
-                  }
-                  if (ecomUtils.onPromotion(product)) {
-                    data.produtosLoja.produtoLoja.preco.precoPromocional = product.base_price
-                  }
-                  return bling[method](`/produtoLoja/${blingStore}/${blingProductCode}`, data)
-                }
-                return response
-              })
+              return bling.post(endpoint, data)
             }
           }
           return null
+        })
+
+        .then(response => {
+          if (blingStore && (canCreateNew || appData.export_price)) {
+            const method = originalBlingProduct && originalBlingProduct.produtoLoja ? 'put' : 'post'
+            const data = {
+              produtosLoja: {
+                produtoLoja: {
+                  idLojaVirtual: product._id,
+                  preco: {
+                    preco: ecomUtils.price(product)
+                  }
+                }
+              }
+            }
+            if (ecomUtils.onPromotion(product)) {
+              data.produtosLoja.produtoLoja.preco.precoPromocional = product.base_price
+            }
+            return bling[method](`/produtoLoja/${blingStore}/${blingProductCode}`, data)
+          }
+          return response
         })
       handleJob({ appSdk, storeId }, queueEntry, job)
     })
