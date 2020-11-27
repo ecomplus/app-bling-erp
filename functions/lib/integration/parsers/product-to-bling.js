@@ -7,6 +7,7 @@ module.exports = (product, originalBlingProduct, blingProductCode, blingStore, a
   const blingProduct = {
     codigo: blingProductCode,
     descricao: ecomUtils.name(product, 'pt_br').substring(0, 120),
+    descricaoCurta: product.short_description || product.name,
     tipo: 'P',
     situacao: product.available && product.visible ? 'Ativo' : 'Inativo',
     un: originalBlingProduct && originalBlingProduct.un
@@ -34,9 +35,6 @@ module.exports = (product, originalBlingProduct, blingProductCode, blingStore, a
     blingProduct.itensPorCaixa = product.min_quantity
   }
 
-  if (product.short_description) {
-    blingProduct.descricaoCurta = product.short_description
-  }
   if (product.body_text) {
     blingProduct.descricaoComplementar = product.body_text
   }
