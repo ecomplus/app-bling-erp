@@ -50,30 +50,32 @@ module.exports = ({ appSdk, storeId }, blingToken, blingStore, queueEntry, appDa
             }
           }
 
-          const blingProduct = parseProduct(product, originalBlingProduct, blingProductCode, blingStore, appData)
-          if (blingProduct) {
-            const data = { produto: blingProduct }
-            const endpoint = originalBlingProduct ? `/produto/${blingProductCode}` : '/produto'
-            return bling.post(endpoint, data).then(response => {
-              if (blingStore && (!originalBlingProduct || !originalBlingProduct.produtoLoja)) {
-                const method = originalBlingProduct ? 'put' : 'post'
-                const data = {
-                  produtosLoja: {
-                    produtoLoja: {
-                      idLojaVirtual: product._id,
-                      preco: {
-                        preco: ecomUtils.price(product)
+          if (canCreateNew) {
+            const blingProduct = parseProduct(product, originalBlingProduct, blingProductCode, blingStore, appData)
+            if (blingProduct) {
+              const data = { produto: blingProduct }
+              const endpoint = originalBlingProduct ? `/produto/${blingProductCode}` : '/produto'
+              return bling.post(endpoint, data).then(response => {
+                if (blingStore && (!originalBlingProduct || !originalBlingProduct.produtoLoja)) {
+                  const method = originalBlingProduct ? 'put' : 'post'
+                  const data = {
+                    produtosLoja: {
+                      produtoLoja: {
+                        idLojaVirtual: product._id,
+                        preco: {
+                          preco: ecomUtils.price(product)
+                        }
                       }
                     }
                   }
+                  if (ecomUtils.onPromotion(product)) {
+                    data.produtosLoja.produtoLoja.preco.precoPromocional = product.base_price
+                  }
+                  return bling[method](`/produtoLoja/${blingStore}/${blingProductCode}`, data)
                 }
-                if (ecomUtils.onPromotion(product)) {
-                  data.produtosLoja.produtoLoja.preco.precoPromocional = product.base_price
-                }
-                return bling[method](`/produtoLoja/${blingStore}/${blingProductCode}`, data)
-              }
-              return response
-            })
+                return response
+              })
+            }
           }
           return null
         })

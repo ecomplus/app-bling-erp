@@ -1,11 +1,9 @@
 const ecomUtils = require('@ecomplus/utils')
 
 module.exports = (product, originalBlingProduct, blingProductCode, blingStore, appData) => {
-  const canSetStock = !originalBlingProduct || appData.export_quantity
-  const canSetPrice = !originalBlingProduct || (!blingStore && appData.export_price)
-
   const blingProduct = {
     codigo: blingProductCode,
+    vlr_unit: ecomUtils.price(product),
     descricao: ecomUtils.name(product, 'pt_br').substring(0, 120),
     descricaoCurta: product.short_description || product.name,
     tipo: 'P',
@@ -17,19 +15,13 @@ module.exports = (product, originalBlingProduct, blingProductCode, blingStore, a
         : 'un'
   }
 
-  if (canSetPrice) {
-    blingProduct.vlr_unit = ecomUtils.price(product)
-  } else if (originalBlingProduct.vlr_unit !== undefined) {
-    blingProduct.vlr_unit = originalBlingProduct.vlr_unit
-  }
   if (product.cost_price) {
     blingProduct.preco_custo = product.cost_price
   }
-
-  if (typeof product.quantity === 'number' && canSetStock) {
+  if (typeof product.quantity === 'number') {
     blingProduct.estoque = product.quantity
-  } else {
-    blingProduct.estoque = originalBlingProduct.estoque
+  } else if (originalBlingProduct) {
+    blingProduct.estoque = originalBlingProduct.estoqueAtual
   }
   if (product.min_quantity) {
     blingProduct.itensPorCaixa = product.min_quantity
@@ -106,13 +98,9 @@ module.exports = (product, originalBlingProduct, blingProductCode, blingStore, a
       const blingVariation = {
         nome: '',
         codigo: variation.sku || `${product.sku}-${(i + 1)}`,
-        clonarDadosPai: 'S'
-      }
-      if (canSetPrice && variation.price) {
-        blingVariation.vlr_unit = ecomUtils.price({ ...product, ...variation })
-      }
-      if (canSetStock) {
-        blingVariation.estoque = variation.quantity || 0
+        clonarDadosPai: 'S',
+        vlr_unit: ecomUtils.price({ ...product, ...variation }),
+        estoque: variation.quantity || 0
       }
 
       for (const gridId in variation.specifications) {
