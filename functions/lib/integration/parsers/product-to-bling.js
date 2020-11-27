@@ -37,9 +37,8 @@ module.exports = (product, originalBlingProduct, blingProductCode, blingStore, a
   if (product.short_description) {
     blingProduct.descricaoCurta = product.short_description
   }
-  const description = product.body_text || product.body_html
-  if (description) {
-    blingProduct.descricaoComplementar = description
+  if (product.body_text) {
+    blingProduct.descricaoComplementar = product.body_text
   }
   if (product.warranty) {
     const warrantyNum = parseInt(product.warranty)
