@@ -64,10 +64,7 @@ module.exports = (product, originalBlingProduct, blingProductCode, blingStore, a
       case 'g':
         blingProduct.peso_bruto /= 1000
     }
-  } else {
-    blingProduct.peso_bruto = 0
   }
-
   if (product.dimensions) {
     for (const side in product.dimensions) {
       if (product.dimensions[side]) {
@@ -83,15 +80,6 @@ module.exports = (product, originalBlingProduct, blingProductCode, blingStore, a
         }
       }
     }
-  }
-  if (!blingProduct.largura) {
-    blingProduct.largura = '0mm'
-  }
-  if (!blingProduct.altura) {
-    blingProduct.altura = '0mm'
-  }
-  if (!blingProduct.profundidade) {
-    blingProduct.profundidade = '0mm'
   }
 
   if (product.brands && product.brands.length) {
