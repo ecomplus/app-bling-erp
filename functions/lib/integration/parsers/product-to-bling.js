@@ -27,8 +27,9 @@ module.exports = (product, originalBlingProduct, blingProductCode, blingStore, a
     blingProduct.itensPorCaixa = product.min_quantity
   }
 
-  if (product.body_text) {
-    blingProduct.descricaoComplementar = product.body_text
+  const description = product.body_text || product.body_html
+  if (description) {
+    blingProduct.descricaoComplementar = description
   }
   if (product.warranty) {
     const warrantyNum = parseInt(product.warranty)
