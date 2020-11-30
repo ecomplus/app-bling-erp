@@ -55,6 +55,7 @@ module.exports = function (apikey) {
           xml = js2xmlparser.parse(root, body[root])
         }
       }
+      console.log(JSON.stringify(xml))
       return request(method, {
         url,
         headers: {
