@@ -39,9 +39,9 @@ module.exports = ({ appSdk, storeId }, blingToken, blingStore, queueEntry, appDa
           throw err
         })
 
-        .then(({ produtos }) => {
-          if (Array.isArray(produtos)) {
-            originalBlingProduct = produtos.find(({ produto }) => product.sku === String(produto.codigo))
+        .then(({ data }) => {
+          if (Array.isArray(data.produtos)) {
+            originalBlingProduct = data.produtos.find(({ produto }) => product.sku === String(produto.codigo))
             if (originalBlingProduct) {
               originalBlingProduct = originalBlingProduct.produto
             } else if (!canCreateNew) {

@@ -13,14 +13,21 @@ module.exports = function (apikey) {
   const request = (method, options) => instance({
     method,
     ...options
-  }).then(({ data }) => {
+  }).then(response => {
+    const { data } = response
     if (data) {
       const { retorno } = data
-      if (retorno) {
-        return retorno
+      if (retorno.erros) {
+        const err = new Error('Bling error response')
+        response.status = 400
+        err.response = response
+        err.config = response.config
+        err.request = response.request
+        throw err
       }
+      response.data = retorno
     }
-    return data
+    return response
   })
 
   const parseUrl = url => {
