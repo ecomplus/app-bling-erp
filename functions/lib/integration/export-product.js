@@ -60,43 +60,45 @@ module.exports = ({ appSdk, storeId }, blingToken, blingStore, queueEntry, appDa
         })
 
         .then(response => {
-          if (blingStore && (canCreateNew || appData.export_price)) {
-            const blingProducts = response.data && response.data.produtos
-            console.log(JSON.stringify(blingProducts))
-            if (Array.isArray(blingProducts) && blingProducts.length) {
-              const promises = blingProducts.map(({ produto }) => {
-                if (!produto) {
-                  return null
-                }
-                const method = produto.produtoLoja ? 'put' : 'post'
-                const data = {
-                  produtosLoja: {
-                    produtoLoja: {
-                      idLojaVirtual: product._id
+          if (response) {
+            console.log(JSON.stringify(response.data))
+            if (blingStore && (canCreateNew || appData.export_price)) {
+              const blingProducts = response.data && response.data.produtos
+              if (Array.isArray(blingProducts) && blingProducts.length) {
+                const promises = blingProducts.map(({ produto }) => {
+                  if (!produto) {
+                    return null
+                  }
+                  const method = produto.produtoLoja ? 'put' : 'post'
+                  const data = {
+                    produtosLoja: {
+                      produtoLoja: {
+                        idLojaVirtual: product._id
+                      }
                     }
                   }
-                }
-                data.produtosLoja.produtoLoja.preco = ecomUtils.onPromotion(product)
-                  ? {
-                      preco: product.base_price,
-                      precoPromocional: ecomUtils.price(product)
-                    }
-                  : {
-                      preco: ecomUtils.price(product)
-                    }
-                const endpoint = `/produtoLoja/${blingStore}/${produto.codigo}`
-                const promise = bling[method](endpoint, data)
-                if (method === 'put') {
-                  promise.catch(err => {
-                    if (err.response && err.response.status === 404) {
-                      return bling.post(endpoint, data)
-                    }
-                    throw err
-                  })
-                }
-                return promise
-              })
-              return Promise.all(promises).then(([response]) => response)
+                  data.produtosLoja.produtoLoja.preco = ecomUtils.onPromotion(product)
+                    ? {
+                        preco: product.base_price,
+                        precoPromocional: ecomUtils.price(product)
+                      }
+                    : {
+                        preco: ecomUtils.price(product)
+                      }
+                  const endpoint = `/produtoLoja/${blingStore}/${produto.codigo}`
+                  const promise = bling[method](endpoint, data)
+                  if (method === 'put') {
+                    promise.catch(err => {
+                      if (err.response && err.response.status === 404) {
+                        return bling.post(endpoint, data)
+                      }
+                      throw err
+                    })
+                  }
+                  return promise
+                })
+                return Promise.all(promises).then(([response]) => response)
+              }
             }
           }
           return response
