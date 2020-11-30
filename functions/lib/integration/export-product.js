@@ -62,6 +62,7 @@ module.exports = ({ appSdk, storeId }, blingToken, blingStore, queueEntry, appDa
         .then(response => {
           if (blingStore && (canCreateNew || appData.export_price)) {
             const blingProducts = response.data && response.data.produtos
+            console.log(JSON.stringify(blingProducts))
             if (Array.isArray(blingProducts) && blingProducts.length) {
               const promises = blingProducts.map(({ produto }) => {
                 const method = produto && produto.produtoLoja ? 'put' : 'post'
