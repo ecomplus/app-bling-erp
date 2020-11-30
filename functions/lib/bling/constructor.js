@@ -69,7 +69,6 @@ module.exports = function (apikey) {
           })
         }
       }
-      console.log(JSON.stringify(xml))
       return request(method, {
         url,
         headers: {
