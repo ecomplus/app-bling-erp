@@ -62,7 +62,7 @@ module.exports = ({ appSdk, storeId }, blingToken, blingStore, queueEntry, appDa
         .then(response => {
           console.log(response)
           if (response) {
-            console.log(JSON.stringify(response.data))
+            console.log(response.data)
             if (blingStore && (canCreateNew || appData.export_price)) {
               const blingProducts = response.data && response.data.produtos
               if (Array.isArray(blingProducts) && blingProducts.length) {
