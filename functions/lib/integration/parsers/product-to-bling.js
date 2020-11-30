@@ -92,9 +92,7 @@ module.exports = (product, originalBlingProduct, blingProductCode, blingStore, a
     product.pictures.forEach(({ zoom, big, normal }) => {
       const img = (zoom || big || normal)
       if (img) {
-        blingProduct.imagens.url.push({
-          url: img.url
-        })
+        blingProduct.imagens.url.push(img.url)
       }
     })
   }
@@ -140,9 +138,7 @@ module.exports = (product, originalBlingProduct, blingProductCode, blingStore, a
           })
         }
       }
-      blingProduct.variacoes.variacao.push({
-        variacao: blingVariation
-      })
+      blingProduct.variacoes.variacao.push(blingVariation)
     })
   }
 
