@@ -60,6 +60,7 @@ module.exports = ({ appSdk, storeId }, blingToken, blingStore, queueEntry, appDa
         })
 
         .then(response => {
+          console.log(response)
           if (response) {
             console.log(JSON.stringify(response.data))
             if (blingStore && (canCreateNew || appData.export_price)) {
