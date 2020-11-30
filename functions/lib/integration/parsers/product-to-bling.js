@@ -82,11 +82,13 @@ module.exports = (product, originalBlingProduct, blingProductCode, blingStore, a
     blingProduct.urlVideo = product.videos[0].url
   }
   if (product.pictures && product.pictures.length) {
-    blingProduct.imagens = []
+    blingProduct.imagens = {
+      url: []
+    }
     product.pictures.forEach(({ zoom, big, normal }) => {
       const img = (zoom || big || normal)
       if (img) {
-        blingProduct.imagens.push({
+        blingProduct.imagens.url.push({
           url: img.url
         })
       }
@@ -94,7 +96,9 @@ module.exports = (product, originalBlingProduct, blingProductCode, blingStore, a
   }
 
   if (product.variations && product.variations.length) {
-    blingProduct.variacoes = []
+    blingProduct.variacoes = {
+      variacao: []
+    }
     product.variations.forEach((variation, i) => {
       const blingVariation = {
         nome: '',
@@ -133,7 +137,7 @@ module.exports = (product, originalBlingProduct, blingProductCode, blingStore, a
           })
         }
       }
-      blingProduct.variacoes.push({
+      blingProduct.variacoes.variacao.push({
         variacao: blingVariation
       })
     })
