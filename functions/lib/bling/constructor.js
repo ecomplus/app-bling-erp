@@ -52,7 +52,11 @@ module.exports = function (apikey) {
       if (body) {
         const root = Object.keys(body)[0]
         if (root) {
-          xml = js2xmlparser.parse(root, body[root])
+          xml = js2xmlparser.parse(root, body[root], {
+            format: {
+              pretty: false
+            }
+          })
         }
       }
       console.log(JSON.stringify(xml))
