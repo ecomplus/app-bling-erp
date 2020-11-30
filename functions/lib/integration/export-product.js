@@ -65,7 +65,10 @@ module.exports = ({ appSdk, storeId }, blingToken, blingStore, queueEntry, appDa
             console.log(JSON.stringify(blingProducts))
             if (Array.isArray(blingProducts) && blingProducts.length) {
               const promises = blingProducts.map(({ produto }) => {
-                const method = produto && produto.produtoLoja ? 'put' : 'post'
+                if (!produto) {
+                  return null
+                }
+                const method = produto.produtoLoja ? 'put' : 'post'
                 const data = {
                   produtosLoja: {
                     produtoLoja: {
