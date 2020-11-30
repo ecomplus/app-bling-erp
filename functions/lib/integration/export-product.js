@@ -34,7 +34,7 @@ module.exports = ({ appSdk, storeId }, blingToken, blingStore, queueEntry, appDa
       })
         .catch(err => {
           if (err.response && err.response.status === 404) {
-            return {}
+            return { data: {} }
           }
           throw err
         })

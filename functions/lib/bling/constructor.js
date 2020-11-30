@@ -17,9 +17,19 @@ module.exports = function (apikey) {
     const { data } = response
     if (data) {
       const { retorno } = data
-      if (retorno.erros) {
+      if (retorno && retorno.erros) {
         const err = new Error('Bling error response')
-        response.status = 400
+        const blingError = retorno.erros[0] && retorno.erros[0].erro
+        const blingErrorCode = parseInt(blingError && blingError.cod, 10)
+        if (blingErrorCode <= 3) {
+          response.status = 401
+        } else if (blingErrorCode === 18) {
+          response.status = 503
+        } else if (blingErrorCode === 14) {
+          response.status = 404
+        } else {
+          response.status = 400
+        }
         err.response = response
         err.config = response.config
         err.request = response.request
