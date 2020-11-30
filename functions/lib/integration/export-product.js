@@ -87,6 +87,7 @@ module.exports = ({ appSdk, storeId }, blingToken, blingStore, queueEntry, appDa
                     if (err.response && err.response.status === 404) {
                       return bling.post(endpoint, data)
                     }
+                    throw err
                   })
                 }
                 return promise
