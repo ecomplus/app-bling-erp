@@ -1,6 +1,8 @@
 const ecomUtils = require('@ecomplus/utils')
 
 module.exports = (product, originalBlingProduct, blingProductCode, blingStore, appData) => {
+  const hasVariations = product.variations && product.variations.length
+
   const blingProduct = {
     codigo: blingProductCode,
     vlr_unit: ecomUtils.price(product),
@@ -18,10 +20,12 @@ module.exports = (product, originalBlingProduct, blingProductCode, blingStore, a
   if (product.cost_price) {
     blingProduct.preco_custo = product.cost_price
   }
-  if (typeof product.quantity === 'number') {
-    blingProduct.estoque = product.quantity
-  } else if (originalBlingProduct) {
-    blingProduct.estoque = originalBlingProduct.estoqueAtual
+  if (!hasVariations) {
+    if (typeof product.quantity === 'number') {
+      blingProduct.estoque = product.quantity
+    } else if (originalBlingProduct) {
+      blingProduct.estoque = originalBlingProduct.estoqueAtual
+    }
   }
   if (product.min_quantity) {
     blingProduct.itensPorCaixa = product.min_quantity
@@ -95,7 +99,7 @@ module.exports = (product, originalBlingProduct, blingProductCode, blingStore, a
     })
   }
 
-  if (product.variations && product.variations.length) {
+  if (hasVariations) {
     blingProduct.variacoes = {
       variacao: []
     }
