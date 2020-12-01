@@ -174,6 +174,15 @@ const app = {
       },
       hide: true
     },
+    update_product: {
+      schema: {
+        type: 'boolean',
+        default: false,
+        title: 'Sobrescrever produtos',
+        description: 'Atualizar cadastro (não apenas estoque) de produtos importados já existentes na plataforma'
+      },
+      hide: true
+    },
     import_quantity: {
       schema: {
         type: 'boolean',
