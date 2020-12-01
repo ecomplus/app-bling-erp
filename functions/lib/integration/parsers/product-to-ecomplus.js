@@ -70,19 +70,47 @@ const tryImageUpload = (storeId, auth, originImgUrl, product) => new Promise(res
   return picture
 })
 
-module.exports = (tinyProduct, storeId, auth, isNew = true) => new Promise((resolve, reject) => {
-  const sku = tinyProduct.codigo || String(tinyProduct.id)
-  const name = (tinyProduct.nome || sku).trim()
+module.exports = (blingProduct, variations, storeId, auth, isNew = true) => new Promise((resolve, reject) => {
+  const sku = blingProduct.codigo
+  const name = (blingProduct.descricao || sku).trim()
 
   const product = {
-    available: tinyProduct.situacao === 'A',
+    available: blingProduct.situacao === 'Ativo',
     sku,
     name,
-    cost_price: tinyProduct.preco_custo,
-    price: tinyProduct.preco_promocional || tinyProduct.preco,
-    base_price: tinyProduct.preco,
-    warranty: tinyProduct.garantia,
-    body_html: tinyProduct.descricao_complementar
+    quantity: Number(blingProduct.estoqueAtual || 0),
+    cost_price: blingProduct.preco_custo,
+    short_description: blingProduct.descricaoCurta,
+    body_html: blingProduct.descricaoComplementar
+  }
+
+  const { produtoLoja } = blingProduct
+  if (produtoLoja && produtoLoja.preco && produtoLoja.preco.preco) {
+    if (produtoLoja.preco.precoPromocional) {
+      product.price = Number(produtoLoja.preco.precoPromocional)
+      product.base_price = Number(produtoLoja.preco.preco)
+    } else {
+      product.price = Number(produtoLoja.preco.preco)
+    }
+  } else {
+    product.price = Number(blingProduct.preco || blingProduct.vlr_unit)
+  }
+
+  if (blingProduct.garantia) {
+    product.warranty = String(blingProduct.garantia)
+  }
+  if (blingProduct.itensPorCaixa) {
+    product.min_quantity = Number(blingProduct.itensPorCaixa)
+  }
+  if (blingProduct.class_fiscal) {
+    product.mpn = [blingProduct.class_fiscal]
+  }
+  const validateGtin = gtin => typeof gtin === 'string' && /^([0-9]{8}|[0-9]{12,14})$/.test(gtin)
+  if (validateGtin(blingProduct.gtin)) {
+    product.gtin = [blingProduct.gtin]
+    if (validateGtin(blingProduct.gtinEmbalagem)) {
+      product.gtin.push(blingProduct.gtinEmbalagem)
+    }
   }
 
   if (isNew) {
@@ -94,25 +122,11 @@ module.exports = (tinyProduct, storeId, auth, isNew = true) => new Promise((reso
     }
   }
 
-  if (tinyProduct.unidade_por_caixa) {
-    product.min_quantity = Number(tinyProduct.unidade_por_caixa)
-  }
-  if (tinyProduct.ncm) {
-    product.mpn = [tinyProduct.ncm]
-  }
-  const validateGtin = gtin => typeof gtin === 'string' && /^([0-9]{8}|[0-9]{12,14})$/.test(gtin)
-  if (validateGtin(tinyProduct.gtin)) {
-    product.gtin = [tinyProduct.gtin]
-    if (validateGtin(tinyProduct.gtin_embalagem)) {
-      product.gtin.push(tinyProduct.gtin_embalagem)
-    }
-  }
-
-  const weight = tinyProduct.peso_bruto || tinyProduct.peso_liquido
+  const weight = parseFloat(blingProduct.pesoBruto || blingProduct.pesoLiq)
   if (weight > 0) {
     product.weight = {
       unit: 'kg',
-      value: parseFloat(weight)
+      value: weight
     }
   }
 
@@ -121,81 +135,89 @@ module.exports = (tinyProduct, storeId, auth, isNew = true) => new Promise((reso
     ['altura', 'height'],
     ['comprimento', 'length']
   ].forEach(([lado, side]) => {
-    const dimension = tinyProduct[`${lado}_embalagem`] || tinyProduct[`${lado}Embalagem`]
+    const dimension = parseFloat(blingProduct[`${lado}Produto`])
     if (dimension > 0) {
       if (!product.dimensions) {
         product.dimensions = {}
       }
       product.dimensions[side] = {
         unit: 'cm',
-        value: parseFloat(dimension)
+        value: dimension
       }
     }
   })
 
-  if (isNew) {
-    if (Array.isArray(tinyProduct.variacoes) && tinyProduct.variacoes.length) {
-      product.variations = []
-      tinyProduct.variacoes.forEach(({ variacao }) => {
-        const { codigo, preco, grade } = variacao
-        if (grade) {
+  if (Array.isArray(blingProduct.variacoes) && blingProduct.variacoes.length) {
+    product.variations = variations || []
+    blingProduct.variacoes.forEach(({ variacao }) => {
+      if (variacao.nome) {
+        const gridsAndValues = variacao.nome.split(';')
+        if (gridsAndValues.length) {
           const specifications = {}
           const specTexts = []
-          for (const tipo in grade) {
-            if (grade[tipo]) {
-              const gridId = removeAccents(tipo.toLowerCase())
-                .replace(/\s+/g, '_')
-                .replace(/[^a-z0-9_]/g, '')
-                .substring(0, 30)
-                .padStart(2, 'i')
-              const spec = {
-                text: grade[tipo]
-              }
-              specTexts.push(spec.text)
+
+          gridsAndValues.forEach(gridAndValue => {
+            const [gridName, text] = gridAndValue.split(':')
+            if (gridName && text) {
+              const gridId = gridName === 'Cor'
+                ? 'colors'
+                : removeAccents(gridName.toLowerCase())
+                  .replace(/\s+/g, '_')
+                  .replace(/[^a-z0-9_]/g, '')
+                  .substring(0, 30)
+                  .padStart(2, 'i')
+              const spec = { text }
+              specTexts.push(text)
               if (gridId !== 'colors') {
-                spec.value = removeAccents(spec.text.toLowerCase()).substring(0, 100)
+                spec.value = removeAccents(text.toLowerCase()).substring(0, 100)
               }
-              specifications[gridId] = [spec]
+              if (!specifications[gridId]) {
+                specifications[gridId] = [spec]
+              } else {
+                specifications[gridId].push(spec)
+              }
             }
-          }
+          })
 
           if (specTexts.length) {
-            product.variations.push({
-              _id: ecomUtils.randomObjectId(),
-              name: `${name} / ${specTexts.join(' / ')}`.substring(0, 100),
-              sku: codigo,
-              specifications,
-              price: parseFloat(preco || 0)
-            })
+            let variation
+            if (variations) {
+              const variationIndex = variations.findIndex(({ sku }) => sku === variacao.codigo)
+              if (variationIndex > -1) {
+                variation = variations[variationIndex]
+              }
+            }
+            if (!variation) {
+              variation = {
+                _id: ecomUtils.randomObjectId()
+              }
+              variations.push(variation)
+            }
+            variation.name = `${name} / ${specTexts.join(' / ')}`.substring(0, 100)
+            variation.sku = variacao.codigo
+            variation.specifications = specifications
+            variation.quantity = Number(variacao.estoqueAtual || 0)
+            const price = parseFloat(variacao.preco || variacao.vlr_unit)
+            if (price) {
+              variation.price = price
+            }
           }
         }
-      })
-    }
-
-    if (Array.isArray(tinyProduct.imagens_externas)) {
-      product.pictures = []
-      tinyProduct.imagens_externas.forEach(imagemExterna => {
-        if (imagemExterna.imagem_externa) {
-          const { url } = imagemExterna.imagem_externa
-          if (url) {
-            product.pictures.push({ normal: { url } })
-          }
-        }
-      })
-    }
-
-    if (tinyProduct.anexos) {
-      if (!product.pictures) {
-        product.pictures = []
       }
-      const promises = []
-      tinyProduct.anexos.forEach(({ anexo }) => {
-        if (typeof anexo === 'string' && anexo.startsWith('http')) {
-          promises.push(tryImageUpload(storeId, auth, anexo, product))
-        }
-      })
-      return Promise.all(promises).then(() => resolve(product))
+    })
+  }
+
+  if (isNew && Array.isArray(blingProduct.imagem) && blingProduct.imagem.length) {
+    if (!product.pictures) {
+      product.pictures = []
     }
+    const promises = []
+    blingProduct.imagem.forEach(({ link }) => {
+      if (typeof link === 'string' && link.startsWith('http')) {
+        promises.push(tryImageUpload(storeId, auth, link, product))
+      }
+    })
+    return Promise.all(promises).then(() => resolve(product))
   }
 
   resolve(product)
