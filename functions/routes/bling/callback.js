@@ -8,7 +8,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
     const { retorno } = req.body
     const bling = new Bling(blingToken)
     console.log(retorno)
-    res.sendStatus(200)
+    return res.sendStatus(200)
   }
 
   res.sendStatus(403)
