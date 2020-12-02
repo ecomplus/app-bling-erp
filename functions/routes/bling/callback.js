@@ -5,9 +5,9 @@ exports.post = ({ appSdk, admin }, req, res) => {
   const storeId = parseInt(req.query.store_id, 10)
 
   if (storeId > 100 && typeof blingToken === 'string' && blingToken && req.body) {
-    const { retorno } = req.body
+    console.log(req.body)
+    console.log(req.params)
     const bling = new Bling(blingToken)
-    console.log(retorno)
     return res.sendStatus(200)
   }
 
