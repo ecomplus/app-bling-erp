@@ -1,5 +1,5 @@
-const getAppData = require('../store-api/get-app-data')
-const updateAppData = require('../store-api/update-app-data')
+const getAppData = require('../../lib/store-api/get-app-data')
+const updateAppData = require('../../lib/store-api/update-app-data')
 
 exports.post = ({ appSdk, admin }, req, res) => {
   const blingToken = req.query.token
