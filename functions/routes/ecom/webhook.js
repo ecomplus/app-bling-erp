@@ -153,9 +153,12 @@ exports.post = ({ appSdk, admin }, req, res) => {
             const blingToken = appData.bling_api_token
             const blingStore = appData.bling_store
             if (typeof blingToken === 'string' && blingToken) {
+              admin.firestore().doc(`bling_tokens/${blingToken}`)
+                .set({ storeId, blingStore })
+                .catch(console.error)
+
               let integrationConfig
               let canCreateNew = false
-
               switch (trigger.resource) {
                 case 'applications':
                   integrationConfig = appData
