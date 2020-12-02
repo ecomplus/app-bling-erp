@@ -4,7 +4,7 @@ const Bling = require('../bling/constructor')
 const parseProduct = require('./parsers/product-to-ecomplus')
 const handleJob = require('./handle-job')
 
-module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry, appData, canCreateNew, isHiddenQueue) => {
+module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry, appData, _, isHiddenQueue) => {
   const [sku, productId] = String(queueEntry.nextId).split(';:')
   let blingProductCode = sku
 
@@ -14,7 +14,7 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
     .get().then(querySnapshot => {
       let blingStockUpdate
       querySnapshot.forEach(documentSnapshot => {
-        blingStockUpdate = documentSnapshot.data()
+        blingStockUpdate = documentSnapshot.get('estoque')
         documentSnapshot.ref.delete().catch(console.error)
       })
       return blingStockUpdate
@@ -125,9 +125,9 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
             }
           }
 
-          const handleBlingStock = blingProduct => {
+          const handleBlingStock = (blingProduct, isStockOnly) => {
             let quantity = Number(blingProduct.estoqueAtual)
-            if (product && (!appData.update_product || variationId)) {
+            if (product && (isStockOnly === true || !appData.update_product || variationId)) {
               if (!isNaN(quantity)) {
                 if (quantity < 0) {
                   quantity = 0
@@ -165,7 +165,7 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
           console.log(`#${storeId} ${JSON.stringify({ sku, productId, hasVariations, variationId })}`)
           let job
           if (blingStockUpdate && isHiddenQueue) {
-            job = handleBlingStock(blingStockUpdate)
+            job = handleBlingStock(blingStockUpdate, true)
           } else {
             job = bling.get(`/produto/${blingProductCode}`, {
               params: {
