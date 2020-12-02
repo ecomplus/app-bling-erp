@@ -140,3 +140,9 @@ exports.updateTokens = functions.pubsub.schedule(cron).onRun(() => {
   })
 })
 console.log(`-- Sheduled update E-Com Plus tokens '${cron}'`)
+
+// schedule active check queues from Store API
+const checkIdleQueues = require('./lib/integration/check-idle-queues')
+const queueFallbackCron = 'every 30 mins'
+exports.scheduledSync = functions.pubsub.schedule(queueFallbackCron).onRun(checkIdleQueues)
+console.log(`-- Sheduled active check idle queues from Store API '${queueFallbackCron}'`)
