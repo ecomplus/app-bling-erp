@@ -36,8 +36,10 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
 
         .then(({ data }) => {
           let originalBlingOrder
+          console.log(blingOrderNumber, data.pedidos)
           if (Array.isArray(data.pedidos)) {
             originalBlingOrder = data.pedidos.find(({ pedido }) => {
+              console.log(pedido)
               if (String(order.number) === pedido.numero_ecommerce) {
                 return !blingStore || (String(blingStore) === String(pedido.loja))
               }
