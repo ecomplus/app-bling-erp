@@ -9,7 +9,8 @@ exports.post = ({ appSdk, admin }, req, res) => {
     let { retorno } = req.body
     if (!retorno && typeof req.body.data === 'string') {
       try {
-        retorno = JSON.parse(req.body.data)
+        const data = JSON.parse(req.body.data)
+        retorno = data.retorno
       } catch (e) {
       }
     }
