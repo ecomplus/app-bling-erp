@@ -29,7 +29,7 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
       const job = bling.get(`/pedido/${blingOrderNumber}`)
         .catch(err => {
           if (err.response && err.response.status === 404) {
-            return {}
+            return { data: {} }
           }
           throw err
         })
