@@ -83,7 +83,7 @@ const log = ({ appSdk, storeId }, queueEntry, payload) => {
                 }
                 if (config) {
                   const { url, method, data } = config
-                  notes += `\n\n-- Request -- \n${method} ${url} \n${JSON.stringify(data)}`
+                  notes += `\n\n-- Request -- \n${method} ${url} \n${data}`
                 }
               } else if (payload.isConfigError === true) {
                 notes = payload.message
