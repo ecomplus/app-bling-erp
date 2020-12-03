@@ -71,7 +71,7 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
               if (blingStatusObj) {
                 return bling.put(`/pedido/${blingOrderNumber}`, {
                   pedido: {
-                    idSituacao: Number(blingStatusObj.id)
+                    idSituacao: Number(blingStatusObj.situacao.id)
                   }
                 })
               }
