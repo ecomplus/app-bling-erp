@@ -40,6 +40,7 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
     blingOrder.loja = Number(blingStore)
   }
 
+  const { amount } = order
   const buyer = order.buyers && order.buyers[0]
   const shippingLine = order.shipping_lines && order.shipping_lines[0]
   const transaction = order.transactions && order.transactions[0]
@@ -105,15 +106,13 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
     }
     blingOrder.parcelas = []
     if (transaction.installments) {
-      let { number, value, total } = transaction.installments
-      if (!value) {
-        value = (total || transaction.amount) / number
-      }
+      const { number } = transaction.installments
+      const vlr = amount.total / number
       for (let i = 0; i < number; i++) {
         blingOrder.parcelas.push({
           parcela: {
             dias: (i * 30) || 1,
-            vlr: value,
+            vlr,
             obs: `${blingPaymentLabel} (${(i + 1)}/${number})`
           }
         })
@@ -122,7 +121,7 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
       blingOrder.parcelas.push({
         parcela: {
           data: blingOrder.data,
-          vlr: transaction.amount,
+          vlr: amount.total,
           obs: `${blingPaymentLabel} (1/1)`
         }
       })
@@ -162,20 +161,17 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
     }
   }
 
-  const { amount } = order
-  if (amount) {
-    if (typeof amount.freight === 'number') {
-      blingOrder.vlr_frete = amount.freight
-      if (amount.tax) {
-        blingOrder.vlr_frete += amount.tax
-      }
-      if (amount.extra) {
-        blingOrder.vlr_frete += amount.extra
-      }
+  if (typeof amount.freight === 'number') {
+    blingOrder.vlr_frete = amount.freight
+    if (amount.tax) {
+      blingOrder.vlr_frete += amount.tax
     }
-    if (amount.discount) {
-      blingOrder.vlr_desconto = amount.discount
+    if (amount.extra) {
+      blingOrder.vlr_frete += amount.extra
     }
+  }
+  if (amount.discount) {
+    blingOrder.vlr_desconto = amount.discount
   }
 
   if (order.notes) {
