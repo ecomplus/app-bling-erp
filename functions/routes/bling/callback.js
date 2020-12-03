@@ -23,7 +23,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
             if (appData.bling_api_token !== blingToken) {
               return res.sendStatus(401)
             }
-            let { estoques } = retorno
+            let { estoques, pedidos } = retorno
             if (Array.isArray(estoques)) {
               if (Array.isArray(estoques[0])) {
                 estoques = estoques[0]
@@ -68,6 +68,33 @@ exports.post = ({ appSdk, admin }, req, res) => {
                     })
                   })
                 }
+              }
+            }
+
+            if (Array.isArray(pedidos)) {
+              let orderNumbers = appData.___importation && appData.___importation.order_numbers
+              if (!Array.isArray(orderNumbers)) {
+                orderNumbers = []
+              }
+              let hasNewOrder = false
+              pedidos.forEach(({ pedido }) => {
+                if (pedido && pedido.numero) {
+                  const orderNumber = String(pedido.numero)
+                  if (!orderNumbers.includes(orderNumber)) {
+                    orderNumbers.push(orderNumber)
+                    hasNewOrder = true
+                  }
+                }
+              })
+
+              if (hasNewOrder) {
+                console.log(`> #${storeId} order numbers: ${JSON.stringify(orderNumbers)}`)
+                return updateAppData({ appSdk, storeId }, {
+                  ___importation: {
+                    ...appData.___importation,
+                    order_numbers: orderNumbers
+                  }
+                })
               }
             }
             return null
