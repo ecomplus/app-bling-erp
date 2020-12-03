@@ -48,7 +48,6 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
 
   if (buyer) {
     const blingCustomer = {
-      id: buyer._id,
       nome: (buyer.corporate_name || ecomUtils.fullName(buyer)).substring(0, 30) ||
         `Comprador de #${blingOrderNumber}`,
       tipoPessoa: buyer.registry_type === 'j' ? 'J' : 'F'
