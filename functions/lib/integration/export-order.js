@@ -51,7 +51,7 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
           }
 
           if (!originalBlingOrder) {
-            const blingOrder = parseOrder(order, appData, storeId)
+            const blingOrder = parseOrder(order, blingOrderNumber, blingStore, appData, storeId)
             console.log(`#${storeId} ${JSON.stringify(blingOrder)}`)
             return bling.post('/pedido', {
               pedido: blingOrder

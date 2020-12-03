@@ -1,16 +1,43 @@
 const ecomUtils = require('@ecomplus/utils')
-const parseStatus = require('./status')
-const formatDate = require('../../helpers/format-tiny-date')
 
-module.exports = (order, appData, storeId) => {
-  const orderRef = String(order.number) || order._id
+const formatDate = d => {
+  return d.getDate().toString().padStart(2, '0') + '/' +
+    (d.getMonth() + 1).toString().padStart(2, '0') + '/' +
+    d.getFullYear()
+}
 
-  const tinyOrder = {
-    numero_pedido_ecommerce: orderRef,
-    data_pedido: formatDate(new Date(order.opened_at || order.created_at)),
-    ecommerce: 'E-Com Plus',
-    situacao: parseStatus(order),
-    itens: []
+const parseAddress = (address, blingAddress) => {
+  if (address) {
+    ;[
+      ['name', 'nome', 120],
+      ['street', 'endereco', 50],
+      ['number', 'numero', 10],
+      ['complement', 'complemento', 50],
+      ['borough', 'bairro', 30],
+      ['zip', 'cep', 10],
+      ['city', 'cidade', 30],
+      ['province_code', 'uf', 30]
+    ].forEach(([addressField, blingAddressField, maxLength]) => {
+      if (address[addressField] && !blingAddress[blingAddressField]) {
+        blingAddress[blingAddressField] = String(address[addressField]).substring(0, maxLength)
+      }
+    })
+    if (blingAddress.cep && /[0-9]{7,8}/.test(blingAddress.cep)) {
+      blingAddress.cep = blingAddress.cep.padStart(8, '0')
+        .replace(/^([\d]{2})([\d]{3})([\d]{3})$/, '$1.$2-$3')
+    }
+  }
+}
+
+module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
+  const blingOrder = {
+    numero: blingOrderNumber,
+    numero_loja: String(order.number),
+    data: formatDate(new Date(order.opened_at || order.created_at))
+  }
+
+  if (blingStore) {
+    blingOrder.loja = Number(blingStore)
   }
 
   const buyer = order.buyers && order.buyers[0]
@@ -19,171 +46,148 @@ module.exports = (order, appData, storeId) => {
   const shippingAddress = shippingLine && shippingLine.to
   const billingAddress = transaction && transaction.billing_address
 
-  const parseAddress = (address, tinyObject) => {
-    ;[
-      ['street', 'endereco', 50],
-      ['number', 'numero', 10],
-      ['complement', 'complemento', 50],
-      ['borough', 'bairro', 30],
-      ['zip', 'cep', 10],
-      ['city', 'cidade', 30],
-      ['province_code', 'uf', 30]
-    ].forEach(([addressField, tinyField, maxLength]) => {
-      if (address[addressField]) {
-        tinyObject[tinyField] = String(address[addressField]).substring(0, maxLength)
-      }
-    })
-  }
-
   if (buyer) {
-    const tinyCustomer = {
-      codigo: buyer._id,
+    const blingCustomer = {
+      id: buyer._id,
       nome: (buyer.corporate_name || ecomUtils.fullName(buyer)).substring(0, 30) ||
-        `Comprador de #${orderRef}`,
-      tipo_pessoa: buyer.registry_type === 'j' ? 'J' : 'F'
-    }
-    if (buyer.display_name) {
-      tinyCustomer.nome_fantasia = buyer.display_name.substring(0, 30)
+        `Comprador de #${blingOrderNumber}`,
+      tipoPessoa: buyer.registry_type === 'j' ? 'J' : 'F'
     }
     if (buyer.doc_number && buyer.doc_number.length <= 18) {
-      tinyCustomer.cpf_cnpj = buyer.doc_number
+      blingCustomer.cpf_cnpj = buyer.doc_number
     }
     if (buyer.inscription_number && buyer.inscription_number.length <= 18) {
-      tinyCustomer.ie = buyer.inscription_number
+      blingCustomer.ie = buyer.inscription_number
     }
-    if (buyer.main_email && buyer.main_email.length <= 50) {
-      tinyCustomer.email = buyer.main_email
+    if (buyer.main_email && buyer.main_email.length <= 60) {
+      blingCustomer.email = buyer.main_email
     }
-    if (shippingAddress) {
-      parseAddress(billingAddress || shippingAddress, tinyCustomer)
+    if (buyer.phones) {
+      ;['celular', 'tel'].forEach((blingCustomerField, i) => {
+        const phone = buyer.phones && buyer.phones[i]
+        if (phone) {
+          blingCustomer[blingCustomerField] = phone.country_code ? `+${phone.country_code} ` : ''
+          blingCustomer[blingCustomerField] += phone.number
+        }
+      })
     }
-    const phone = buyer.phones && buyer.phones[0]
-    if (phone) {
-      tinyCustomer.fone = phone.country_code ? `+${phone.country_code} ` : ''
-      tinyCustomer.fone += phone.number
-    }
-    tinyOrder.cliente = tinyCustomer
+    parseAddress(billingAddress || shippingAddress, blingCustomer)
+    blingOrder.cliente = blingCustomer
   } else {
-    tinyOrder.cliente = {
-      nome: `Comprador de #${orderRef}`
+    blingOrder.cliente = {
+      nome: `Comprador de #${blingOrderNumber}`
     }
   }
 
-  if (shippingAddress && billingAddress) {
-    tinyOrder.endereco_entrega = {}
-    parseAddress(shippingAddress, tinyOrder.endereco_entrega)
-    if (shippingAddress.name) {
-      tinyOrder.endereco_entrega.nome_destinatario = shippingAddress.name.substring(0, 60)
-    }
-  }
-
-  if (order.items) {
+  if (order.items && order.items.length) {
+    blingOrder.itens = []
     order.items.forEach(item => {
       if (item.quantity) {
         const itemRef = (item.sku || item._id).substring(0, 20)
-        tinyOrder.itens.push({
+        blingOrder.itens.push({
           item: {
             codigo: itemRef,
             descricao: item.name ? item.name.substring(0, 120) : itemRef,
-            unidade: 'UN',
-            quantidade: item.quantity,
-            valor_unitario: ecomUtils.price(item)
+            un: 'Un',
+            qtde: item.quantity,
+            vlr_unit: ecomUtils.price(item)
           }
         })
       }
     })
   }
 
-  if (order.payment_method_label) {
-    tinyOrder.meio_pagamento = order.payment_method_label
-  }
   if (transaction) {
-    switch (transaction.payment_method.code) {
-      case 'credit_card':
-        tinyOrder.forma_pagamento = 'credito'
-        break
-      case 'banking_billet':
-        tinyOrder.forma_pagamento = 'boleto'
-        break
-      case 'account_deposit':
-        tinyOrder.forma_pagamento = 'deposito'
-        break
-      case 'online_debit':
-      case 'debit_card':
-      case 'balance_on_intermediary':
-        tinyOrder.forma_pagamento = 'debito'
-        break
-      default:
-        tinyOrder.forma_pagamento = 'multiplas'
+    let blingPaymentLabel = ''
+    if (order.payment_method_label) {
+      blingPaymentLabel = order.payment_method_label
+    } else if (transaction.payment_method.name) {
+      blingPaymentLabel = transaction.payment_method.name.substring(0, 140)
     }
-    if (!tinyOrder.meio_pagamento && transaction.payment_method.name) {
-      tinyOrder.meio_pagamento = transaction.payment_method.name.substring(0, 100)
+    blingOrder.parcelas = []
+    if (transaction.installments) {
+      let { number, value, total } = transaction.installments
+      if (!value) {
+        value = (total || transaction.amount) / number
+      }
+      for (let i = 0; i < number; i++) {
+        blingOrder.parcelas.push({
+          parcela: {
+            dias: (i * 30) || 1,
+            vlr: value,
+            obs: `${blingPaymentLabel} (${(i + 1)}/${number})`
+          }
+        })
+      }
+    } else {
+      blingOrder.parcelas.push({
+        parcela: {
+          data: blingOrder.data,
+          vlr: transaction.amount,
+          obs: `${blingPaymentLabel} (1/1)`
+        }
+      })
     }
   }
 
-  if (order.shipping_method_label) {
-    tinyOrder.forma_frete = order.shipping_method_label
-  }
   if (shippingLine) {
-    tinyOrder.forma_envio = 'X'
+    blingOrder.transporte = {}
+    if (order.shipping_method_label) {
+      blingOrder.transporte.transportadora = order.shipping_method_label
+    }
     if (shippingLine.app) {
-      const { carrier } = shippingLine.app
-      if (carrier === 'Loggi' && storeId === 1166) {
-        // mocked exception (https://github.com/ecomplus/app-tiny-erp/issues/5)
-        // keeps forma_envio `X`
-      } else {
-        if (carrier) {
-          if (/correios/i.test(carrier)) {
-            tinyOrder.forma_envio = 'C'
-          } else if (/b2w/i.test(carrier)) {
-            tinyOrder.forma_envio = 'B'
-          } else if (/mercado envios/i.test(carrier)) {
-            tinyOrder.forma_envio = 'M'
-          } else {
-            tinyOrder.forma_envio = 'T'
-          }
-        }
+      if (shippingLine.app.carrier && shippingLine.app.service_name) {
         if (
-          (!tinyOrder.forma_envio || tinyOrder.forma_envio === 'X' || tinyOrder.forma_envio === 'T') &&
-          shippingLine.app.service_name && /(pac|sedex)/i.test(shippingLine.app.service_name)
+          /correios/i.test(shippingLine.app.carrier) ||
+          /(pac|sedex)/i.test(shippingLine.app.service_name)
         ) {
-          tinyOrder.forma_envio = 'C'
+          blingOrder.transporte.servico_correios = shippingLine.app.service_name
         }
       }
-      if (!tinyOrder.forma_frete && shippingLine.app.label) {
-        tinyOrder.forma_frete = shippingLine.app.label
+      if (!blingOrder.transporte.transportadora && shippingLine.app.label) {
+        blingOrder.transporte.transportadora = shippingLine.app.label
       }
     }
-  } else {
-    tinyOrder.forma_envio = 'S'
+    if (shippingLine.package && shippingLine.package.weight) {
+      const { unit, value } = shippingLine.package.weight
+      blingOrder.transporte.peso_bruto = unit === 'g'
+        ? value / 1000
+        : unit === 'mg'
+          ? value / 1000000
+          : value
+    }
+    if (shippingAddress) {
+      blingOrder.transporte.dados_etiqueta = {}
+      parseAddress(shippingAddress, blingOrder.transporte.dados_etiqueta)
+    }
   }
 
   const { amount } = order
   if (amount) {
     if (typeof amount.freight === 'number') {
-      tinyOrder.valor_frete = amount.freight
+      blingOrder.vlr_frete = amount.freight
       if (amount.tax) {
-        tinyOrder.valor_frete += amount.tax
+        blingOrder.vlr_frete += amount.tax
       }
       if (amount.extra) {
-        tinyOrder.valor_frete += amount.extra
+        blingOrder.vlr_frete += amount.extra
       }
     }
     if (amount.discount) {
-      tinyOrder.valor_desconto = amount.discount
+      blingOrder.vlr_desconto = amount.discount
     }
   }
 
   if (order.notes) {
-    tinyOrder.obs = order.notes.substring(0, 100)
+    blingOrder.obs = order.notes.substring(0, 250)
   }
   if (order.staff_notes) {
-    tinyOrder.obs_internas = order.staff_notes.substring(0, 100)
+    blingOrder.obs_internas = order.staff_notes.substring(0, 250)
   }
 
-  if (appData.tiny_order_data) {
-    for (const field in appData.tiny_order_data) {
-      let value = appData.tiny_order_data[field]
+  if (appData.bling_order_data) {
+    for (const field in appData.bling_order_data) {
+      let value = appData.bling_order_data[field]
       switch (value) {
         case undefined:
         case '':
@@ -193,14 +197,14 @@ module.exports = (order, appData, storeId) => {
           if (typeof value === 'string') {
             value = value.trim()
             if (value) {
-              tinyOrder[field] = value
+              blingOrder[field] = value
             }
           } else {
-            tinyOrder[field] = value
+            blingOrder[field] = value
           }
       }
     }
   }
 
-  return tinyOrder
+  return blingOrder
 }
