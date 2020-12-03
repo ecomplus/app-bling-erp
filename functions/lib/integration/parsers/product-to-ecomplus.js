@@ -157,7 +157,7 @@ module.exports = (blingProduct, variations, storeId, auth, isNew = true) => new 
           const specTexts = []
 
           gridsAndValues.forEach(gridAndValue => {
-            const [gridName, text] = gridAndValue.split(':')
+            const [gridName, text] = gridAndValue.trim().split(':')
             if (gridName && text) {
               const gridId = gridName === 'Cor'
                 ? 'colors'
