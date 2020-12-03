@@ -34,10 +34,10 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
           throw err
         })
 
-        .then(({ pedidos }) => {
+        .then(({ data }) => {
           let originalBlingOrder
-          if (Array.isArray(pedidos)) {
-            originalBlingOrder = pedidos.find(({ pedido }) => {
+          if (Array.isArray(data.pedidos)) {
+            originalBlingOrder = data.pedidos.find(({ pedido }) => {
               if (String(order.number) === pedido.numero_ecommerce) {
                 return !blingStore || (String(blingStore) === String(pedido.loja))
               }
@@ -61,14 +61,12 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
         })
 
         .then(() => {
-          return bling.get('/situacao/Vendas').then(({ situacoes }) => {
-            if (Array.isArray(situacoes)) {
+          return bling.get('/situacao/Vendas').then(({ data }) => {
+            if (Array.isArray(data.situacoes)) {
               const blingStatus = parseStatus(order)
-              const blingStatusId = situacoes.find(({ situacao }) => {
+              const blingStatusId = data.situacoes.find(({ situacao }) => {
                 return situacao.nome && situacao.nome.toLowerCase() === blingStatus
               })
-              console.log(situacoes)
-              console.log({ blingStatus, blingStatusId })
 
               if (blingStatusId) {
                 return bling.put(`/pedido/${blingOrderNumber}`, {
