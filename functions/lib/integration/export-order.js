@@ -62,19 +62,24 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
 
         .then(() => {
           return bling.get('/situacao/Vendas').then(({ situacoes }) => {
-            const blingStatus = parseStatus(order)
-            const blingStatusId = situacoes.find(({ situacao }) => {
-              return situacao.nome && situacao.nome.toLowerCase() === blingStatus
-            })
-
-            if (blingStatusId) {
-              return bling.put(`/pedido/${blingOrderNumber}`, {
-                pedido: {
-                  idSituacao: blingStatusId
-                }
+            if (Array.isArray(situacoes)) {
+              const blingStatus = parseStatus(order)
+              const blingStatusId = situacoes.find(({ situacao }) => {
+                return situacao.nome && situacao.nome.toLowerCase() === blingStatus
               })
+
+              if (blingStatusId) {
+                return bling.put(`/pedido/${blingOrderNumber}`, {
+                  pedido: {
+                    idSituacao: blingStatusId
+                  }
+                })
+              }
+              return null
             }
-            return null
+            const err = new Error('Sua conta Bling não tem "situacoes" cadastradas ou a API do Bling falhou')
+            err.isConfigError = true
+            throw err
           })
         })
       handleJob({ appSdk, storeId }, queueEntry, job)
