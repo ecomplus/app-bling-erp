@@ -23,6 +23,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
               return res.sendStatus(401)
             }
             let { estoques } = retorno
+            console.log({ retorno, estoques })
             if (Array.isArray(estoques)) {
               console.log(estoques)
               if (Array.isArray(estoques[0])) {
