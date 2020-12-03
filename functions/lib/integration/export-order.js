@@ -49,23 +49,33 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
               return null
             }
           }
-          const blingOrder = parseOrder(order, appData, storeId)
+
           if (!originalBlingOrder) {
+            const blingOrder = parseOrder(order, appData, storeId)
             console.log(`#${storeId} ${JSON.stringify(blingOrder)}`)
             return bling.post('/pedido', {
               pedido: blingOrder
             })
           }
-
-          const blingStatus = parseStatus(order)
-          if (blingStatus) {
-            return bling.put(`/pedido/${blingOrderNumber}`, {
-              pedido: {
-                idSituacao: blingStatus
-              }
-            })
-          }
           return null
+        })
+
+        .then(() => {
+          return bling.get('/situacao/Vendas').then(({ situacoes }) => {
+            const blingStatus = parseStatus(order)
+            const blingStatusId = situacoes.find(({ situacao }) => {
+              return situacao.nome && situacao.nome.toLowerCase() === blingStatus
+            })
+
+            if (blingStatusId) {
+              return bling.put(`/pedido/${blingOrderNumber}`, {
+                pedido: {
+                  idSituacao: blingStatusId
+                }
+              })
+            }
+            return null
+          })
         })
       handleJob({ appSdk, storeId }, queueEntry, job)
     })
