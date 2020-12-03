@@ -24,6 +24,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
             }
             let { estoques } = retorno
             if (Array.isArray(estoques)) {
+              console.log(estoques)
               if (Array.isArray(estoques[0])) {
                 estoques = estoques[0]
                 for (let i = 1; i < estoques.length; i++) {
@@ -32,12 +33,14 @@ exports.post = ({ appSdk, admin }, req, res) => {
               }
 
               if (estoques.length) {
+                console.log(estoques)
                 let skus = appData.___importation && appData.___importation.skus
                 if (!Array.isArray(skus)) {
                   skus = []
                 }
                 const promises = []
                 estoques.forEach(({ estoque }) => {
+                  console.log(estoque)
                   if (estoque && estoque.codigo) {
                     const sku = String(estoque.codigo)
                     promises.push(new Promise(resolve => {
