@@ -67,6 +67,8 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
               const blingStatusId = situacoes.find(({ situacao }) => {
                 return situacao.nome && situacao.nome.toLowerCase() === blingStatus
               })
+              console.log(situacoes)
+              console.log({ blingStatus, blingStatusId })
 
               if (blingStatusId) {
                 return bling.put(`/pedido/${blingOrderNumber}`, {
