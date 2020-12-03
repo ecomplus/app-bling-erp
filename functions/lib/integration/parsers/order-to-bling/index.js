@@ -6,7 +6,7 @@ const formatDate = d => {
     d.getFullYear()
 }
 
-const parseAddress = (address, blingAddress) => {
+const parseAddress = (address, blingAddress, blingCityField = 'cidade') => {
   if (address) {
     ;[
       ['name', 'nome', 120],
@@ -15,7 +15,7 @@ const parseAddress = (address, blingAddress) => {
       ['complement', 'complemento', 50],
       ['borough', 'bairro', 30],
       ['zip', 'cep', 10],
-      ['city', 'cidade', 30],
+      ['city', blingCityField, 30],
       ['province_code', 'uf', 30]
     ].forEach(([addressField, blingAddressField, maxLength]) => {
       if (address[addressField] && !blingAddress[blingAddressField]) {
@@ -132,21 +132,22 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
 
   if (shippingLine) {
     blingOrder.transporte = {}
-    if (order.shipping_method_label) {
-      blingOrder.transporte.transportadora = order.shipping_method_label
-    }
     if (shippingLine.app) {
-      if (shippingLine.app.carrier && shippingLine.app.service_name) {
-        if (
-          /correios/i.test(shippingLine.app.carrier) ||
-          /(pac|sedex)/i.test(shippingLine.app.service_name)
-        ) {
-          blingOrder.transporte.servico_correios = shippingLine.app.service_name
+      const { carrier } = shippingLine.app
+      if (carrier) {
+        blingOrder.transporte.transportadora = carrier
+        if (shippingLine.app.service_name) {
+          if (/correios/i.test(carrier) || /(pac|sedex)/i.test(shippingLine.app.service_name)) {
+            blingOrder.transporte.servico_correios = shippingLine.app.service_name
+          }
         }
       }
       if (!blingOrder.transporte.transportadora && shippingLine.app.label) {
         blingOrder.transporte.transportadora = shippingLine.app.label
       }
+    }
+    if (!blingOrder.transporte.transportadora && order.shipping_method_label) {
+      blingOrder.transporte.transportadora = order.shipping_method_label
     }
     if (shippingLine.package && shippingLine.package.weight) {
       const { unit, value } = shippingLine.package.weight
@@ -158,7 +159,7 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
     }
     if (shippingAddress) {
       blingOrder.transporte.dados_etiqueta = {}
-      parseAddress(shippingAddress, blingOrder.transporte.dados_etiqueta)
+      parseAddress(shippingAddress, blingOrder.transporte.dados_etiqueta, 'municipio')
     }
   }
 
