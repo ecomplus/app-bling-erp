@@ -2,6 +2,69 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.0.0 (2020-12-03)
+
+
+### Features
+
+* **auth-callback:** add procedure trigger for app "self" ([3bc0b3c](https://github.com/ecomplus/application-starter/commit/3bc0b3ced76caad1e0cc4c238fed14e61fc527f3))
+* **bling-callback:** authenticating and receiving bling callbacks ([7111611](https://github.com/ecomplus/application-starter/commit/7111611ec1256d2d2fc8196c90faedf081e49fb6))
+* **bling-callback:** handling order update callbacks ([1f64127](https://github.com/ecomplus/application-starter/commit/1f64127123765baab55d844d2bd73baabeafda66))
+* **bling-callback:** properly handling stock callback and update ([92bca97](https://github.com/ecomplus/application-starter/commit/92bca97de645ce52a634b3ff1aa3da2cb7171d36))
+* **bling-client:** setup simple bling api client constructor ([f9c94ec](https://github.com/ecomplus/application-starter/commit/f9c94ec9984fdfc693733cab2d0ebd6787edf321))
+* **config:** setup initial app config for erp common flux ([14acb42](https://github.com/ecomplus/application-starter/commit/14acb42501da8a5784f115dcc6e4b1dc384db6dc))
+* **export-order:** parsing and creating/updating orders on bling ([0bdacc3](https://github.com/ecomplus/application-starter/commit/0bdacc30501ac982c3a64d12d3985c3132870e4d))
+* **export-product:** handling product export/update from ecomplus to bling ([c1a9187](https://github.com/ecomplus/application-starter/commit/c1a9187ef53d61b7a83379d504af3e655fec2069))
+* **import-order:** update status, tracking code and invoices from bling ([77c79b5](https://github.com/ecomplus/application-starter/commit/77c79b589e76be054b0f2ed665ed19b48f91266d))
+* **import-product:** handling product import to create/update on ecomplus from bling ([492605e](https://github.com/ecomplus/application-starter/commit/492605ed9089d7007b83b1d80d71129e18df87fc))
+* **queues:** schedule active check idle queues from store api (fallback) ([89e35ac](https://github.com/ecomplus/application-starter/commit/89e35ac57f64eaa39ff8750da29ce91becadffee))
+* **store-api:** abstraction lib to update app data ([76fe0c0](https://github.com/ecomplus/application-starter/commit/76fe0c05e72faaabe6af976f8b434bceea702a3b))
+* **webhook:** webhook route handling importation/exportation queues ([a039067](https://github.com/ecomplus/application-starter/commit/a039067889c77d97a4a6cbf930bc09c2810e9602))
+
+
+### Bug Fixes
+
+* **admin-settings:** edit bling order data additional config fields ([5c84b0c](https://github.com/ecomplus/application-starter/commit/5c84b0c691deb46ea3cd8af4fdbba06043d83042))
+* **bling-callback:** fix parsing json string data ([1c4ca22](https://github.com/ecomplus/application-starter/commit/1c4ca227449d303f853b2d304cfc545833af5118))
+* **bling-callback:** receive post request instead of get ([77a5df3](https://github.com/ecomplus/application-starter/commit/77a5df317ab2e4b8c8e27e44e9f932c24833d683))
+* **bling-client:** fix handling bling api errors and status ([417a4a6](https://github.com/ecomplus/application-starter/commit/417a4a69e78f17d3ccb129c07cbd9fc74101fc3f))
+* **bling-client:** must have post method, abstracting response data ([faef7f4](https://github.com/ecomplus/application-starter/commit/faef7f483f61c1200c3ba64ebd58def853219254))
+* **bling-client:** post with application/x-www-form-urlencoded ([f07c4ff](https://github.com/ecomplus/application-starter/commit/f07c4ff3f324ab39c15d1ff1ced0766216b9b007))
+* **bling-client:** post with application/x-www-form-urlencoded (fix qs) ([3070c46](https://github.com/ecomplus/application-starter/commit/3070c46287539b5cd57e6dc6a152f4065c638089))
+* **bling-client:** treat common bling api error codes ([e32010a](https://github.com/ecomplus/application-starter/commit/e32010a07370a660bf74b87b2af688e9fa9bada3))
+* **config:** add bling store setting and fix procedure triggers ([a1c26bd](https://github.com/ecomplus/application-starter/commit/a1c26bd2ad40693490c47e703887c9ba1acfb459))
+* **deps:** add form-data to direct dependencies ([85c286e](https://github.com/ecomplus/application-starter/commit/85c286ecef2f8a723fab1e7e025039302313fdc4))
+* **deps:** add js2xmlparser to direct function deps ([54a4f26](https://github.com/ecomplus/application-starter/commit/54a4f264186199a54a6b15a7fa1aec2ca8cc173e))
+* **ecom-config:** add (back) 'update_product' to admin settings ([5c01e02](https://github.com/ecomplus/application-starter/commit/5c01e020cda17e9791d2a050965ea863bf24f9e9))
+* **export-order:** check bling 'situacoes' and thow error if invalid ([e420f8e](https://github.com/ecomplus/application-starter/commit/e420f8e660ea1504b1581ee7a85ef68858b7abde))
+* **export-order:** don't send buyer id (prevent error with repeated customer) ([0ea3f6a](https://github.com/ecomplus/application-starter/commit/0ea3f6a23f699a5e334d74e30d9daf570b96bd49))
+* **export-order:** fix handling bling not found responses ([0e38e85](https://github.com/ecomplus/application-starter/commit/0e38e85ba65f2074ec160db895981af3a2003de8))
+* **export-order:** fix handling response data from bling api ([dd369e2](https://github.com/ecomplus/application-starter/commit/dd369e29996641faff9ae80813fa23010db62bb0))
+* **export-order:** fix matching existent bling order by number ([f98f78e](https://github.com/ecomplus/application-starter/commit/f98f78e857295a76b61ca0e7b0a24870a0a4f4de))
+* **export-order:** fix order parser to bling xml ([be16439](https://github.com/ecomplus/application-starter/commit/be1643946f542ff5c901091010030e5ce5188cd8))
+* **export-order:** fix parsing bling order status ('situacao') ([831548d](https://github.com/ecomplus/application-starter/commit/831548d82afb29ad925c9c9faa2fcb2eafbc97de))
+* **export-order:** fix updating bling order status ([a9ba2fb](https://github.com/ecomplus/application-starter/commit/a9ba2fb2434d31bca3075819bf6c2ae97497929e))
+* **export-order:** fix updating bling order status ('situacao' object) ([d31effc](https://github.com/ecomplus/application-starter/commit/d31effc9cac2b574349a50d7a4c5c9423ec7275d))
+* **export-order:** minor order parser fixes (address and carrier) ([c15c34b](https://github.com/ecomplus/application-starter/commit/c15c34b9a149d20d5365cbb71c3b9feaba8ed489))
+* **export-order:** use order amount total instead of transaction amount to set 'parcelas' ([3b5af42](https://github.com/ecomplus/application-starter/commit/3b5af42ac755f7521551c3147ea2644ce1a66e61))
+* **export-product:** always set price/stock with manual exportation ([f52abd2](https://github.com/ecomplus/application-starter/commit/f52abd2ada69ec598c5506ecbd8e1d79319bf3f2))
+* **export-product:** fix handling automatic price/stock update events ([3d92c0c](https://github.com/ecomplus/application-starter/commit/3d92c0c1ba2ee01e86212c0cfb76d8df22a9755b))
+* **export-product:** fix handling multiproduct (variations) to bling store ([2bf008d](https://github.com/ecomplus/application-starter/commit/2bf008d6da1a0a21e0e74ed98d323be607a61dcc))
+* **export-product:** fix handling multiproduct (variations) to bling store ([838b4fe](https://github.com/ecomplus/application-starter/commit/838b4fee94693cbd2c19b144fced6a1d49535f8b))
+* **export-product:** prevent error with unexpected bling api response ([6b23287](https://github.com/ecomplus/application-starter/commit/6b232871298b9166a051faf0288507e65ff64ee1))
+* **export-product:** properly linking product variations after main product ([a69f7ee](https://github.com/ecomplus/application-starter/commit/a69f7ee22e35a482f48debc98c4fff078d138d7f))
+* **import-product:** minor fix parsing variation grids and options ([3bf7166](https://github.com/ecomplus/application-starter/commit/3bf716624331b7ae4e94433cc9e9f6458acdf8d8))
+* **imports:** fix imported lib file paths ([577018b](https://github.com/ecomplus/application-starter/commit/577018b45950d9171cf28b2830bf8393668fcaf6))
+* **parse-product:** always set bling product 'descricaoCurta' ([c7df407](https://github.com/ecomplus/application-starter/commit/c7df407e0783750005659d86ca27139e04334dd3))
+* **parse-product:** always set bling product domensions (zero) ([bad85c2](https://github.com/ecomplus/application-starter/commit/bad85c2e4649979451d8be716b5a62cfa5d89519))
+* **parse-product:** array fixes for properly xml parse ([8c5fd24](https://github.com/ecomplus/application-starter/commit/8c5fd24f124c5f4a733d5c9b272cf84ee9a4e10c))
+* **parse-product:** fix composing arrays for xml parse ([7c9d06c](https://github.com/ecomplus/application-starter/commit/7c9d06c8f57c4257d775b02336a88ee0b21b06de))
+* **parse-product:** send text only body as 'descricaoComplementar' ([960c935](https://github.com/ecomplus/application-starter/commit/960c93561ccab5a93891e957a2d06706e15ebb55))
+* **parse-product:** set main product stock only if no variations ([201436e](https://github.com/ecomplus/application-starter/commit/201436ef8d6f0334187d5b7ab40bcc2939f889da))
+* **post-job-hander:** do not stringify request data (xml, not json :disapointed:) ([9936921](https://github.com/ecomplus/application-starter/commit/993692123a068af0311a4cf9e6928f4e5347fbb5))
+* **product-to-bling:** send html body when no text only format ([2c66e72](https://github.com/ecomplus/application-starter/commit/2c66e7292552c0ef1a1542b282bd0bb916792776))
+* **webhook:** properly checking update price/quantity options ([8ea8a52](https://github.com/ecomplus/application-starter/commit/8ea8a52b9aac73a527e10791c4b44c26e585689f))
+
 ## [1.0.0-starter.16](https://github.com/ecomplus/application-starter/compare/v1.0.0-starter.15...v1.0.0-starter.16) (2020-11-05)
 
 
