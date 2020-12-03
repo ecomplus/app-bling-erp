@@ -1,45 +1,55 @@
-module.exports = (tinyOrder, shippingLines, tiny) => new Promise((resolve, reject) => {
+module.exports = (blingOrder, shippingLines) => {
   const partialOrder = {}
-  if (tinyOrder.obs_interna) {
-    partialOrder.staff_notes = tinyOrder.obs_interna
+  if (blingOrder.observacaointerna) {
+    partialOrder.staff_notes = blingOrder.observacaointerna
   }
 
   if (shippingLines && shippingLines.length) {
-    const shippingLine = shippingLines[0]
-    if (
-      (tinyOrder.codigo_rastreamento || tinyOrder.url_rastreamento) &&
-      (!shippingLine.tracking_codes || !shippingLine.tracking_codes.length)
-    ) {
-      let link
-      if (tinyOrder.url_rastreamento) {
-        link = tinyOrder.url_rastreamento
+    if (blingOrder.transporte && blingOrder.transporte.volumes) {
+      const { volumes } = blingOrder.transporte
+      for (let i = 0; i < volumes.length && i < shippingLines.length; i++) {
+        const { volume } = volumes[i]
+        const shippingLine = shippingLines[i]
+        if (
+          volume &&
+          volume.codigoRastreamento &&
+          (!shippingLine.tracking_codes || !shippingLine.tracking_codes.length)
+        ) {
+          const tracking = {
+            code: String(volume.codigoRastreamento),
+            link: `https://www.melhorrastreio.com.br/rastreio/${volume.codigoRastreamento}`
+          }
+          shippingLine.tracking_codes = [tracking]
+          partialOrder.shipping_lines = shippingLines
+        }
       }
-      const tracking = {
-        code: String(tinyOrder.codigo_rastreamento) ||
-          link.replace(/^https?:\/\/[^/]+/, '').replace(/^[^?]+\?/, '').substring(0, 70),
-        link
-      }
-      shippingLine.tracking_codes = [tracking]
-      partialOrder.shipping_lines = shippingLines
     }
 
-    if (tinyOrder.id_nota_fiscal > 0) {
-      shippingLine.invoices = []
-      return tiny.post('/nota.fiscal.obter.php', { id: tinyOrder.id_nota_fiscal })
-        .then(tinyInvoice => {
-          const number = String(tinyInvoice.nota_fiscal.numero)
-          if (number && !shippingLine.invoices.find(invoice => invoice.number === number)) {
-            shippingLine.invoices.push({
-              number,
-              serial_number: String(tinyInvoice.nota_fiscal.serie)
-            })
+    const { nota } = blingOrder
+    if (nota && nota.numero) {
+      const shippingLine = shippingLines[0]
+      if (!shippingLine.invoices) {
+        shippingLine.invoices = []
+      }
+      if (nota.numero && !shippingLine.invoices.find(({ number }) => number === String(nota.numero))) {
+        const invoice = {
+          number: String(nota.numero)
+        }
+        if (nota.serie) {
+          invoice.serial_number = String(nota.serie)
+        }
+        if (nota.chaveAcesso) {
+          invoice.access_key = String(nota.chaveAcesso)
+        }
+        if (nota.dataEmissao) {
+          const date = new Date(nota.dataEmissao)
+          if (date.getTime() > 0) {
+            invoice.issued_at = date.toISOString()
           }
-          partialOrder.shipping_lines = shippingLines
-          resolve(partialOrder)
-        })
-        .catch(reject)
+        }
+        shippingLine.invoices.push(invoice)
+        partialOrder.shipping_lines = shippingLines
+      }
     }
   }
-
-  resolve(partialOrder)
-})
+}

@@ -16,14 +16,14 @@ module.exports = order => {
   switch (order.fulfillment_status && order.fulfillment_status.current) {
     case 'in_production':
     case 'in_separation':
-      return 'preparando envio'
+      return 'em andamento'
     case 'invoice_issued':
       return 'faturado'
     case 'ready_for_shipping':
       return 'pronto envio'
     case 'shipped':
     case 'partially_shipped':
-      return 'enviado'
+      return 'atendido'
     case 'delivered':
       return 'entregue'
   }
