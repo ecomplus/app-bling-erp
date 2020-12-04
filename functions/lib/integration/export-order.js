@@ -35,6 +35,7 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
         })
 
         .then(({ data }) => {
+          const blingStatus = parseStatus(order)
           let originalBlingOrder
           if (Array.isArray(data.pedidos)) {
             originalBlingOrder = data.pedidos.find(({ pedido }) => {
@@ -46,41 +47,49 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
             if (originalBlingOrder) {
               originalBlingOrder = originalBlingOrder.pedido
             } else if (!canCreateNew) {
-              return null
+              return {}
             }
           }
 
           if (!originalBlingOrder) {
+            if (appData.approved_orders_only) {
+              switch (blingStatus) {
+                case 'em aberto':
+                case 'cancelado':
+                  return {}
+              }
+            }
             const blingOrder = parseOrder(order, blingOrderNumber, blingStore, appData, storeId)
             console.log(`#${storeId} ${JSON.stringify(blingOrder)}`)
-            return bling.post('/pedido', {
-              pedido: blingOrder
+            return bling.post('/pedido', { pedido: blingOrder })
+              .then(() => ({ blingStatus }))
+          }
+          return { blingStatus }
+        })
+
+        .then(({ blingStatus }) => {
+          if (blingStatus) {
+            return bling.get('/situacao/Vendas').then(({ data }) => {
+              if (Array.isArray(data.situacoes)) {
+                const blingStatusObj = data.situacoes.find(({ situacao }) => {
+                  return situacao.nome && situacao.nome.toLowerCase() === blingStatus
+                })
+
+                if (blingStatusObj) {
+                  return bling.put(`/pedido/${blingOrderNumber}`, {
+                    pedido: {
+                      idSituacao: Number(blingStatusObj.situacao.id)
+                    }
+                  })
+                }
+                return null
+              }
+              const err = new Error('Sua conta Bling não tem "situacoes" cadastradas ou a API do Bling falhou')
+              err.isConfigError = true
+              throw err
             })
           }
           return null
-        })
-
-        .then(() => {
-          return bling.get('/situacao/Vendas').then(({ data }) => {
-            if (Array.isArray(data.situacoes)) {
-              const blingStatus = parseStatus(order)
-              const blingStatusObj = data.situacoes.find(({ situacao }) => {
-                return situacao.nome && situacao.nome.toLowerCase() === blingStatus
-              })
-
-              if (blingStatusObj) {
-                return bling.put(`/pedido/${blingOrderNumber}`, {
-                  pedido: {
-                    idSituacao: Number(blingStatusObj.situacao.id)
-                  }
-                })
-              }
-              return null
-            }
-            const err = new Error('Sua conta Bling não tem "situacoes" cadastradas ou a API do Bling falhou')
-            err.isConfigError = true
-            throw err
-          })
         })
       handleJob({ appSdk, storeId }, queueEntry, job)
     })

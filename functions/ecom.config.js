@@ -165,6 +165,15 @@ const app = {
       },
       hide: true
     },
+    approved_orders_only: {
+      schema: {
+        type: 'boolean',
+        default: true,
+        title: 'Apenas vendas agenciadas',
+        description: 'Criar pedido no Bling apenas quando aprovado'
+      },
+      hide: true
+    },
     new_products: {
       schema: {
         type: 'boolean',
