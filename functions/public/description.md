@@ -11,5 +11,5 @@ Integração para gestão de estoque, pedidos e logística via [Bling](https://w
 - Importação de status de pedido, código de rastreamento e/ou nota fiscal pelo número;
 
 <div class="alert alert-info">
-  Crie sua conta Bling com o **cupom `#ecomclub`** para ganhar 3 meses de teste.
+  Crie sua conta Bling com o <b>cupom <code>#ecomclub</code></b> para ganhar 3 meses de teste.
 </div>
