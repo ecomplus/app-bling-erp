@@ -1,3 +1,13 @@
-# My Awesome E-Com Plus App
+# Bling ERP
 
-Somethings about my app and what it does...
+Integração para gestão de estoque, pedidos e logística via [Bling](https://www.bling.com.br/home):
+
+- Exportação de produtos automática ou manual da E-Com Plus para o Bling ERP;
+- Importação de produtos do Bling para a E-Com Plus;
+- Atualização automática de estoque do Bling para a E-Com Plus (ou vice-versa) por SKU;
+- Atualização automática de preços da E-Com Plus para o Bling por SKU;
+- Exportação de pedidos automática ou manual da E-Com Plus para o Bling;
+- Atualização automática de status de pedidos exportados;
+- Importação de status de pedido, código de rastreamento e/ou nota fiscal pelo número;
+
+> Crie sua conta Bling com o **cupom `#ecomclub`** para ganhar 3 meses de teste.

@@ -1,7 +1,7 @@
 {
   "app": {
-    "title": "",
-    "short_description": "",
-    "category": "tools"
+    "title": "Bling ERP",
+    "short_description": "Sincronização de estoque, exportação e importação de pedidos e produtos com o Bling ERP",
+    "category": "inventory"
   }
 }
