@@ -100,7 +100,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
             return null
           })
 
-          .then(payload => res.sendStatus(payload ? 201 : 204))
+          .then(payload => res.sendStatus(200))
           .catch(err => {
             console.error(err)
             res.sendStatus(502)
