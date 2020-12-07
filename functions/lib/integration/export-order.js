@@ -71,9 +71,22 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
           if (blingStatus) {
             return bling.get('/situacao/Vendas').then(({ data }) => {
               if (Array.isArray(data.situacoes)) {
-                const blingStatusObj = data.situacoes.find(({ situacao }) => {
-                  return situacao.nome && situacao.nome.toLowerCase() === blingStatus
-                })
+                let blingStatusObj
+                const findBlingStatus = statusLabel => {
+                  blingStatusObj = data.situacoes.find(({ situacao }) => {
+                    return situacao.nome && situacao.nome.toLowerCase() === statusLabel
+                  })
+                }
+                if (Array.isArray(blingStatus)) {
+                  for (let i = 0; i < blingStatus.length; i++) {
+                    findBlingStatus(blingStatus[i])
+                    if (blingStatusObj) {
+                      break
+                    }
+                  }
+                } else {
+                  findBlingStatus(blingStatus)
+                }
 
                 if (blingStatusObj) {
                   return bling.put(`/pedido/${blingOrderNumber}`, {

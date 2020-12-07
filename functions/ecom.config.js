@@ -169,8 +169,8 @@ const app = {
       schema: {
         type: 'boolean',
         default: true,
-        title: 'Apenas vendas agenciadas',
-        description: 'Criar pedido no Bling apenas quando aprovado'
+        title: 'Apenas pedidos aprovados',
+        description: 'Criar pedido no Bling após aprovação'
       },
       hide: true
     },
