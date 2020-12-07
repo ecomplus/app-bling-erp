@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/ecomplus/application-starter/compare/v1.0.0...v1.1.0) (2020-12-07)
+
+
+### Features
+
+* **export-order:** add/check new 'approved_orders_only' config option ([fd1fbf8](https://github.com/ecomplus/application-starter/commit/fd1fbf86faef1b8fbe512748f65640419eb3bc99))
+
+
+### Bug Fixes
+
+* **export-order:** better handling bling status ([#1](https://github.com/ecomplus/application-starter/issues/1)) ([a198328](https://github.com/ecomplus/application-starter/commit/a198328cddc28a481cc900a25e32ad23028fbc6a))
+
 ## 1.0.0 (2020-12-03)
 
 
