@@ -1,6 +1,12 @@
-# E-Com Plus Application Starter
+# App Bling ERP
 
-[![Deploy](https://github.com/ecomplus/application-starter/workflows/Deploy/badge.svg)](https://github.com/ecomplus/application-starter/actions?workflow=Deploy)  [![License MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Deploy](https://github.com/ecomplus/app-bling-erp/workflows/Deploy/badge.svg)](https://github.com/ecomplus/app-bling-erp/actions?workflow=Deploy) [![Publish](https://github.com/ecomplus/app-bling-erp/workflows/Publish/badge.svg)](https://github.com/ecomplus/app-bling-erp/actions?workflow=Publish) [![License GPL](https://img.shields.io/badge/License-GPL-orange.svg)](https://opensource.org/licenses/GPL)
+
+E-Com Plus app to integrate Bling ERP
+
+[CHANGELOG](https://github.com/ecomplus/app-bling-erp/blob/master/CHANGELOG.md)
+
+# E-Com Plus Application Starter
 
 :dog: Boilerplate for E-Com Plus apps with [Firebase](https://firebase.google.com/) Cloud Functions and GitHub Actions.
 
