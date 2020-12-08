@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/ecomplus/application-starter/compare/v1.1.0...v1.1.1) (2020-12-08)
+
+
+### Bug Fixes
+
+* **bling-callback:** ignore stock callbakc when import disabled or export enabled ([94f3eaf](https://github.com/ecomplus/application-starter/commit/94f3eaf31fa27fca46d7a28056bf7f032ed8d7d5))
+
 ## [1.1.0](https://github.com/ecomplus/application-starter/compare/v1.0.0...v1.1.0) (2020-12-07)
 
 
