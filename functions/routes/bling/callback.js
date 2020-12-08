@@ -33,6 +33,9 @@ exports.post = ({ appSdk, admin }, req, res) => {
               }
 
               if (estoques.length) {
+                if (!appData.import_quantity || appData.export_quantity) {
+                  return res.sendStatus(204)
+                }
                 let skus = appData.___importation && appData.___importation.skus
                 if (!Array.isArray(skus)) {
                   skus = []
