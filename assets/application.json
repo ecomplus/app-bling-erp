@@ -76,8 +76,8 @@
       "schema": {
         "type": "boolean",
         "default": true,
-        "title": "Apenas vendas agenciadas",
-        "description": "Criar pedido no Bling apenas quando aprovado"
+        "title": "Apenas pedidos aprovados",
+        "description": "Criar pedido no Bling após aprovação"
       },
       "hide": true
     },
@@ -268,5 +268,5 @@
     }
   },
   "auth_callback_uri": "https://us-central1-ecom-bling.cloudfunctions.net/app/ecom/auth-callback",
-  "version": "1.0.0"
+  "version": "1.1.0"
 }
