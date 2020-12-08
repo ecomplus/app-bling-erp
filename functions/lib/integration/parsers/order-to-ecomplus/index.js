@@ -49,6 +49,7 @@ module.exports = (blingOrder, shippingLines) => {
         }
         shippingLine.invoices.push(invoice)
         partialOrder.shipping_lines = shippingLines
+        partialOrder.fulfillment_status.current = 'invoice_issued'
       }
     }
   }
