@@ -206,7 +206,7 @@ const app = {
         type: 'boolean',
         default: false,
         title: 'Exportar estoques',
-        description: 'Atualizar estoques no Bling automaticamente'
+        description: 'ATENÇÃO: ative apenas se o controle de estoque for centralizado na plataforma'
       },
       hide: true
     },
