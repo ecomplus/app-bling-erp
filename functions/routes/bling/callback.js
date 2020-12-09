@@ -110,6 +110,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
           })
       })
     } else {
+      console.log(`#${storeId} unexpected Bling callback: ${JSON.stringify(req.body)}`)
       return res.sendStatus(400)
     }
   }
