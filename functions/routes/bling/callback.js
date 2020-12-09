@@ -111,7 +111,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
       })
     } else {
       console.log(`#${storeId} unexpected Bling callback: ${JSON.stringify(req.body)}`)
-      return res.sendStatus(400)
+      return res.status(200).send('Ignoring invalid request body')
     }
   }
 
