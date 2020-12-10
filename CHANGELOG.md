@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.2](https://github.com/ecomplus/application-starter/compare/v1.1.1...v1.1.2) (2020-12-10)
+
+
+### Bug Fixes
+
+* **import-order:** also check tracking code from 'codigosRastreamento' (not documented) and invoices ([d3a8f58](https://github.com/ecomplus/application-starter/commit/d3a8f583ee4a7a2748e1070ad6691c201a00a025))
+* **parse-status:** edit status maps ([8f5aa42](https://github.com/ecomplus/application-starter/commit/8f5aa42ec8c4752d9fe8079ec180cef617eda0f4))
+
 ### [1.1.1](https://github.com/ecomplus/application-starter/compare/v1.1.0...v1.1.1) (2020-12-08)
 
 
