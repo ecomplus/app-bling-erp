@@ -16,6 +16,10 @@ exports.post = ({ appSdk, admin }, req, res) => {
     }
 
     if (retorno) {
+      /*
+      TODO: check Bling server IPs
+      const clientIp = req.get('x-forwarded-for') || req.connection.remoteAddress
+      */
       return appSdk.getAuth(storeId).then(auth => {
         return getAppData({ appSdk, storeId, auth })
 
