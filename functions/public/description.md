@@ -80,11 +80,6 @@ Acesse essa configuração em Preferências > Suprimentos > Estoque, e insira as
 ![exemplo](https://us-central1-ecom-bling.cloudfunctions.net/app/img/config10.png)
 
 
-### Dica importante:
-
-Os campos sincronizados devem ser corrigidos/modificados apenas no Bling. Caso você corrija/modifique alguma destas informações no painel de controle da E-Com Plus, estas informações serão sobrescritas pelos dados cadastrados no Bling assim que rodar a próxima rotina de sincronização.
-
-
 ## Importação - Exportação de  produtos / Pedidos manualmente:
 
 Se houver produtos ou pedidos que deseja **exportar ou importar** entre as plataformas, vá em Exportação/Importação manual e informe as informações nos locais informados abaixo:
