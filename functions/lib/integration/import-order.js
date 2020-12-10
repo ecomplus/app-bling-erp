@@ -53,33 +53,34 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
             }
             const order = result[0]
 
-            const partialOrder = parseOrder(blingOrder, order.shipping_lines)
-            const promises = []
-            if (partialOrder && Object.keys(partialOrder).length) {
-              promises.push(appSdk
-                .apiRequest(storeId, `/orders/${order._id}.json`, 'PATCH', partialOrder, auth))
-            }
-
-            const { fulfillmentStatus, financialStatus } = parseStatus(situacao)
-            const data = {
-              date_time: new Date().toISOString(),
-              flags: ['from-bling']
-            }
-
-            ;[
-              [financialStatus, 'payments_history'],
-              [fulfillmentStatus, 'fulfillments']
-            ].forEach(([newStatus, subresource]) => {
-              if (
-                newStatus &&
-                (!order[subresource] || getLastStatus(order[subresource]) !== newStatus)
-              ) {
-                data.status = newStatus
-                const endpoint = `/orders/${order._id}/${subresource}.json`
-                promises.push(appSdk.apiRequest(storeId, endpoint, 'POST', data, auth))
+            return parseOrder(blingOrder, order.shipping_lines, bling).then(partialOrder => {
+              const promises = []
+              if (partialOrder && Object.keys(partialOrder).length) {
+                promises.push(appSdk
+                  .apiRequest(storeId, `/orders/${order._id}.json`, 'PATCH', partialOrder, auth))
               }
+
+              const { fulfillmentStatus, financialStatus } = parseStatus(situacao)
+              const data = {
+                date_time: new Date().toISOString(),
+                flags: ['from-bling']
+              }
+
+              ;[
+                [financialStatus, 'payments_history'],
+                [fulfillmentStatus, 'fulfillments']
+              ].forEach(([newStatus, subresource]) => {
+                if (
+                  newStatus &&
+                  (!order[subresource] || getLastStatus(order[subresource]) !== newStatus)
+                ) {
+                  data.status = newStatus
+                  const endpoint = `/orders/${order._id}/${subresource}.json`
+                  promises.push(appSdk.apiRequest(storeId, endpoint, 'POST', data, auth))
+                }
+              })
+              return Promise.all(promises).then(([firstResult]) => firstResult)
             })
-            return Promise.all(promises).then(([firstResult]) => firstResult)
           })
 
           .then(payload => {
