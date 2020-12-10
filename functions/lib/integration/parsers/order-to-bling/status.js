@@ -19,14 +19,14 @@ module.exports = order => {
     case 'in_separation':
       return ['em separação', 'em andamento']
     case 'invoice_issued':
-      return 'faturado'
+      return ['faturado', 'atendido']
     case 'ready_for_shipping':
       return ['pronto para envio', 'pronto envio']
     case 'shipped':
     case 'partially_shipped':
       return ['enviado', 'atendido']
     case 'delivered':
-      return 'entregue'
+      return ['entregue', 'atendido']
   }
 
   if (financialStatus && financialStatus.endsWith('paid')) {

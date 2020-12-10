@@ -9,12 +9,14 @@ module.exports = situacao => {
       fulfillmentStatus = 'in_separation'
       break
     case 'faturado':
+    case 'atendido':
       fulfillmentStatus = 'invoice_issued'
       break
     case 'pronto para envio':
       fulfillmentStatus = 'ready_for_shipping'
       break
-    case 'atendido':
+    case 'enviado':
+    case 'despachado':
       fulfillmentStatus = 'shipped'
       break
     case 'entregue':
