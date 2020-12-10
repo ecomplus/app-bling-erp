@@ -9,18 +9,18 @@ Integração para gestão de estoque, pedidos e logística via [Bling](https://w
 - Exportação de pedidos automática ou manual da E-Com Plus para o Bling;
 - Atualização automática de status de pedidos exportados;
 - Importação de status de pedido, código de rastreamento e/ou nota fiscal pelo número;
-___
+
 <div class="alert alert-info">
   Crie sua conta Bling com o <b>cupom <code>#ecomclub</code></b> para ganhar 3 meses de teste.
 </div>
 
 ___
 
-## Tutorial de Configuração:
+## Tutorial de Configuração
 
-Instale o aplicativo na plataforma da E-Com Plus e depois vá nas configurações do Bling conforme passo a passo abaixo:
+Instale o aplicativo no painel da E-Com Plus e depois vá nas configurações do Bling conforme passo a passo abaixo:
 
-### Parametrização Bling:
+### Parametrização Bling
 
 Você deve acessar a sua conta do Bling, e ir até o menu “Preferências”, localizado no canto superior direito.
 
@@ -40,7 +40,7 @@ Agora copie o código do API Key no Bling e cole no Campo API Token do aplicativ
 ![exemplo](https://us-central1-ecom-bling.cloudfunctions.net/app/img/config4.png)
 
 
-### Integrações:
+### Integrações
 
 Após criar o usuário, o segundo passo é criar a sua loja no Bling, para isso acesse novamente o menu “Preferências” no painel do Bling, selecione o menu “Integrações”, e agora clique em “Configurações de integração com lojas virtuais e marketplaces”.
 
@@ -56,7 +56,11 @@ Insira no campo Canal de Venda o nome E-Com Plus e clique no botão salvar.
 
 Acesse então loja virtual que será associada a E-Com Plus, clique nela e abrirá as autenticações, clique na aba Callbacks, altere o tipo de retorno para JSON. Coloque a seguinte URL em todos os 3 campos:
 
-https://us-central1-ecom-bling.cloudfunctions.net/app/bling/callback?token=geradanaapikey(usuarioapi)&store_id=**numerodaloja**  (o número da loja está na página principal do seu dashboard na E-Com Plus).
+```
+https://us-central1-ecom-bling.cloudfunctions.net/app/bling/callback?token={chaveApiBling}&store_id={numeroLojaEcom}
+```
+
+> O número da loja está na página principal do seu dashboard na E-Com Plus
 
 Feito isso, ative as 3 configurações e Salve, conforme a imagem:
 
@@ -64,39 +68,36 @@ Feito isso, ative as 3 configurações e Salve, conforme a imagem:
 
 Pronto, no Bling está tudo configurado para que sua loja Bling esteja sincronizada com a E-Com Plus.
 
-### Informações sobre os seus pedidos 
+### Informações sobre os seus pedidos
+
 A E-Com Plus envia os pedidos de acordo com o parâmetro selecionado na aba *configuração*:
 
 ![exemplo](https://us-central1-ecom-bling.cloudfunctions.net/app/img/config9.png)
 
-Os dados de Nota fiscal, são enviados para a E-Com Plus no momento que a Nota fiscal passa a ter o status de Emitida/DANFE. 
+Os dados de Nota fiscal, são enviados para a E-Com Plus no momento que a Nota fiscal passa a ter o status de Emitida/DANFE.
 
-Para que o pedido tenha o status alterado para enviado na E-Com Plus, é preciso que ele esteja com a situação de enviado. 
+Para que o pedido tenha o status alterado para enviado na E-Com Plus, é preciso que ele esteja com a situação de enviado.
 
-Para dar baixa no estoque dos produtos no Bling quando ocorrerem pedidos você deve configurar as atualizações de reserva de estoque para: Em aberto, Em andamento, Em digitação, Verificado. 
+Para dar baixa no estoque dos produtos no Bling quando ocorrerem pedidos você deve configurar as atualizações de reserva de estoque para: Em aberto, Em andamento, Em digitação, Verificado.
 
 Acesse essa configuração em Preferências > Suprimentos > Estoque, e insira as informações no campo Considerar situações de vendas para obter o saldo atual.
 
 ![exemplo](https://us-central1-ecom-bling.cloudfunctions.net/app/img/config10.png)
 
-
-## Importação - Exportação de  produtos / Pedidos manualmente:
+## Importação - Exportação de  produtos / Pedidos manualmente
 
 Se houver produtos ou pedidos que deseja **exportar ou importar** entre as plataformas, vá em Exportação/Importação manual e informe as informações nos locais informados abaixo:
 
 ![exemplo](https://us-central1-ecom-bling.cloudfunctions.net/app/img/config11.png)
 
-
-## Configuração para novos pedidos no Bling:
+## Configuração para novos pedidos no Bling
 
 Configure como será gerado no Bling os novos pedidos gerado na E-Com Plus:
 
 ![exemplo](https://us-central1-ecom-bling.cloudfunctions.net/app/img/config12.png)
 
-
-## Logs de erros:
+## Logs de processos
 
 No aplicativo na E-Com Plus existe o acompanhamento dos logs. Dessa forma, você pode verificar o que causou a falha ou consultar se o envio foi concluído corretamente. Os retornos `200` e `201` quer dizer que a comunicação foi feita com sucesso!
 
 ![exemplo](https://us-central1-ecom-bling.cloudfunctions.net/app/img/config13.png)
-
