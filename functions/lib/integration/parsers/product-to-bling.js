@@ -132,7 +132,9 @@ module.exports = (product, originalBlingProduct, blingProductCode, blingStore, a
             }
             if (blingVariation.nome) {
               blingVariation.nome += ';'
-              gridTitle += i === 1 ? ' secundária' : ` ${(i + 1)}`
+              if (i > 0) {
+                gridTitle += i === 1 ? ' secundária' : ` ${(i + 1)}`
+              }
             }
             blingVariation.nome += `${gridTitle}:${text.replace(/[:;]/g, '')}`
           })
