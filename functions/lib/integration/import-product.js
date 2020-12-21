@@ -120,7 +120,6 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
             console.log(`#${storeId} skipping ${sku} / ${productId}`)
             return
           }
-          console.log(`#${storeId} importing ${sku} / ${productId}`)
 
           if (product && product.metafields) {
             const metafield = product.metafields.find(({ field }) => field === 'bling:codigo')
