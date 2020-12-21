@@ -10,11 +10,14 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
 
   return firestore().collection('bling_stock_updates')
     .where('ref', '==', `${storeId}_${blingToken}_${sku}`)
-    .limit(10)
     .get().then(querySnapshot => {
-      let blingStockUpdate
+      let blingStockUpdate, lastUpdateTime
       querySnapshot.forEach(documentSnapshot => {
-        blingStockUpdate = documentSnapshot.get('estoque')
+        const updateTime = documentSnapshot.updateTime.toDate().getTime()
+        if (!lastUpdateTime || updateTime > lastUpdateTime) {
+          lastUpdateTime = updateTime
+          blingStockUpdate = documentSnapshot.get('estoque')
+        }
         documentSnapshot.ref.delete().catch(console.error)
       })
       return blingStockUpdate
