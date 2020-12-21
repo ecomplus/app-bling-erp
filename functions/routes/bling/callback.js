@@ -48,6 +48,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
                 estoques.forEach(({ estoque }) => {
                   if (estoque && estoque.codigo) {
                     const sku = String(estoque.codigo)
+                    console.log(`> Bling callback: #${storeId} ${sku}`)
                     promises.push(new Promise(resolve => {
                       admin.firestore().collection('bling_stock_updates').add({
                         ref: `${storeId}_${blingToken}_${sku}`,
