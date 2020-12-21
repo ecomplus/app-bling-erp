@@ -63,7 +63,7 @@ module.exports = (blingOrder, shippingLines, bling) => new Promise((resolve, rej
       }
 
       if (nota.serie && (!shippingLine.tracking_codes || !shippingLine.tracking_codes.length)) {
-        return bling.get(`/notafiscal/${nota.numero}/${nota.serie} `)
+        return bling.get(`/notafiscal/${nota.numero}/${nota.serie}`)
           .then(({ data }) => {
             const blingInvoice = data.notasfiscais &&
               data.notasfiscais[0] && data.notasfiscais[0].notafiscal
