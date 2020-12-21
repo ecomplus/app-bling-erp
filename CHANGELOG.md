@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.6](https://github.com/ecomplus/application-starter/compare/v1.1.5...v1.1.6) (2020-12-21)
+
+
+### Bug Fixes
+
+* **import-order:** try to fix bling invoices requests (remove white space) ([f22f23a](https://github.com/ecomplus/application-starter/commit/f22f23ae457d023b7b185973fbd0856547c5edfa))
+
 ### [1.1.5](https://github.com/ecomplus/application-starter/compare/v1.1.4...v1.1.5) (2020-12-21)
 
 
