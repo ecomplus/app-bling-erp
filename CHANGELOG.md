@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.4](https://github.com/ecomplus/application-starter/compare/v1.1.3...v1.1.4) (2020-12-21)
+
+
+### Bug Fixes
+
+* **bling-callback:** prevent unhandled promise rejection ([c440a34](https://github.com/ecomplus/application-starter/commit/c440a34e4185311b463452dbdd1bec3bb102142e))
+* **import-order:** ignore order when when bling 'codigo loja' doesn't match ([412210e](https://github.com/ecomplus/application-starter/commit/412210e338072ea0b8b51662d7ac96ce3f9e8676))
+* **import-product:** check all stock updates, delete old ones ([4bc7289](https://github.com/ecomplus/application-starter/commit/4bc72894a3af420c2e2df539666c80357de1629e))
+
 ### [1.1.3](https://github.com/ecomplus/application-starter/compare/v1.1.2...v1.1.3) (2020-12-10)
 
 
