@@ -24,7 +24,7 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
         return !blingStore || (String(blingStore) === String(pedido.loja))
       })
       if (!blingOrder) {
-        blingOrder = data.pedidos[0]
+        return null
       }
       blingOrder = blingOrder.pedido
 
