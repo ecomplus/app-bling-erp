@@ -70,8 +70,9 @@ module.exports = (blingOrder, shippingLines, bling) => new Promise((resolve, rej
             if (blingInvoice) {
               checkTrackingCodes(blingInvoice)
             }
+            resolve(partialOrder)
           })
-          .finally(() => {
+          .catch(e => {
             resolve(partialOrder)
           })
       }

@@ -17,7 +17,6 @@ const getLastStatus = records => {
 module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry, appData) => {
   const blingOrderNumber = queueEntry.nextId
   const bling = new Bling(blingToken)
-  console.log(`#${storeId} import order ${blingOrderNumber}`)
 
   const job = bling.get(`/pedido/${blingOrderNumber}`)
     .then(({ data }) => {
