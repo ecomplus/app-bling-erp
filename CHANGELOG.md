@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/ecomplus/application-starter/compare/v1.1.6...v1.2.0) (2021-01-07)
+
+
+### Features
+
+* **import-order:** also read invoice link and try key from bling invoices endpoint ([8429f8b](https://github.com/ecomplus/application-starter/commit/8429f8b9a1a0ffa786007b40988a21679faada4c))
+
 ### [1.1.6](https://github.com/ecomplus/application-starter/compare/v1.1.5...v1.1.6) (2020-12-21)
 
 
