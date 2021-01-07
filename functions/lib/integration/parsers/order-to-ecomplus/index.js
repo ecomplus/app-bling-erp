@@ -42,7 +42,11 @@ module.exports = (blingOrder, shippingLines, bling) => new Promise((resolve, rej
       if (!shippingLine.invoices) {
         shippingLine.invoices = []
       }
-      if (!shippingLine.invoices.find(({ number }) => number === String(nota.numero))) {
+
+      let invoiceIndex = shippingLine.invoices.findIndex(({ number }) => {
+        return number === String(nota.numero)
+      })
+      if (invoiceIndex === -1) {
         const invoice = {
           number: String(nota.numero)
         }
@@ -59,16 +63,26 @@ module.exports = (blingOrder, shippingLines, bling) => new Promise((resolve, rej
           }
         }
         shippingLine.invoices.push(invoice)
+        invoiceIndex = shippingLine.invoices.length - 1
         partialOrder.shipping_lines = shippingLines
       }
 
-      if (nota.serie && (!shippingLine.tracking_codes || !shippingLine.tracking_codes.length)) {
+      if (nota.serie) {
         return bling.get(`/notafiscal/${nota.numero}/${nota.serie}`)
           .then(({ data }) => {
             const blingInvoice = data.notasfiscais &&
               data.notasfiscais[0] && data.notasfiscais[0].notafiscal
             if (blingInvoice) {
               checkTrackingCodes(blingInvoice)
+              ;[
+                ['linkDanfe', 'link'],
+                ['chaveAcesso', 'access_key']
+              ].forEach((blingField, field) => {
+                if (blingInvoice[blingField] && !shippingLine.invoices[invoiceIndex][field]) {
+                  shippingLine.invoices[invoiceIndex][field] = String(blingInvoice[blingField])
+                  partialOrder.shipping_lines = shippingLines
+                }
+              })
             }
             resolve(partialOrder)
           })
