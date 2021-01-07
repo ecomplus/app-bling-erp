@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.1](https://github.com/ecomplus/application-starter/compare/v1.2.0...v1.2.1) (2021-01-07)
+
+
+### Bug Fixes
+
+* **import-order:** syntax fix while handling response from bling invoice ([855527b](https://github.com/ecomplus/application-starter/commit/855527b52e59686a4aae77d935818f5a78e13988))
+
 ## [1.2.0](https://github.com/ecomplus/application-starter/compare/v1.1.6...v1.2.0) (2021-01-07)
 
 
