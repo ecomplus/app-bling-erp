@@ -77,7 +77,7 @@ module.exports = (blingOrder, shippingLines, bling) => new Promise((resolve, rej
               ;[
                 ['linkDanfe', 'link'],
                 ['chaveAcesso', 'access_key']
-              ].forEach((blingField, field) => {
+              ].forEach(([blingField, field]) => {
                 if (blingInvoice[blingField] && !shippingLine.invoices[invoiceIndex][field]) {
                   shippingLine.invoices[invoiceIndex][field] = String(blingInvoice[blingField])
                   partialOrder.shipping_lines = shippingLines
