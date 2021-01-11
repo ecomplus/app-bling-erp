@@ -155,7 +155,7 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
               method = 'POST'
               endpoint = '/products.json'
             }
-            return parseProduct(blingProduct, product.variations, storeId, auth, method === 'POST')
+            return parseProduct(blingProduct, product && product.variations, storeId, auth, method === 'POST')
               .then(product => {
                 if (!isNaN(quantity)) {
                   product.quantity = quantity >= 0 ? quantity : 0
