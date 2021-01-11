@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.2](https://github.com/ecomplus/application-starter/compare/v1.2.1...v1.2.2) (2021-01-11)
+
+
+### Bug Fixes
+
+* **import-product:** prevent calling `product.variations` with undefined product ([0555980](https://github.com/ecomplus/application-starter/commit/05559803b2d8008c7d55f1b13fe1d62e4188778b))
+
 ### [1.2.1](https://github.com/ecomplus/application-starter/compare/v1.2.0...v1.2.1) (2021-01-07)
 
 
