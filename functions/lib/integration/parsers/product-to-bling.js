@@ -7,7 +7,7 @@ module.exports = (product, originalBlingProduct, blingProductCode, blingStore, a
     codigo: blingProductCode,
     vlr_unit: ecomUtils.price(product),
     descricao: ecomUtils.name(product, 'pt_br').substring(0, 120),
-    descricaoCurta: product.short_description || product.name,
+    descricaoCurta: product.short_description,
     tipo: 'P',
     situacao: product.available && product.visible ? 'Ativo' : 'Inativo',
     un: originalBlingProduct && originalBlingProduct.un
@@ -33,8 +33,15 @@ module.exports = (product, originalBlingProduct, blingProductCode, blingStore, a
 
   const description = product.body_text || product.body_html
   if (description) {
-    blingProduct.descricaoComplementar = description
+    if (!blingProduct.descricaoCurta) {
+      blingProduct.descricaoCurta = description
+    } else {
+      blingProduct.descricaoComplementar = description
+    }
+  } else if (!blingProduct.descricaoCurta) {
+    blingProduct.descricaoCurta = product.name
   }
+
   if (product.warranty) {
     const warrantyNum = parseInt(product.warranty)
     if (warrantyNum > 0) {

@@ -79,9 +79,14 @@ module.exports = (blingProduct, variations, storeId, auth, isNew = true) => new 
     sku,
     name,
     quantity: Number(blingProduct.estoqueAtual || 0),
-    cost_price: blingProduct.preco_custo,
-    short_description: blingProduct.descricaoCurta,
-    body_html: blingProduct.descricaoComplementar
+    cost_price: blingProduct.preco_custo
+  }
+
+  if (blingProduct.descricaoComplementar) {
+    product.short_description = blingProduct.descricaoCurta
+    product.body_html = blingProduct.descricaoComplementar
+  } else {
+    product.body_html = blingProduct.descricaoCurta
   }
 
   const { produtoLoja } = blingProduct
