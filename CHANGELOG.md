@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.3](https://github.com/ecomplus/application-starter/compare/v1.2.2...v1.2.3) (2021-01-11)
+
+
+### Bug Fixes
+
+* **product-parse:** better handling bling description fields (bad names :neutral_face:) ([b7dfe7b](https://github.com/ecomplus/application-starter/commit/b7dfe7b2fe47bd86e0f1bb3dd34d4e98b6a2356f))
+
 ### [1.2.2](https://github.com/ecomplus/application-starter/compare/v1.2.1...v1.2.2) (2021-01-11)
 
 
