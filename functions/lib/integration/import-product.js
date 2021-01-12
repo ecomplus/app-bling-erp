@@ -173,6 +173,7 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
             job = bling.get(`/produto/${blingProductCode}`, {
               params: {
                 estoque: 'S',
+                imagem: 'S',
                 loja: blingStore
               }
             }).then(({ data }) => {
