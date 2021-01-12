@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.4](https://github.com/ecomplus/application-starter/compare/v1.2.3...v1.2.4) (2021-01-12)
+
+
+### Bug Fixes
+
+* **import-product:** must set 'imagem' param to bling get request ([#8](https://github.com/ecomplus/application-starter/issues/8)) ([5f5f64f](https://github.com/ecomplus/application-starter/commit/5f5f64fc628badc4960e2cd9f8d5521e1bb49d0c))
+
 ### [1.2.3](https://github.com/ecomplus/application-starter/compare/v1.2.2...v1.2.3) (2021-01-11)
 
 
