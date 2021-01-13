@@ -29,12 +29,13 @@ server.use(bodyParser.json())
 
 server.use(function (err, req, res, next) {
   if (err instanceof SyntaxError) {
+    console.log(`Invalid request body at ${req.originalUrl}:`)
     let body = err.body || req.body
     if (body) {
       if (typeof body !== 'string' && body.slice) {
         body = body.slice(0, 100).toString()
       }
-      console.log(`Invalid request body at ${req.originalUrl}:`, body)
+      console.log(body)
     }
     if (!res.headersSent) {
       res.status(400).send(`Invalid request body: "${err.message}"`)
