@@ -25,12 +25,16 @@ const { app, procedures } = require('./ecom.config')
 const { ecomServerIps, setup } = require('@ecomplus/application-sdk')
 
 server.use(bodyParser.urlencoded({ extended: false }))
-server.use(bodyParser.json())
+server.use(bodyParser.json({
+  verify: (req, res, buf) => {
+    req.rawBody = buf
+  }
+}))
 
 server.use(function (err, req, res, next) {
   if (err instanceof SyntaxError) {
     console.log(`Invalid request body at ${req.originalUrl}:`)
-    let body = err.body || req.body
+    let body = err.body || req.body || req.rawBody
     if (body) {
       if (typeof body !== 'string' && body.slice) {
         body = body.slice(0, 100).toString()
