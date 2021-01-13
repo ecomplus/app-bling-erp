@@ -25,7 +25,25 @@ const { app, procedures } = require('./ecom.config')
 const { ecomServerIps, setup } = require('@ecomplus/application-sdk')
 
 server.use(bodyParser.urlencoded({ extended: false }))
-const jsonParser = bodyParser.json()
+server.use(bodyParser.json())
+
+server.use(function (err, req, res, next) {
+  if (err instanceof SyntaxError) {
+    console.log(`Invalid request body at ${req.originalUrl} (${req.get('Content-Type')}):`)
+    let body = err.body || req.body
+    if (body) {
+      if (typeof body !== 'string' && body.slice) {
+        body = body.slice(0, 100).toString()
+      }
+      console.log(body)
+    }
+    if (!res.headersSent) {
+      res.status(400).send(`Invalid request body: "${err.message}"`)
+    }
+  } else {
+    next()
+  }
+})
 
 server.use((req, res, next) => {
   if (req.url.startsWith('/ecom/')) {
@@ -109,7 +127,7 @@ recursiveReadDir(routesDir).filter(filepath => filepath.endsWith('.js')).forEach
   for (const method in methods) {
     const middleware = methods[method]
     if (middleware) {
-      const handler = (req, res) => {
+      router[method](filename, (req, res) => {
         console.log(`${method} ${filename}`)
         prepareAppSdk().then(appSdk => {
           middleware({ appSdk, admin }, req, res)
@@ -121,18 +139,7 @@ recursiveReadDir(routesDir).filter(filepath => filepath.endsWith('.js')).forEach
             message: 'Can\'t setup `ecomAuth`, check Firebase console registers'
           })
         })
-      }
-
-      if (filename.startsWith('/ecom') && method !== 'get') {
-        router[method](filename, jsonParser, handler)
-      } else if (filename.startsWith('/bling')) {
-        router[method](filename, bodyParser.urlencoded({
-          extended: false,
-          type: '*/*'
-        }), handler)
-      } else {
-        router[method](filename, handler)
-      }
+      })
     }
   }
 })
