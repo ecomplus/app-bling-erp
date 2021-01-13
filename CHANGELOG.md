@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.5](https://github.com/ecomplus/application-starter/compare/v1.2.4...v1.2.5) (2021-01-13)
+
+
+### Bug Fixes
+
+* **response:** prevent resending response on header sent ([04d4270](https://github.com/ecomplus/application-starter/commit/04d42704608e3ce4410774e7e0fbdca5f7f68d27))
+* **server:** try to force urlencoded parse (any mime) for bling callback endpoint ([e786d52](https://github.com/ecomplus/application-starter/commit/e786d520f4fa3fb422bb4afa5bef3e598deb9e88))
+* **server:** try to force urlencoded parse (any mime) for bling callback endpoint ([80f4fd1](https://github.com/ecomplus/application-starter/commit/80f4fd1da5697c7b60e391284120fcc646df7c2e))
+* **server:** try to force urlencoded parse (any mime) for bling callback endpoint ([c3fe55b](https://github.com/ecomplus/application-starter/commit/c3fe55b08f8568aa44f18c7fc281ae917b4e5393))
+
 ### [1.2.4](https://github.com/ecomplus/application-starter/compare/v1.2.3...v1.2.4) (2021-01-12)
 
 
