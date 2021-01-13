@@ -24,13 +24,8 @@ const { app, procedures } = require('./ecom.config')
 // https://github.com/ecomplus/application-sdk
 const { ecomServerIps, setup } = require('@ecomplus/application-sdk')
 
-server.use('/ecom/*', bodyParser.urlencoded({ extended: false }))
-server.use('/ecom/*', bodyParser.json())
-
-server.use('/bling/*', bodyParser.urlencoded({
-  extended: false,
-  type: 'application/*'
-}))
+server.use(bodyParser.urlencoded({ extended: false }))
+const jsonParser = bodyParser.json()
 
 server.use((req, res, next) => {
   if (req.url.startsWith('/ecom/')) {
@@ -114,7 +109,7 @@ recursiveReadDir(routesDir).filter(filepath => filepath.endsWith('.js')).forEach
   for (const method in methods) {
     const middleware = methods[method]
     if (middleware) {
-      router[method](filename, (req, res) => {
+      const handler = (req, res) => {
         console.log(`${method} ${filename}`)
         prepareAppSdk().then(appSdk => {
           middleware({ appSdk, admin }, req, res)
@@ -126,7 +121,13 @@ recursiveReadDir(routesDir).filter(filepath => filepath.endsWith('.js')).forEach
             message: 'Can\'t setup `ecomAuth`, check Firebase console registers'
           })
         })
-      })
+      }
+
+      if (filename.startsWith('/ecom') && method !== 'get') {
+        router[method](filename, jsonParser, handler)
+      } else {
+        router[method](filename, handler)
+      }
     }
   }
 })
