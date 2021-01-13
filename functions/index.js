@@ -27,25 +27,6 @@ const { ecomServerIps, setup } = require('@ecomplus/application-sdk')
 server.use(bodyParser.urlencoded({ extended: false }))
 server.use(bodyParser.json())
 
-server.use(function (err, req, res, next) {
-  if (err) {
-    console.log(`Invalid request body at ${req.originalUrl} (${req.get('Content-Type')}):`)
-    let body = err.body || req.body
-    if (body) {
-      if (typeof body !== 'string' && body.slice) {
-        body = body.slice(0, 100).toString()
-      }
-      console.log(body)
-    }
-    if (!res.headersSent) {
-      res.status(400).send(`Invalid request body: "${err.message}"`)
-    }
-  } else {
-    console.log('Body parsed')
-    next()
-  }
-})
-
 server.use((req, res, next) => {
   if (req.url.startsWith('/ecom/')) {
     // get E-Com Plus Store ID from request header
