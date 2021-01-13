@@ -28,7 +28,7 @@ server.use(bodyParser.urlencoded({ extended: false }))
 server.use(bodyParser.json())
 
 server.use(function (err, req, res, next) {
-  if (err instanceof SyntaxError) {
+  if (err) {
     console.log(`Invalid request body at ${req.originalUrl} (${req.get('Content-Type')}):`)
     let body = err.body || req.body
     if (body) {
@@ -41,6 +41,7 @@ server.use(function (err, req, res, next) {
       res.status(400).send(`Invalid request body: "${err.message}"`)
     }
   } else {
+    console.log('Body parsed')
     next()
   }
 })
