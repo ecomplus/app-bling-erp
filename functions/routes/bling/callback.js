@@ -110,7 +110,11 @@ exports.post = ({ appSdk, admin }, req, res) => {
             })
         })
 
-        .then(payload => res.sendStatus(200))
+        .then(payload => {
+          if (!res.headersSent) {
+            res.sendStatus(200)
+          }
+        })
         .catch(err => {
           console.error(err)
           res.sendStatus(502)
