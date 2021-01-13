@@ -25,25 +25,7 @@ const { app, procedures } = require('./ecom.config')
 const { ecomServerIps, setup } = require('@ecomplus/application-sdk')
 
 server.use(bodyParser.urlencoded({ extended: false }))
-server.use((req, res, next) => {
-  bodyParser.json()(req, res, err => {
-    if (err) {
-      console.log(`Invalid request body at ${req.originalUrl} (${req.get('Content-Type')}):`)
-      let body = err.body || req.body
-      if (body) {
-        if (typeof body !== 'string' && body.slice) {
-          body = body.slice(0, 100).toString()
-        }
-        console.log(body)
-      }
-      if (!res.headersSent) {
-        res.status(400).send(`Invalid request body: "${err.message}"`)
-      }
-    } else {
-      next()
-    }
-  })
-})
+server.use(bodyParser.json())
 
 server.use((req, res, next) => {
   if (req.url.startsWith('/ecom/')) {
