@@ -125,6 +125,11 @@ recursiveReadDir(routesDir).filter(filepath => filepath.endsWith('.js')).forEach
 
       if (filename.startsWith('/ecom') && method !== 'get') {
         router[method](filename, jsonParser, handler)
+      } else if (filename.startsWith('/bling')) {
+        router[method](filename, bodyParser.urlencoded({
+          extended: false,
+          type: '*/*'
+        }), handler)
       } else {
         router[method](filename, handler)
       }
