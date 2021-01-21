@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.6](https://github.com/ecomplus/application-starter/compare/v1.2.5...v1.2.6) (2021-01-21)
+
+
+### Bug Fixes
+
+* **export-order:** bling order number must be unique (multi store not respected here) ([c7aa153](https://github.com/ecomplus/application-starter/commit/c7aa153e6eaffa4e98b49ebe85b01e74ac6f2258))
+
 ### [1.2.5](https://github.com/ecomplus/application-starter/compare/v1.2.4...v1.2.5) (2021-01-13)
 
 
