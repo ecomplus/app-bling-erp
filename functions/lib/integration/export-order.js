@@ -1,3 +1,4 @@
+const ecomUtils = require('@ecomplus/utils')
 const errorHandling = require('../store-api/error-handling')
 const Bling = require('../bling/constructor')
 const parseOrder = require('./parsers/order-to-bling/')
@@ -15,18 +16,16 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
       }
 
       let blingOrderNumber
-      if (order.metafields) {
-        const metafield = order.metafields.find(({ field }) => field === 'bling:numero')
+      let { metafields } = order
+      if (metafields) {
+        const metafield = metafields.find(({ field }) => field === 'bling:numero')
         if (metafield) {
           blingOrderNumber = metafield.value
         }
       }
-      if (!blingOrderNumber) {
-        blingOrderNumber = String(order.number)
-      }
       const bling = new Bling(blingToken)
 
-      const job = bling.get(`/pedido/${blingOrderNumber}`)
+      const job = bling.get(`/pedido/${(blingOrderNumber || order.number)}`)
         .catch(err => {
           if (err.response && err.response.status === 404) {
             return { data: {} }
@@ -45,7 +44,8 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
               return false
             })
             if (originalBlingOrder) {
-              originalBlingOrder = originalBlingOrder.pedido
+              blingOrderNumber = originalBlingOrder.pedido.numero
+              return { blingStatus }
             } else if (!canCreateNew) {
               return {}
             }
@@ -59,16 +59,38 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
                   return {}
               }
             }
+
             const blingOrder = parseOrder(order, blingOrderNumber, blingStore, appData, storeId)
             console.log(`#${storeId} ${JSON.stringify(blingOrder)}`)
             return bling.post('/pedido', { pedido: blingOrder })
-              .then(() => ({ blingStatus }))
+
+              .then(({ data }) => {
+                if (data && data.pedidos && data.pedidos[0]) {
+                  blingOrderNumber = data.pedidos[0].pedido.numero
+                  if (blingOrderNumber) {
+                    if (!metafields) {
+                      metafields = []
+                    }
+                    metafields.push({
+                      _id: ecomUtils.randomObjectId(),
+                      namespace: 'bling',
+                      field: 'bling:numero',
+                      value: String(blingOrderNumber)
+                    })
+                    appSdk.apiRequest(storeId, `/orders/${order._id}.json`, 'PATCH', {
+                      metafields
+                    }, auth)
+                      .catch(console.error)
+                  }
+                }
+                return { blingStatus }
+              })
           }
-          return { blingStatus }
+          return {}
         })
 
         .then(({ blingStatus }) => {
-          if (blingStatus) {
+          if (blingStatus && blingOrderNumber) {
             return bling.get('/situacao/Vendas').then(({ data }) => {
               if (Array.isArray(data.situacoes)) {
                 let blingStatusObj

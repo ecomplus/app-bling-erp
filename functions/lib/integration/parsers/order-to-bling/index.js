@@ -31,11 +31,12 @@ const parseAddress = (address, blingAddress, blingCityField = 'cidade') => {
 
 module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
   const blingOrder = {
-    numero: blingOrderNumber,
     numero_loja: String(order.number),
     data: formatDate(new Date(order.opened_at || order.created_at))
   }
-
+  if (blingOrderNumber) {
+    blingOrder.numero = String(blingOrderNumber)
+  }
   if (blingStore) {
     blingOrder.loja = Number(blingStore)
   }
@@ -50,7 +51,7 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
   if (buyer) {
     const blingCustomer = {
       nome: (buyer.corporate_name || ecomUtils.fullName(buyer)).substring(0, 30) ||
-        `Comprador de #${blingOrderNumber}`,
+        `Comprador de #${order.number}`,
       tipoPessoa: buyer.registry_type === 'j' ? 'J' : 'F'
     }
     if (buyer.doc_number && buyer.doc_number.length <= 18) {
@@ -75,7 +76,7 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
     blingOrder.cliente = blingCustomer
   } else {
     blingOrder.cliente = {
-      nome: `Comprador de #${blingOrderNumber}`
+      nome: `Comprador de #${order.number}`
     }
   }
 
