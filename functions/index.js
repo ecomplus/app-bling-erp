@@ -146,3 +146,9 @@ const checkIdleQueues = require('./lib/integration/check-idle-queues')
 const queueFallbackCron = 'every 30 mins'
 exports.scheduledSync = functions.pubsub.schedule(queueFallbackCron).onRun(checkIdleQueues)
 console.log(`-- Sheduled active check idle queues from Store API '${queueFallbackCron}'`)
+
+// delete old stored Bling order states
+const clearOrderStates = require('./lib/integration/clear-order-states')
+const clearStatesCron = '15 10 * * *'
+exports.scheduledSync = functions.pubsub.schedule(clearStatesCron).onRun(clearOrderStates)
+console.log(`-- Sheduled clearing order stored states '${clearStatesCron}'`)
