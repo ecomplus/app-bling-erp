@@ -42,7 +42,7 @@ server.use((req, res, next) => {
 
     if (process.env.NODE_ENV !== 'development') {
       // check for operator token
-      if (operatorToken !== req.get('x-operator-token')) {
+      if (operatorToken !== (req.get('x-operator-token') || req.query.operator_token)) {
         // last check for IP address from E-Com Plus servers
         const clientIp = req.get('x-forwarded-for') || req.connection.remoteAddress
         if (ecomServerIps.indexOf(clientIp) === -1) {
@@ -149,6 +149,6 @@ console.log(`-- Sheduled active check idle queues from Store API '${queueFallbac
 
 // delete old stored Bling order states
 const clearOrderStates = require('./lib/integration/clear-order-states')
-const clearStatesCron = '15 10 * * *'
+const clearStatesCron = '35 10 * * *'
 exports.scheduledClear = functions.pubsub.schedule(clearStatesCron).onRun(clearOrderStates)
 console.log(`-- Sheduled clearing order stored states '${clearStatesCron}'`)
