@@ -43,6 +43,7 @@ const tryImageUpload = (storeId, auth, originImgUrl, product) => new Promise(res
             if (Object.keys(data.picture).length) {
               return resolve({
                 _id: ecomUtils.randomObjectId(),
+                normal: data.picture.zoom,
                 ...data.picture
               })
             }
