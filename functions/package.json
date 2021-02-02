@@ -13,11 +13,11 @@
     "node": "10"
   },
   "dependencies": {
-    "@ecomplus/application-sdk": "^22.0.0-firestore.1.14.0",
-    "@google-cloud/firestore": "^4.7.1",
+    "@ecomplus/application-sdk": "^22.0.0-firestore.1.14.1",
+    "@google-cloud/firestore": "^4.9.1",
     "express": "^4.17.1",
-    "firebase-admin": "^9.4.1",
-    "firebase-functions": "^3.11.0",
+    "firebase-admin": "^9.4.2",
+    "firebase-functions": "^3.13.1",
     "form-data": "^3.0.0",
     "js2xmlparser": "^4.0.1",
     "querystring": "^0.2.0"
