@@ -7,13 +7,13 @@ module.exports = context => {
   return firestore()
     .collection('bling_orders')
     .where('updatedAt', '<', firestore.Timestamp.fromDate(date))
-    .limit(2000)
+    .limit(500)
     .get().then(querySnapshot => {
       let i = 0
       querySnapshot.forEach(documentSnapshot => {
         setTimeout(() => {
           documentSnapshot.ref.delete()
-        }, i * 20)
+        }, i * 100)
         i++
       })
     })
