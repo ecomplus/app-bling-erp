@@ -11,7 +11,9 @@ module.exports = context => {
     .get().then(querySnapshot => {
       let i = 0
       querySnapshot.forEach(documentSnapshot => {
-        setTimeout(documentSnapshot.ref.delete, i * 20)
+        setTimeout(() => {
+          documentSnapshot.ref.delete()
+        }, i * 20)
         i++
       })
     })

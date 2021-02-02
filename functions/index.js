@@ -149,6 +149,6 @@ console.log(`-- Sheduled active check idle queues from Store API '${queueFallbac
 
 // delete old stored Bling order states
 const clearOrderStates = require('./lib/integration/clear-order-states')
-const clearStatesCron = '25 11 * * *'
+const clearStatesCron = '50 11 * * *'
 exports.scheduledClear = functions.pubsub.schedule(clearStatesCron).onRun(clearOrderStates)
 console.log(`-- Sheduled clearing order stored states '${clearStatesCron}'`)
