@@ -12,5 +12,6 @@ module.exports = context => {
       for (const doc of querySnapshot.docs) {
         await doc.ref.delete()
       }
+      console.log(`> Deleted ${querySnapshot.size} Bling order states`)
     })
 }
