@@ -9,8 +9,10 @@ module.exports = context => {
     .where('updatedAt', '<', firestore.Timestamp.fromDate(date))
     .limit(2000)
     .get().then(querySnapshot => {
-      querySnapshot.forEach((documentSnapshot, i) => {
+      let i = 0
+      querySnapshot.forEach(documentSnapshot => {
         setTimeout(documentSnapshot.ref.delete, i * 20)
+        i++
       })
     })
 }
