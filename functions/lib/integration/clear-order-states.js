@@ -8,13 +8,9 @@ module.exports = context => {
     .collection('bling_orders')
     .where('updatedAt', '<', firestore.Timestamp.fromDate(date))
     .limit(500)
-    .get().then(querySnapshot => {
-      let i = 0
-      querySnapshot.forEach(documentSnapshot => {
-        setTimeout(() => {
-          documentSnapshot.ref.delete()
-        }, i * 100)
-        i++
-      })
+    .get().then(async querySnapshot => {
+      for (const doc of querySnapshot.docs) {
+        await doc.ref.delete()
+      }
     })
 }
