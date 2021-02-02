@@ -15,7 +15,11 @@ const tryImageUpload = (storeId, auth, originImgUrl, product) => new Promise(res
   })
     .then(({ data }) => {
       const form = new FormData()
-      form.append('file', Buffer.from(data), originImgUrl.replace(/.*\/([^/]+)$/, '$1'))
+      let filename = originImgUrl.replace(/.*\/([^/]+)$/, '$1')
+      if (!/\.[a-z]+$/i.test(filename)) {
+        filename += '.jpg'
+      }
+      form.append('file', Buffer.from(data), filename)
 
       return axios.post(`https://apx-storage.e-com.plus/${storeId}/api/v1/upload.json`, form, {
         headers: {
