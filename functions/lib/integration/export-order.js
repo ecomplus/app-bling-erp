@@ -44,12 +44,12 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
               }
               return false
             })
-            if (originalBlingOrder) {
-              blingOrderNumber = originalBlingOrder.pedido.numero
-              return { blingStatus }
-            } else if (!canCreateNew) {
-              return {}
-            }
+          }
+          if (originalBlingOrder) {
+            blingOrderNumber = originalBlingOrder.pedido.numero
+            return { blingStatus }
+          } else if (!canCreateNew) {
+            return {}
           }
 
           if (!originalBlingOrder) {
