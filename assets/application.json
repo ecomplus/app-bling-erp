@@ -277,5 +277,5 @@
     }
   },
   "auth_callback_uri": "https://us-central1-ecom-bling.cloudfunctions.net/app/ecom/auth-callback",
-  "version": "1.3.0"
+  "version": "1.3.2"
 }
