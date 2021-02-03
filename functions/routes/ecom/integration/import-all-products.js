@@ -32,7 +32,7 @@ exports.get = ({ appSdk, admin }, req, res) => {
             if (Array.isArray(data.produtos)) {
               data.produtos.forEach(({ produto }) => {
                 const sku = String(produto.codigo)
-                if (!skus.includes(sku)) {
+                if (sku && !skus.includes(sku)) {
                   skus.push(sku)
                 }
               })
