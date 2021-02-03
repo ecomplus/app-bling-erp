@@ -88,10 +88,10 @@ module.exports = (blingProduct, variations, storeId, auth, isNew = true) => new 
   }
 
   if (blingProduct.descricaoComplementar) {
-    product.short_description = blingProduct.descricaoCurta
-    product.body_html = blingProduct.descricaoComplementar
+    product.short_description = String(blingProduct.descricaoCurta)
+    product.body_html = String(blingProduct.descricaoComplementar)
   } else {
-    product.body_html = blingProduct.descricaoCurta
+    product.body_html = String(blingProduct.descricaoCurta)
   }
 
   const { produtoLoja } = blingProduct
