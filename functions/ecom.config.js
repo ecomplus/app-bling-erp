@@ -174,6 +174,15 @@ const app = {
       },
       hide: true
     },
+    random_order_number: {
+      schema: {
+        type: 'boolean',
+        default: false,
+        title: 'Randomizar número dos pedidos',
+        description: 'Evita repetir número de pedidos de outros canais de venda integrados'
+      },
+      hide: true
+    },
     new_products: {
       schema: {
         type: 'boolean',
