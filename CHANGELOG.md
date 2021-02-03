@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.3](https://github.com/ecomplus/application-starter/compare/v1.3.2...v1.3.3) (2021-02-03)
+
+
+### Bug Fixes
+
+* **import-all-products:** prevent adding empty sku ([b640202](https://github.com/ecomplus/application-starter/commit/b6402021fdc8da336ef53cbe763d468b1758f4b3))
+* **import-all-products:** prevent sending response twice ([c223202](https://github.com/ecomplus/application-starter/commit/c2232026fee2ecfb473bbc9ff127b78cec2f18e6))
+
 ### [1.3.2](https://github.com/ecomplus/application-starter/compare/v1.3.1...v1.3.2) (2021-02-03)
 
 
