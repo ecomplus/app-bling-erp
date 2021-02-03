@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.2](https://github.com/ecomplus/application-starter/compare/v1.3.1...v1.3.2) (2021-02-03)
+
+
+### Bug Fixes
+
+* **import-all-products:** endpoint with 'get' method ([f1823c4](https://github.com/ecomplus/application-starter/commit/f1823c47dd4d2a8190e92dc3a3014bfea5ee2e20))
+
 ### [1.3.1](https://github.com/ecomplus/application-starter/compare/v1.3.0...v1.3.1) (2021-02-03)
 
 
