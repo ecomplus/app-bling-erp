@@ -31,9 +31,11 @@ exports.get = ({ appSdk, admin }, req, res) => {
           .then(({ data }) => {
             if (Array.isArray(data.produtos)) {
               data.produtos.forEach(({ produto }) => {
-                const sku = String(produto.codigo)
-                if (sku && !skus.includes(sku)) {
-                  skus.push(sku)
+                if (!produto.codigoPai) {
+                  const sku = String(produto.codigo)
+                  if (sku && !skus.includes(sku)) {
+                    skus.push(sku)
+                  }
                 }
               })
               if (data.produtos.length === 100 && skus.length < 3000) {
