@@ -36,7 +36,7 @@ exports.get = ({ appSdk, admin }, req, res) => {
                   skus.push(sku)
                 }
               })
-              if (data.produtos.length === 100 && skus.length < 500) {
+              if (data.produtos.length === 100 && skus.length < 3000) {
                 return listNextBlingProducts(page + 1)
               }
             }
