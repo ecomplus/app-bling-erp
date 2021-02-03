@@ -201,7 +201,7 @@ module.exports = (blingProduct, variations, storeId, auth, isNew = true) => new 
               variation = {
                 _id: ecomUtils.randomObjectId()
               }
-              variations.push(variation)
+              product.variations.push(variation)
             }
             variation.name = `${name} / ${specTexts.join(' / ')}`.substring(0, 100)
             variation.sku = variacao.codigo
