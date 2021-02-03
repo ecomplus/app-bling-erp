@@ -35,8 +35,9 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
 
         .then(({ data }) => {
           const blingStatus = parseStatus(order)
+          const hasFoundByNumber = Boolean(Array.isArray(data.pedidos) && data.pedidos.length)
           let originalBlingOrder
-          if (Array.isArray(data.pedidos)) {
+          if (hasFoundByNumber) {
             originalBlingOrder = data.pedidos.find(({ pedido }) => {
               if (String(order.number) === pedido.numeroPedidoLoja) {
                 return !blingStore || (String(blingStore) === String(pedido.loja))
@@ -58,6 +59,11 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
                 case 'cancelado':
                   return {}
               }
+            }
+            if (!blingOrderNumber) {
+              blingOrderNumber = (hasFoundByNumber || appData.random_order_number === true)
+                ? String(Math.floor(Math.random() * (99999999 - 10000000)) + 10000000)
+                : String(order.number)
             }
 
             const blingOrder = parseOrder(order, blingOrderNumber, blingStore, appData, storeId)
