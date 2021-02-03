@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/ecomplus/application-starter/compare/v1.2.7...v1.3.0) (2021-02-03)
+
+
+### Features
+
+* **admin-settings:** add 'random_order_number' config option ([a117635](https://github.com/ecomplus/application-starter/commit/a1176357947219e25883fc79659b42e9ea718525))
+* **import-all-products:** endpoint to mannually trigger import all from bling ([04445bf](https://github.com/ecomplus/application-starter/commit/04445bf8225fb312b68b224ea67a16c31dd18eee))
+
+
+### Bug Fixes
+
+* **clear-order-states:** add delay for firestore delete operations ([5825218](https://github.com/ecomplus/application-starter/commit/582521867c2eac644738aa8ad7b62076ff07e286))
+* **clear-order-states:** add delay for firestore operations ([0730d1c](https://github.com/ecomplus/application-starter/commit/0730d1cbe67cdc6c035608f392ba1e40e7b892de))
+* **clear-order-states:** prevent firestore DEADLINE_EXCEEDED error ([057c486](https://github.com/ecomplus/application-starter/commit/057c4862222eaa3d3a844e722a4cfa750aef1a51))
+* **clear-order-states:** try to prevent `Cannot read property '_settings' of undefined` error ([6ba39a7](https://github.com/ecomplus/application-starter/commit/6ba39a79d73f22a521d0485782a2110a1f58b23c))
+* **export-order:** user original order number by default when not already used ([b379efe](https://github.com/ecomplus/application-starter/commit/b379efe2196cfab6668f5986bd42ba6d88576195))
+* **functions:** must fix additional scheduled function name ([e277f92](https://github.com/ecomplus/application-starter/commit/e277f92e8a20ad8572f13159e695298b7054af4a))
+* **import-all-products:** fix require paths ([ad2f2c3](https://github.com/ecomplus/application-starter/commit/ad2f2c35d897c17b7b542eb450dfa62959296bac))
+* **import-product:** ensure uploaded image has extension on filename ([1a1f5f7](https://github.com/ecomplus/application-starter/commit/1a1f5f707fc620b09abec6ca7b87ebecaf2b88b4))
+* **import-product:** ensure uploaded image has extension on filename ([8f2ff1a](https://github.com/ecomplus/application-starter/commit/8f2ff1ab663ce8f929a2244d668486322e71b180))
+* **import-product:** ensure uploaded pictures has 'normal' thumb size ([809db6e](https://github.com/ecomplus/application-starter/commit/809db6e90258f53222e55270409634d6f12d204e))
+* **order-states:** clear documents older than 1 day ([03a0d6b](https://github.com/ecomplus/application-starter/commit/03a0d6b9e678ff2e6c5ff8505d60a5944cf40cf8))
+
 ### [1.2.7](https://github.com/ecomplus/application-starter/compare/v1.2.6...v1.2.7) (2021-02-02)
 
 
