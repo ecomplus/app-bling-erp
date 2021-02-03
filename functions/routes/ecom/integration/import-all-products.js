@@ -1,7 +1,7 @@
 const updateAppData = require('../../../lib/store-api/update-app-data')
 const Bling = require('../../../lib/bling/constructor')
 
-exports.post = ({ appSdk, admin }, req, res) => {
+exports.get = ({ appSdk, admin }, req, res) => {
   const { storeId } = req
   const blingToken = req.query.bling_token
   const blingStore = req.query.bling_store
