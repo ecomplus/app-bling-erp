@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.1](https://github.com/ecomplus/application-starter/compare/v1.3.0...v1.3.1) (2021-02-03)
+
+
+### Bug Fixes
+
+* **export-order:** ensure exiting job when order not found and can't create new one ([b97de40](https://github.com/ecomplus/application-starter/commit/b97de406db7a9e0a876558d76ed9baf0bffd4c2f))
+
 ## [1.3.0](https://github.com/ecomplus/application-starter/compare/v1.2.7...v1.3.0) (2021-02-03)
 
 
