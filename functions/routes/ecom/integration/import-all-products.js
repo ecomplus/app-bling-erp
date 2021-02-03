@@ -17,6 +17,7 @@ exports.get = ({ appSdk, admin }, req, res) => {
       if (page > 1) {
         endpoint += `/page=${page}`
       }
+      console.log(`> #${storeId} import all [page ${page}]`)
 
       setTimeout(() => {
         countBlingReqs++
@@ -51,7 +52,7 @@ exports.get = ({ appSdk, admin }, req, res) => {
     }
 
     listNextBlingProducts(blingOffsetPage)
-    res.sendStatus(201)
+    return res.sendStatus(201)
   }
 
   res.sendStatus(403)
