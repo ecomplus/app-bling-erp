@@ -5,6 +5,7 @@ on:
     branches:
       - master
     paths:
+      - '.github/deploy'
       - 'functions/**'
       - 'scripts/_constants.js'
       - 'scripts/firebase-deploy.js'
