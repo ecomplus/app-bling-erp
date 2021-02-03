@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.4](https://github.com/ecomplus/application-starter/compare/v1.3.3...v1.3.4) (2021-02-03)
+
+
+### Bug Fixes
+
+* **import-product:** ensure description fields as string on parse ([eeb9912](https://github.com/ecomplus/application-starter/commit/eeb99126bfd567bee44083218c3117d2c2bfbc7a))
+
 ### [1.3.3](https://github.com/ecomplus/application-starter/compare/v1.3.2...v1.3.3) (2021-02-03)
 
 
