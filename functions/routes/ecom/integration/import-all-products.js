@@ -43,7 +43,7 @@ exports.get = ({ appSdk, admin }, req, res) => {
             if (skus.length) {
               console.log(`> #${storeId} all SKUs: ${JSON.stringify(skus)}`)
               return updateAppData({ appSdk, storeId }, {
-                ___importation: { skus }
+                importation: { skus }
               })
             }
           })
