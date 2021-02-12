@@ -88,7 +88,7 @@ module.exports = (blingProduct, variations, storeId, auth, isNew = true) => new 
   }
 
   if (blingProduct.descricaoComplementar) {
-    product.short_description = String(blingProduct.descricaoCurta)
+    product.short_description = String(blingProduct.descricaoCurta.slice(0,255))
     product.body_html = String(blingProduct.descricaoComplementar)
   } else {
     product.body_html = String(blingProduct.descricaoCurta)
