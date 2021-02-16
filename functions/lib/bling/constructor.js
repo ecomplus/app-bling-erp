@@ -14,13 +14,17 @@ module.exports = function (apikey) {
     method,
     ...options
   }).then(response => {
-    const { data } = response
+    const { data, config } = response
     if (data) {
       const { retorno } = data
       if (retorno && retorno.erros) {
-        const err = new Error('Bling error response')
         const blingError = retorno.erros[0] && retorno.erros[0].erro
         const blingErrorCode = parseInt(blingError && blingError.cod, 10)
+        let msg = `Bling error code ${blingErrorCode}`
+        if (config) {
+          msg += ` for [${config.method}] ${config.url}`
+        }
+        const err = new Error(msg)
         if (blingErrorCode <= 3) {
           response.status = 401
         } else if (blingErrorCode === 18) {
@@ -31,8 +35,7 @@ module.exports = function (apikey) {
           response.status = 400
         }
         err.response = response
-        err.config = response.config
-        err.request = response.request
+        err.config = config
         throw err
       }
       response.data = retorno
