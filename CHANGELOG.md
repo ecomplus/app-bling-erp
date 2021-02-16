@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.7](https://github.com/ecomplus/application-starter/compare/v1.3.6...v1.3.7) (2021-02-16)
+
+
+### Bug Fixes
+
+* **bling-client:** better debugging bling error responses (err stack msg) ([95b454c](https://github.com/ecomplus/application-starter/commit/95b454ca27457e62dbcf658a4bfb57510b685de5))
+* **deps:** update all non-major dependencies ([#10](https://github.com/ecomplus/application-starter/issues/10)) ([3d091b0](https://github.com/ecomplus/application-starter/commit/3d091b0ea778b6ca10b2307d26ed105c7288f8d8))
+* **import-product:** limit `short_description` string length ([#9](https://github.com/ecomplus/application-starter/issues/9)) ([0e239be](https://github.com/ecomplus/application-starter/commit/0e239becc75d431e8830651116c6dd7d733623cc))
+
 ### [1.3.6](https://github.com/ecomplus/application-starter/compare/v1.3.5...v1.3.6) (2021-02-03)
 
 
