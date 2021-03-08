@@ -84,7 +84,7 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
     blingOrder.itens = []
     order.items.forEach(item => {
       if (item.quantity) {
-        const itemRef = (item.sku || item._id).substring(0, 20)
+        const itemRef = (item.sku || item._id).substring(0, 40)
         blingOrder.itens.push({
           item: {
             codigo: itemRef,
