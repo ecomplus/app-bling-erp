@@ -20,7 +20,12 @@ module.exports = function (apikey) {
       if (retorno && retorno.erros) {
         const blingError = retorno.erros[0] && retorno.erros[0].erro
         const blingErrorCode = parseInt(blingError && blingError.cod, 10)
-        let msg = `Bling error code ${blingErrorCode}`
+        let msg = 'Bling error'
+        if (!isNaN(blingErrorCode)) {
+          msg += ` code ${blingErrorCode}`
+        } else {
+          msg += ` ${JSON.stringify(retorno.erros)}`
+        }
         if (config) {
           msg += ` for [${config.method}] ${config.url}`
         }
