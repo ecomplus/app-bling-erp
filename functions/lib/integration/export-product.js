@@ -63,7 +63,7 @@ module.exports = ({ appSdk, storeId }, blingToken, blingStore, queueEntry, appDa
           if (blingStore && (canCreateNew || appData.export_price)) {
             const promises = []
             const linkBlingProduct = (codigo, idLojaVirtual) => {
-              const method = originalBlingProduct ? 'put' : 'post'
+              const method = originalBlingProduct && originalBlingProduct.produtoLoja ? 'put' : 'post'
               const data = {
                 produtosLoja: {
                   produtoLoja: { idLojaVirtual }
