@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.8](https://github.com/ecomplus/application-starter/compare/v1.3.7...v1.3.8) (2021-03-08)
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([#12](https://github.com/ecomplus/application-starter/issues/12)) ([6d791b8](https://github.com/ecomplus/application-starter/commit/6d791b865ffc4f8b254a47e1d160ac3a5d0f2e64))
+* **export-order:** limit Bling product `item.codigo` to 40 chars ([#22](https://github.com/ecomplus/application-starter/issues/22)) ([416c4c4](https://github.com/ecomplus/application-starter/commit/416c4c432b3763b6aec20ed6ddd8430763160d11))
+* **export-product:** check Bling product `produtoLoja` to update price ([c382d90](https://github.com/ecomplus/application-starter/commit/c382d90b05c8caf04338444124cb0997397ae937))
+* **import-product:** bling product field `descricaoCurta` may be null, prevent type error ([#19](https://github.com/ecomplus/application-starter/issues/19)) ([2caea15](https://github.com/ecomplus/application-starter/commit/2caea1573a1e12e177cbe04ffc3f7a769de5b07d))
+
 ### [1.3.7](https://github.com/ecomplus/application-starter/compare/v1.3.6...v1.3.7) (2021-02-16)
 
 
