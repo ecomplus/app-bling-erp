@@ -183,7 +183,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
                   break
                 case 'orders':
                   if (trigger.body) {
-                    canCreateNew = Boolean(appData.new_orders)
+                    canCreateNew = appData.new_orders ? undefined : false
                     integrationConfig = {
                       _exportation: {
                         order_ids: [resourceId]

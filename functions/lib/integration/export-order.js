@@ -49,7 +49,9 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
             blingOrderNumber = originalBlingOrder.pedido.numero
             return { blingStatus }
           } else if (!canCreateNew) {
-            return {}
+            if (canCreateNew === false || blingOrderNumber) {
+              return {}
+            }
           }
 
           if (!originalBlingOrder) {
