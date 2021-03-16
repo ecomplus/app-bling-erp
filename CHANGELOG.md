@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.9](https://github.com/ecomplus/application-starter/compare/v1.3.8...v1.3.9) (2021-03-16)
+
+
+### Bug Fixes
+
+* **export-order:** prevent recreating "removed" bling orders automatically ([b9419b1](https://github.com/ecomplus/application-starter/commit/b9419b1937391824993bea3f76a9d692bdae8068))
+
 ### [1.3.8](https://github.com/ecomplus/application-starter/compare/v1.3.7...v1.3.8) (2021-03-08)
 
 
