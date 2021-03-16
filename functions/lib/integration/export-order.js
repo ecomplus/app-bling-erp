@@ -17,10 +17,12 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
 
       let blingOrderNumber
       let { metafields } = order
+      let hasCreatedBlingOrder
       if (metafields) {
         const metafield = metafields.find(({ field }) => field === 'bling:numero')
         if (metafield) {
           blingOrderNumber = metafield.value
+          hasCreatedBlingOrder = Boolean(blingOrderNumber)
         }
       }
       const bling = new Bling(blingToken)
@@ -49,7 +51,7 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
             blingOrderNumber = originalBlingOrder.pedido.numero
             return { blingStatus }
           } else if (!canCreateNew) {
-            if (canCreateNew === false || blingOrderNumber) {
+            if (canCreateNew === false || hasCreatedBlingOrder) {
               return {}
             }
           }
