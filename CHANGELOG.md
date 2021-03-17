@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.10](https://github.com/ecomplus/application-starter/compare/v1.3.9...v1.3.10) (2021-03-17)
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([#24](https://github.com/ecomplus/application-starter/issues/24)) ([f100791](https://github.com/ecomplus/application-starter/commit/f1007913736b4487438393e0bc40b8d171087bd0))
+* **export-order:** try matching order by number only when metadata set ([bf4c7d6](https://github.com/ecomplus/application-starter/commit/bf4c7d6c8838cded8cdf412affcdaed077aa97d8))
+* **parse-order-status:** check payments history when financil status not set ([#25](https://github.com/ecomplus/application-starter/issues/25)) ([3d81e68](https://github.com/ecomplus/application-starter/commit/3d81e68a5268b96ef52c51cbd9d4615f7844b8ed))
+
 ### [1.3.9](https://github.com/ecomplus/application-starter/compare/v1.3.8...v1.3.9) (2021-03-16)
 
 
