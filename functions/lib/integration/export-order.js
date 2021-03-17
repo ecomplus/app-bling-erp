@@ -46,6 +46,11 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
               }
               return false
             })
+            if (!originalBlingOrder && blingOrderNumber) {
+              originalBlingOrder = data.pedidos.find(({ pedido }) => {
+                return blingOrderNumber === String(pedido.numero)
+              })
+            }
           }
           if (originalBlingOrder) {
             blingOrderNumber = originalBlingOrder.pedido.numero
@@ -61,6 +66,7 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
               switch (blingStatus) {
                 case 'em aberto':
                 case 'cancelado':
+                  console.log(`#${storeId} ${orderId} skipped with status "${blingStatus}"`)
                   return {}
               }
             }
