@@ -1,5 +1,12 @@
 module.exports = order => {
-  const financialStatus = order.financial_status && order.financial_status.current
+  let financialStatus = order.financial_status && order.financial_status.current
+  if (!financialStatus) {
+    const paymentsHistory = order.payments_history
+    if (paymentsHistory && paymentsHistory.length) {
+      financialStatus = paymentsHistory[paymentsHistory.length - 1].status
+    }
+  }
+
   switch (financialStatus) {
     case 'pending':
     case 'under_analysis':
