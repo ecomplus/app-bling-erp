@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.11](https://github.com/ecomplus/application-starter/compare/v1.3.10...v1.3.11) (2021-03-18)
+
+
+### Bug Fixes
+
+* **bling-client:** handle bling error response with object (not always array :disapointed:) ([#27](https://github.com/ecomplus/application-starter/issues/27)) ([c45ac55](https://github.com/ecomplus/application-starter/commit/c45ac554859c68259c3fddff0545508dd5bb7f68))
+* **export-product:** bling product field `profundidade` instead of `comprimento` ([#26](https://github.com/ecomplus/application-starter/issues/26)) ([d81572a](https://github.com/ecomplus/application-starter/commit/d81572a029eff933525fd1a553a24712ab655bfd))
+
 ### [1.3.10](https://github.com/ecomplus/application-starter/compare/v1.3.9...v1.3.10) (2021-03-17)
 
 
