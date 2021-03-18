@@ -145,7 +145,7 @@ module.exports = (blingProduct, variations, storeId, auth, isNew = true) => new 
   ;[
     ['largura', 'width'],
     ['altura', 'height'],
-    ['comprimento', 'length']
+    ['profundidade', 'length']
   ].forEach(([lado, side]) => {
     const dimension = parseFloat(blingProduct[`${lado}Produto`])
     if (dimension > 0) {
