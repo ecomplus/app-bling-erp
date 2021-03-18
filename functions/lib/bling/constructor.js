@@ -18,13 +18,19 @@ module.exports = function (apikey) {
     if (data) {
       const { retorno } = data
       if (retorno && retorno.erros) {
-        const blingError = retorno.erros[0] && retorno.erros[0].erro
-        const blingErrorCode = parseInt(blingError && blingError.cod, 10)
+        const { erros } = retorno
+        let blingErrorCode
+        if (Array.isArray(erros)) {
+          const blingError = erros[0] && erros[0].erro
+          blingErrorCode = parseInt(blingError && blingError.cod, 10)
+        } else if (typeof erros === 'object') {
+          blingErrorCode = parseInt(Object.keys(erros)[0], 10)
+        }
         let msg = 'Bling error'
-        if (!isNaN(blingErrorCode)) {
+        if (blingErrorCode) {
           msg += ` code ${blingErrorCode}`
         } else {
-          msg += ` ${JSON.stringify(retorno.erros)}`
+          msg += ` ${JSON.stringify(erros)}`
         }
         if (config) {
           msg += ` for [${config.method}] ${config.url}`
@@ -34,7 +40,7 @@ module.exports = function (apikey) {
           response.status = 401
         } else if (blingErrorCode === 18) {
           response.status = 503
-        } else if (blingErrorCode === 14) {
+        } else if (blingErrorCode === 14 || blingErrorCode === 123) {
           response.status = 404
         } else {
           response.status = 400
