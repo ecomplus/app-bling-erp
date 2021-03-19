@@ -69,14 +69,10 @@ module.exports = ({ appSdk, storeId }, blingToken, blingStore, queueEntry, appDa
                   produtoLoja: { idLojaVirtual }
                 }
               }
-              data.produtosLoja.produtoLoja.preco = ecomUtils.onPromotion(product)
-                ? {
-                    preco: product.base_price,
-                    precoPromocional: ecomUtils.price(product)
-                  }
-                : {
-                    preco: ecomUtils.price(product)
-                  }
+              data.produtosLoja.produtoLoja.preco = {
+                preco: ecomUtils.onPromotion(product) ? product.base_price : ecomUtils.price(product),
+                precoPromocional: ecomUtils.price(product)
+              }
               const endpoint = `/produtoLoja/${blingStore}/${codigo}`
               const promise = bling[method](endpoint, data)
               if (method === 'put') {
