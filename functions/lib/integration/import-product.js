@@ -115,7 +115,7 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
           const { product, variationId, hasVariations } = payload
           const bling = new Bling(blingToken)
 
-          if (!product && isHiddenQueue) {
+          if (!product && (isHiddenQueue || productId)) {
             dispatchNullJob()
             console.log(`#${storeId} skipping ${sku} / ${productId}`)
             return
