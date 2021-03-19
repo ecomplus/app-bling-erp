@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.12](https://github.com/ecomplus/application-starter/compare/v1.3.11...v1.3.12) (2021-03-19)
+
+
+### Bug Fixes
+
+* **export-product:** always set `precoPromocional` field (never reseted) ([#27](https://github.com/ecomplus/application-starter/issues/27)) ([c9a504b](https://github.com/ecomplus/application-starter/commit/c9a504b6f07a3236e5006e7d4ec521245b59408b))
+
 ### [1.3.11](https://github.com/ecomplus/application-starter/compare/v1.3.10...v1.3.11) (2021-03-18)
 
 
