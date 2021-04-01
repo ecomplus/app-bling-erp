@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.13](https://github.com/ecomplus/application-starter/compare/v1.3.12...v1.3.13) (2021-04-01)
+
+
+### Bug Fixes
+
+* **bling-callback:** try sync sku update, fallback to queue ([42eaa1e](https://github.com/ecomplus/application-starter/commit/42eaa1e74926aab844fb4358e9d1f47dc54e00e9))
+* **deps:** update all non-major dependencies ([#30](https://github.com/ecomplus/application-starter/issues/30)) ([32582c0](https://github.com/ecomplus/application-starter/commit/32582c05a909367216bce55ffed8ddfedd9ac9bc))
+* **import-product:** ignore stored stock updates older than 10min ([9d4f5b1](https://github.com/ecomplus/application-starter/commit/9d4f5b140fb904c9b712ff63097b8b4f72381118))
+
 ### [1.3.12](https://github.com/ecomplus/application-starter/compare/v1.3.11...v1.3.12) (2021-03-19)
 
 
