@@ -156,41 +156,43 @@ exports.post = ({ appSdk, admin }, req, res) => {
               let integrationConfig
               let canCreateNew = false
 
-              switch (trigger.resource) {
-                case 'applications':
-                  integrationConfig = appData
-                  canCreateNew = true
-                  break
-                case 'products':
-                  if (trigger.body) {
-                    if (trigger.action === 'create') {
-                      if (!appData.new_products) {
+              if (trigger.resource === 'applications') {
+                integrationConfig = appData
+                canCreateNew = true
+              } else if (trigger.authentication_id !== auth.myId) {
+                switch (trigger.resource) {
+                  case 'orders':
+                    if (trigger.body) {
+                      canCreateNew = appData.new_orders ? undefined : false
+                      integrationConfig = {
+                        _exportation: {
+                          order_ids: [resourceId]
+                        }
+                      }
+                    }
+                    break
+
+                  case 'products':
+                    if (trigger.body) {
+                      if (trigger.action === 'create') {
+                        if (!appData.new_products) {
+                          break
+                        }
+                        canCreateNew = true
+                      } else if (
+                        (!trigger.body.price || !appData.export_price) &&
+                        (!trigger.body.quantity || !appData.export_quantity)
+                      ) {
                         break
                       }
-                      canCreateNew = true
-                    } else if (
-                      (!trigger.body.price || !appData.export_price) &&
-                      (!trigger.body.quantity || !appData.export_quantity)
-                    ) {
-                      break
-                    }
-                    integrationConfig = {
-                      _exportation: {
-                        product_ids: [resourceId]
+                      integrationConfig = {
+                        _exportation: {
+                          product_ids: [resourceId]
+                        }
                       }
                     }
-                  }
-                  break
-                case 'orders':
-                  if (trigger.body) {
-                    canCreateNew = appData.new_orders ? undefined : false
-                    integrationConfig = {
-                      _exportation: {
-                        order_ids: [resourceId]
-                      }
-                    }
-                  }
-                  break
+                    break
+                }
               }
 
               if (integrationConfig) {
