@@ -1,5 +1,6 @@
 const getAppData = require('../../lib/store-api/get-app-data')
 const updateAppData = require('../../lib/store-api/update-app-data')
+const importProduct = require('../../lib/integration/import-product')
 
 exports.post = ({ appSdk, admin }, req, res) => {
   const blingToken = req.query.token
@@ -22,7 +23,8 @@ exports.post = ({ appSdk, admin }, req, res) => {
       */
       return appSdk.getAuth(storeId)
         .then(auth => {
-          return getAppData({ appSdk, storeId, auth })
+          const appClient = { appSdk, storeId, auth }
+          return getAppData(appClient)
 
             .then(appData => {
               if (appData.bling_api_token !== blingToken) {
@@ -41,42 +43,81 @@ exports.post = ({ appSdk, admin }, req, res) => {
                   if (appData.import_quantity === false || appData.export_quantity) {
                     return res.sendStatus(204)
                   }
-                  let skus = appData.___importation && appData.___importation.skus
-                  if (!Array.isArray(skus)) {
-                    skus = []
-                  }
-                  const promises = []
-                  estoques.forEach(({ estoque }) => {
-                    if (estoque && estoque.codigo) {
-                      const sku = String(estoque.codigo)
-                      console.log(`> Bling callback: #${storeId} ${sku}`)
-                      promises.push(new Promise(resolve => {
-                        admin.firestore().collection('bling_stock_updates').add({
-                          ref: `${storeId}_${blingToken}_${sku}`,
-                          estoque
-                        })
-                          .then(() => {
-                            if (!skus.includes(sku)) {
-                              skus.push(sku)
-                            }
-                            resolve()
-                          })
-                          .catch(console.error)
-                      }))
-                    }
-                  })
+                  const blingStore = appData.bling_store
 
-                  if (promises.length) {
-                    return Promise.all(promises).then(() => {
-                      console.log(`> #${storeId} SKUs: ${JSON.stringify(skus)}`)
-                      return updateAppData({ appSdk, storeId }, {
-                        ___importation: {
-                          ...appData.___importation,
-                          skus
+                  return new Promise((resolve, reject) => {
+                    const saveToQueue = () => {
+                      let skus = appData.___importation && appData.___importation.skus
+                      if (!Array.isArray(skus)) {
+                        skus = []
+                      }
+                      const promises = []
+                      estoques.forEach(({ estoque }, i) => {
+                        if (estoque && estoque.codigo) {
+                          const sku = String(estoque.codigo)
+                          console.log(`> Bling callback: #${storeId} ${sku}`)
+                          promises.push(new Promise(resolve => {
+                            setTimeout(() => {
+                              admin.firestore().collection('bling_stock_updates').add({
+                                ref: `${storeId}_${blingToken}_${sku}`,
+                                estoque
+                              })
+                                .then(() => {
+                                  if (!skus.includes(sku)) {
+                                    skus.push(sku)
+                                  }
+                                  resolve()
+                                })
+                                .catch(console.error)
+                            }, i * 330)
+                          }))
                         }
                       })
-                    })
-                  }
+
+                      if (promises.length) {
+                        return Promise.all(promises)
+                          .then(() => {
+                            console.log(`> #${storeId} SKUs: ${JSON.stringify(skus)}`)
+                            return updateAppData({ appSdk, storeId }, {
+                              ___importation: {
+                                ...appData.___importation,
+                                skus
+                              }
+                            })
+                          })
+                          .then(resolve)
+                          .catch(reject)
+                      }
+                      resolve(true)
+                    }
+
+                    let skuIndex = 0
+                    const tryNextSku = () => {
+                      const blingStockUpdate = estoques[skuIndex] && estoques[skuIndex].estoque
+                      const nextId = blingStockUpdate && blingStockUpdate.codigo
+                      if (nextId) {
+                        console.log(`> Bling callback: #${storeId} ${nextId}`)
+                        const queueEntry = {
+                          nextId,
+                          blingStockUpdate,
+                          isNotQueued: true,
+                          cb: (err, isDone) => {
+                            if (!err && isDone) {
+                              estoques.splice(skuIndex, 1)
+                              skuIndex++
+                              return tryNextSku()
+                            }
+                            saveToQueue()
+                          }
+                        }
+                        importProduct(appClient, blingToken, blingStore, queueEntry, appData, false, true)
+                          .catch(saveToQueue)
+                      } else {
+                        saveToQueue()
+                      }
+                    }
+                    tryNextSku()
+                  })
                 }
               }
 

@@ -185,12 +185,21 @@ const handleJob = (appSession, queueEntry, job) => {
     .then(payload => {
       if (payload && typeof payload.then === 'function') {
         handleJob(appSession, queueEntry, payload)
-      } else {
+      } else if (!queueEntry.isNotQueued) {
         log(appSession, queueEntry, payload)
+      } else if (typeof queueEntry.cb === 'function') {
+        queueEntry.cb(null, true)
       }
       return true
     })
-    .catch(err => log(appSession, queueEntry, err))
+    .catch(err => {
+      if (!queueEntry.isNotQueued) {
+        return log(appSession, queueEntry, err)
+      }
+      if (typeof queueEntry.cb === 'function') {
+        queueEntry.cb(err, false)
+      }
+    })
 }
 
 module.exports = handleJob

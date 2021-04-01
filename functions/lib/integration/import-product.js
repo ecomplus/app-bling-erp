@@ -8,24 +8,33 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
   const [sku, productId] = String(queueEntry.nextId).split(';:')
   let blingProductCode = sku
 
-  return firestore().collection('bling_stock_updates')
-    .where('ref', '==', `${storeId}_${blingToken}_${sku}`)
-    .get().then(querySnapshot => {
-      let blingStockUpdate, lastUpdateTime
-      const timestamp = Date.now()
-      querySnapshot.forEach(documentSnapshot => {
-        const updateTime = documentSnapshot.updateTime.toDate().getTime()
-        if (
-          timestamp - updateTime < 1000 * 60 * 10 &&
-          (!lastUpdateTime || updateTime > lastUpdateTime)
-        ) {
-          lastUpdateTime = updateTime
-          blingStockUpdate = documentSnapshot.get('estoque')
-        }
-        documentSnapshot.ref.delete().catch(console.error)
+  return new Promise((resolve, reject) => {
+    if (queueEntry.blingStockUpdate) {
+      resolve(queueEntry.blingStockUpdate)
+      return
+    }
+
+    firestore().collection('bling_stock_updates')
+      .where('ref', '==', `${storeId}_${blingToken}_${sku}`)
+      .get()
+      .then(querySnapshot => {
+        let blingStockUpdate, lastUpdateTime
+        const timestamp = Date.now()
+        querySnapshot.forEach(documentSnapshot => {
+          const updateTime = documentSnapshot.updateTime.toDate().getTime()
+          if (
+            timestamp - updateTime <= 1000 * 60 * 15 &&
+            (!lastUpdateTime || updateTime > lastUpdateTime)
+          ) {
+            lastUpdateTime = updateTime
+            blingStockUpdate = documentSnapshot.get('estoque')
+          }
+          documentSnapshot.ref.delete().catch(console.error)
+        })
+        resolve(blingStockUpdate)
       })
-      return blingStockUpdate
-    })
+      .catch(reject)
+  })
 
     .then(blingStockUpdate => {
       const findingProduct = productId
