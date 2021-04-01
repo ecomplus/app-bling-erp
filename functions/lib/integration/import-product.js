@@ -12,9 +12,13 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
     .where('ref', '==', `${storeId}_${blingToken}_${sku}`)
     .get().then(querySnapshot => {
       let blingStockUpdate, lastUpdateTime
+      const timestamp = Date.now()
       querySnapshot.forEach(documentSnapshot => {
         const updateTime = documentSnapshot.updateTime.toDate().getTime()
-        if (!lastUpdateTime || updateTime > lastUpdateTime) {
+        if (
+          timestamp - updateTime < 1000 * 60 * 10 &&
+          (!lastUpdateTime || updateTime > lastUpdateTime)
+        ) {
           lastUpdateTime = updateTime
           blingStockUpdate = documentSnapshot.get('estoque')
         }
