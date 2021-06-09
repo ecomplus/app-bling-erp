@@ -56,22 +56,14 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
           storeId,
           url: '/items.json',
           data: {
+            size: 1,
             query: {
               bool: {
-                should: [{
-                  term: { sku }
-                }, {
-                  nested: {
-                    path: 'variations',
-                    query: {
-                      bool: {
-                        filter: [{
-                          term: { 'variations.sku': sku }
-                        }]
-                      }
-                    }
-                  }
-                }]
+                should: [
+                  { term: { skus: sku } },
+                  { term: { visible: true } },
+                  { term: { available: true } }
+                ]
               }
             }
           }
