@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.14](https://github.com/ecomplus/application-starter/compare/v1.3.13...v1.3.14) (2021-06-09)
+
+
+### Bug Fixes
+
+* **import-products:** prefer visible/available items on search api query ([1201a78](https://github.com/ecomplus/application-starter/commit/1201a782518ff0118f0c2939075622c9ff4ee498))
+* **import-products:** sku match is a must (fix search api query) ([3ddb319](https://github.com/ecomplus/application-starter/commit/3ddb3198c24a7aec4320c5f4c8b102fda7b8195e))
+
 ### [1.3.13](https://github.com/ecomplus/application-starter/compare/v1.3.12...v1.3.13) (2021-04-01)
 
 
