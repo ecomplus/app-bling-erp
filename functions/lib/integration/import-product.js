@@ -59,8 +59,10 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
             size: 1,
             query: {
               bool: {
+                must: {
+                  term: { skus: sku }
+                },
                 should: [
-                  { term: { skus: sku } },
                   { term: { visible: true } },
                   { term: { available: true } }
                 ]
