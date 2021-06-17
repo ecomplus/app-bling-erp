@@ -5,6 +5,7 @@ module.exports = (product, originalBlingProduct, blingProductCode, blingStore, a
 
   const blingProduct = {
     codigo: blingProductCode,
+    origem: '0',
     vlr_unit: ecomUtils.price(product),
     descricao: ecomUtils.name(product, 'pt_br').substring(0, 120),
     descricaoCurta: product.short_description,
