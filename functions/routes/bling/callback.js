@@ -1,10 +1,17 @@
-const getAppData = require('../../lib/store-api/get-app-data')
-const updateAppData = require('../../lib/store-api/update-app-data')
-const importProduct = require('../../lib/integration/import-product')
+const axios = require('axios')
+const { baseUri } = require('./../__env')
+const getAppData = require('./../../lib/store-api/get-app-data')
+const updateAppData = require('./../../lib/store-api/update-app-data')
+const importProduct = require('./../../lib/integration/import-product')
 
 exports.post = ({ appSdk, admin }, req, res) => {
+  const startTime = Date.now()
   const blingToken = req.query.token
   const storeId = parseInt(req.query.store_id, 10)
+  let retries = parseInt(req.query.retries, 10)
+  if (isNaN(retries) || retries < 0) {
+    retries = 0
+  }
 
   if (storeId > 100 && typeof blingToken === 'string' && blingToken && req.body) {
     let { retorno } = req.body
@@ -21,14 +28,15 @@ exports.post = ({ appSdk, admin }, req, res) => {
       TODO: check Bling server IPs
       const clientIp = req.get('x-forwarded-for') || req.connection.remoteAddress
       */
+      res.sendStatus(200)
+
       return appSdk.getAuth(storeId)
         .then(auth => {
           const appClient = { appSdk, storeId, auth }
           return getAppData(appClient)
-
             .then(appData => {
               if (appData.bling_api_token !== blingToken) {
-                return res.sendStatus(401)
+                return null
               }
               let { estoques, pedidos } = retorno
               if (Array.isArray(estoques)) {
@@ -41,7 +49,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
 
                 if (estoques.length) {
                   if (appData.import_quantity === false || appData.export_quantity) {
-                    return res.sendStatus(204)
+                    return null
                   }
                   const blingStore = appData.bling_store
 
@@ -155,10 +163,26 @@ exports.post = ({ appSdk, admin }, req, res) => {
           if (!res.headersSent) {
             res.sendStatus(200)
           }
+          return payload
         })
+
         .catch(err => {
           console.error(err)
-          res.sendStatus(502)
+          if (!(retries > 3)) {
+            retries++
+            setTimeout(() => {
+              axios.post(`${baseUri}/bling/callback`, req.body, {
+                params: {
+                  store_id: storeId,
+                  token: blingToken,
+                  retries
+                }
+              }).catch(console.error)
+            }, Math.min(50 * 1000 - (Date.now() - startTime), 40 * 1000))
+          }
+          if (!res.headersSent) {
+            res.sendStatus(502)
+          }
         })
     } else {
       console.log(`#${storeId} unexpected Bling callback: ${JSON.stringify(req.body)}`)
