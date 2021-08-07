@@ -4,7 +4,7 @@ const Bling = require('../bling/constructor')
 const parseProduct = require('./parsers/product-to-ecomplus')
 const handleJob = require('./handle-job')
 
-module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry, appData, _, isHiddenQueue) => {
+module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposit, queueEntry, appData, _, isHiddenQueue) => {
   const [sku, productId] = String(queueEntry.nextId).split(';:')
   let blingProductCode = sku
 
@@ -136,6 +136,22 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry,
           }
 
           const handleBlingStock = (blingProduct, isStockOnly) => {
+            if (blingDeposit) {
+              const blingItems = Array.isArray(blingProduct.variacoes) ? blingProduct.variacoes : []
+              blingItems.unshift(blingProduct)
+              blingItems.forEach(blingItem => {
+                if (Array.isArray(blingItem.depositos)) {
+                  const deposit = blingItem.depositos.find(({ deposito }) => String(deposito.id) === String(blingDeposit))
+                  if (deposit) {
+                    const quantity = Number(deposit.saldo)
+                    if (!isNaN(quantity)) {
+                      blingItem.estoqueAtual = quantity
+                      delete blingItem.depositos
+                    }
+                  }
+                }
+              })
+            }
             let quantity = Number(blingProduct.estoqueAtual)
             if (product && (isStockOnly === true || !appData.update_product || variationId)) {
               if (!isNaN(quantity)) {

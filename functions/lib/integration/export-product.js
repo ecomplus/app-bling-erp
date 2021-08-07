@@ -5,7 +5,7 @@ const Bling = require('../bling/constructor')
 const parseProduct = require('./parsers/product-to-bling')
 const handleJob = require('./handle-job')
 
-module.exports = ({ appSdk, storeId }, blingToken, blingStore, queueEntry, appData, canCreateNew) => {
+module.exports = ({ appSdk, storeId }, blingToken, blingStore, blingDeposit, queueEntry, appData, canCreateNew) => {
   const productId = queueEntry.nextId
   return ecomClient.store({
     storeId,

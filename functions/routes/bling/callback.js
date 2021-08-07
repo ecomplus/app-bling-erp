@@ -52,6 +52,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
                     return null
                   }
                   const blingStore = appData.bling_store
+                  const blingDeposit = appData.bling_deposit
 
                   return new Promise((resolve, reject) => {
                     const saveToQueue = () => {
@@ -118,7 +119,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
                             saveToQueue()
                           }
                         }
-                        importProduct(appClient, blingToken, blingStore, queueEntry, appData, false, true)
+                        importProduct(appClient, blingToken, blingStore, blingDeposit, queueEntry, appData, false, true)
                           .catch(saveToQueue)
                       } else {
                         saveToQueue()

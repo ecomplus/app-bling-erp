@@ -152,6 +152,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
 
             const blingToken = appData.bling_api_token
             const blingStore = appData.bling_store
+            const blingDeposit = appData.bling_deposit
             if (typeof blingToken === 'string' && blingToken) {
               let integrationConfig
               let canCreateNew = false
@@ -236,6 +237,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
                             { appSdk, storeId, auth },
                             blingToken,
                             blingStore,
+                            blingDeposit,
                             queueEntry,
                             appData,
                             canCreateNew,

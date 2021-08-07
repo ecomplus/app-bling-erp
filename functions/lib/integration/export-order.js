@@ -5,7 +5,7 @@ const parseOrder = require('./parsers/order-to-bling/')
 const parseStatus = require('./parsers/order-to-bling/status')
 const handleJob = require('./handle-job')
 
-module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, queueEntry, appData, canCreateNew) => {
+module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposit, queueEntry, appData, canCreateNew) => {
   const orderId = queueEntry.nextId
 
   return appSdk.apiRequest(storeId, `/orders/${orderId}.json`, 'GET', null, auth)

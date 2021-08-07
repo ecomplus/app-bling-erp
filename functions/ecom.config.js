@@ -156,6 +156,15 @@ const app = {
       },
       hide: true
     },
+    bling_deposit: {
+      schema: {
+        type: 'string',
+        maxLength: 255,
+        title: 'ID do depósito no Bling',
+        description: 'Opcional para multi CD no Bling'
+      },
+      hide: true
+    },
     new_orders: {
       schema: {
         type: 'boolean',
