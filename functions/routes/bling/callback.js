@@ -1,5 +1,5 @@
 const axios = require('axios')
-const { baseUri } = require('./../__env')
+const { baseUri } = require('./../../__env')
 const getAppData = require('./../../lib/store-api/get-app-data')
 const updateAppData = require('./../../lib/store-api/update-app-data')
 const importProduct = require('./../../lib/integration/import-product')
