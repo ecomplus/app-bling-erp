@@ -137,8 +137,10 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
 
           const handleBlingStock = (blingProduct, isStockOnly) => {
             if (blingDeposit) {
-              const blingItems = Array.isArray(blingProduct.variacoes) ? blingProduct.variacoes : []
-              blingItems.unshift(blingProduct)
+              let blingItems = [blingProduct]
+              if (Array.isArray(blingProduct.variacoes)) {
+                blingItems = blingItems.concat(blingProduct.variacoes)
+              }
               blingItems.forEach(blingItem => {
                 if (Array.isArray(blingItem.depositos)) {
                   const deposit = blingItem.depositos.find(({ deposito }) => String(deposito.id) === String(blingDeposit))
