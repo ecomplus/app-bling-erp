@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/ecomplus/application-starter/compare/v1.3.15...v1.4.0) (2021-08-09)
+
+
+### Features
+
+* **bling-deposit:** handle bling deposit id option for multi cd [[#49](https://github.com/ecomplus/application-starter/issues/49)] ([2abdfdb](https://github.com/ecomplus/application-starter/commit/2abdfdb8fe88cb1b67808d33a495f0bec8fd0430))
+
+
+### Bug Fixes
+
+* **bling-callback:** fix env require relative path [skip ci] ([cd02da3](https://github.com/ecomplus/application-starter/commit/cd02da354dc229c31b16f5e9726390f5a128e488))
+* **deps:** update all non-major dependencies ([#48](https://github.com/ecomplus/application-starter/issues/48)) ([5f4febc](https://github.com/ecomplus/application-starter/commit/5f4febc63191cd68aae4fff98dbc165a7da31a21))
+* **import-product:** fix handling bling item deposit object for cd specific stock [[#49](https://github.com/ecomplus/application-starter/issues/49)] ([001d4e1](https://github.com/ecomplus/application-starter/commit/001d4e125f003100a2b570d364e72718c4451493))
+* **import-product:** prevent editing default bling products variations list [[#49](https://github.com/ecomplus/application-starter/issues/49)] ([aa9969b](https://github.com/ecomplus/application-starter/commit/aa9969bef5009bbaa3588dbe1e955b2e0b2c2c7c))
+
 ### [1.3.15](https://github.com/ecomplus/application-starter/compare/v1.3.14...v1.3.15) (2021-06-17)
 
 
