@@ -105,7 +105,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
                       const blingStockUpdate = estoques[skuIndex] && estoques[skuIndex].estoque
                       const nextId = blingStockUpdate && blingStockUpdate.codigo
                       if (nextId) {
-                        console.log(`> Bling callback: #${storeId} ${nextId} => ${blingStockUpdate.estoqueAtual}`)
+                        console.log(`> Bling callback: #${storeId} ${nextId} => ${JSON.stringify(blingStockUpdate)}`)
                         const queueEntry = {
                           nextId,
                           blingStockUpdate,
