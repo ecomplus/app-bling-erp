@@ -144,8 +144,8 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
               blingItems.forEach(blingItem => {
                 if (Array.isArray(blingItem.depositos)) {
                   const deposit = blingItem.depositos.find(({ deposito }) => String(deposito.id) === String(blingDeposit))
-                  if (deposit) {
-                    const quantity = Number(deposit.saldo)
+                  if (deposit && deposit.deposito) {
+                    const quantity = Number(deposit.deposito.saldo)
                     if (!isNaN(quantity)) {
                       blingItem.estoqueAtual = quantity
                       delete blingItem.depositos
