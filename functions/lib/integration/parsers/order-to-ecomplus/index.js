@@ -67,11 +67,13 @@ module.exports = (blingOrder, shippingLines, bling) => new Promise((resolve, rej
         partialOrder.shipping_lines = shippingLines
       }
 
-      if (nota.serie) {
+      if (nota.serie && nota.chaveAcesso) {
         return bling.get(`/notafiscal/${nota.numero}/${nota.serie}`)
           .then(({ data }) => {
-            const blingInvoice = data.notasfiscais &&
-              data.notasfiscais[0] && data.notasfiscais[0].notafiscal
+            const blingInvoice = data.notasfiscais ?
+                  data.notasfiscais.find(fiscal => fiscal.notafiscal.chaveAcesso === String(nota.chaveAcesso)).notafiscal
+                  : data.notasfiscais && data.notasfiscais[0] && data.notasfiscais[0].notafiscal
+                  
             if (blingInvoice) {
               checkTrackingCodes(blingInvoice)
               ;[
