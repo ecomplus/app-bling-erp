@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.1](https://github.com/ecomplus/application-starter/compare/v1.4.0...v1.4.1) (2021-08-19)
+
+
+### Bug Fixes
+
+* **import-order:** check invoice access key when set ([#56](https://github.com/ecomplus/application-starter/issues/56)) ([94d714c](https://github.com/ecomplus/application-starter/commit/94d714cee81f3b2b6b2a4483ae59a829db4f9d3d))
+
 ## [1.4.0](https://github.com/ecomplus/application-starter/compare/v1.3.15...v1.4.0) (2021-08-09)
 
 
