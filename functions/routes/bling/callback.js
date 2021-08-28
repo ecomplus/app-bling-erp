@@ -156,29 +156,34 @@ exports.post = ({ appSdk, admin }, req, res) => {
                         }
                       })
                     }
-                    documentRef.set({ orderNumbers })
 
-                    return new Promise((resolve, reject) => {
-                      const unsubscribe = documentRef.onSnapshot(documentSnapshot => {
-                        if (documentSnapshot && documentSnapshot.exists) {
-                          clearTimeout(proceedTimer)
-                          resolve(null)
-                        }
-                      }, err => {
-                        console.log(`Snapshot watcher error: ${err}`)
-                      })
-
-                      const proceedTimer = setTimeout(() => {
-                        unsubscribe()
-                        documentRef.delete().catch(console.error)
-                        console.log(`> #${storeId} order numbers: ${JSON.stringify(orderNumbers)}`)
-                        updateAppData({ appSdk, storeId }, {
-                          ___importation: {
-                            ...appData.___importation,
-                            order_numbers: orderNumbers
+                    return documentRef.set({ orderNumbers }).then(() => {
+                      return new Promise((resolve, reject) => {
+                        const unsubscribe = documentRef.onSnapshot(newDocumentSnapshot => {
+                          if (
+                            newDocumentSnapshot &&
+                            newDocumentSnapshot.exists &&
+                            newDocumentSnapshot.get('orderNumbers').length > orderNumbers.length
+                          ) {
+                            clearTimeout(proceedTimer)
+                            resolve(null)
                           }
-                        }).then(resolve).catch(reject)
-                      }, 1500)
+                        }, err => {
+                          console.log(`Snapshot watcher error: ${err}`)
+                        })
+
+                        const proceedTimer = setTimeout(() => {
+                          unsubscribe()
+                          documentRef.delete().catch(console.error)
+                          console.log(`> #${storeId} order numbers: ${JSON.stringify(orderNumbers)}`)
+                          updateAppData({ appSdk, storeId }, {
+                            ___importation: {
+                              ...appData.___importation,
+                              order_numbers: orderNumbers
+                            }
+                          }).then(resolve).catch(reject)
+                        }, 1500)
+                      })
                     })
                   })
                 }
