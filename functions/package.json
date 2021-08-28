@@ -14,11 +14,11 @@
   },
   "dependencies": {
     "@ecomplus/application-sdk": "^22.0.0-firestore.1.15.4",
-    "@google-cloud/firestore": "^4.14.1",
+    "@google-cloud/firestore": "^4.15.0",
     "axios": "^0.21.1",
     "express": "^4.17.1",
-    "firebase-admin": "^9.11.0",
-    "firebase-functions": "^3.14.1",
+    "firebase-admin": "^9.11.1",
+    "firebase-functions": "^3.15.4",
     "form-data": "^3.0.1",
     "js2xmlparser": "^4.0.1",
     "querystring": "^0.2.1"
@@ -26,7 +26,7 @@
   "devDependencies": {
     "eslint": "^6.8.0",
     "eslint-plugin-promise": "^4.3.1",
-    "firebase-functions-test": "^0.3.1"
+    "firebase-functions-test": "^0.3.2"
   },
   "private": true
 }
