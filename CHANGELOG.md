@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.3](https://github.com/ecomplus/application-starter/compare/v1.4.2...v1.4.3) (2021-08-28)
+
+
+### Bug Fixes
+
+* **bling-callback:** end process (clear proceed timer) when new tmp has more orders only [[#57](https://github.com/ecomplus/application-starter/issues/57)] ([22a2835](https://github.com/ecomplus/application-starter/commit/22a2835929d939c3199512684547dc2f09d7906a))
+
 ### [1.4.2](https://github.com/ecomplus/application-starter/compare/v1.4.1...v1.4.2) (2021-08-28)
 
 
