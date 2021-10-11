@@ -78,7 +78,7 @@ const log = ({ appSdk, storeId }, queueEntry, payload) => {
               if (response) {
                 const { data, status } = response
                 notes = `Error: Status ${status} \n${JSON.stringify(data)}`
-                if (!status || status >= 500) {
+                if (!status || status >= 500 || status === 429) {
                   retrying = queueRetry({ appSdk, storeId, auth }, queueEntry, appData, response)
                 }
                 if (config) {
