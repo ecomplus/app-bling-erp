@@ -11,7 +11,9 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
   return appSdk.apiRequest(storeId, `/orders/${orderId}.json`, 'GET', null, auth)
     .then(({ response }) => {
       const order = response.data
+      const logHead = `#${storeId} ${orderId} `
       if (!order.financial_status) {
+        console.log(`${logHead}skipped with no financial status`)
         return null
       }
 
@@ -66,7 +68,7 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
               switch (blingStatus) {
                 case 'em aberto':
                 case 'cancelado':
-                  console.log(`#${storeId} ${orderId} skipped with status "${blingStatus}"`)
+                  console.log(`${logHead}skipped with status "${blingStatus}"`)
                   return {}
               }
             }
@@ -77,12 +79,13 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
             }
 
             const blingOrder = parseOrder(order, blingOrderNumber, blingStore, appData, storeId)
-            console.log(`#${storeId} ${JSON.stringify(blingOrder)}`)
+            console.log(`${logHead}${JSON.stringify(blingOrder)}`)
             return bling.post('/pedido', { pedido: blingOrder })
 
               .then(({ data }) => {
                 if (data && data.pedidos && data.pedidos[0]) {
                   blingOrderNumber = data.pedidos[0].pedido.numero
+                  console.log(`${logHead}> Bling n${blingOrderNumber}`)
                   if (blingOrderNumber) {
                     if (!metafields) {
                       metafields = []
@@ -98,6 +101,8 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
                     }, auth)
                       .catch(console.error)
                   }
+                } else {
+                  console.log(`${logHead}> Bling error (?) ${JSON.stringify(data)}`)
                 }
                 return { blingStatus }
               })
