@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.4](https://github.com/ecomplus/application-starter/compare/v1.4.3...v1.4.4) (2021-10-11)
+
+
+### Bug Fixes
+
+* **handle-job:** queue retry on bling api 429 error response (api limits) ([cb5b262](https://github.com/ecomplus/application-starter/commit/cb5b26270a72a0507dc75106fdaacf08301099fc))
+
 ### [1.4.3](https://github.com/ecomplus/application-starter/compare/v1.4.2...v1.4.3) (2021-08-28)
 
 
