@@ -29,7 +29,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
       const clientIp = req.get('x-forwarded-for') || req.connection.remoteAddress
       */
       res.sendStatus(200)
-
+      console.log(storeId)
       return appSdk.getAuth(storeId)
         .then(auth => {
           const appClient = { appSdk, storeId, auth }
