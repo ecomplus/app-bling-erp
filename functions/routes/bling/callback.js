@@ -200,8 +200,9 @@ exports.post = ({ appSdk, admin }, req, res) => {
         })
 
         .catch(err => {
+          err.storeId = storeId
           console.error(err)
-          if (!(retries > 3)) {
+          if (!(retries > 3) && !err.appWithoutAuth) {
             retries++
             setTimeout(() => {
               axios.post(`${baseUri}/bling/callback`, req.body, {
