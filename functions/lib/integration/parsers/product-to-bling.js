@@ -54,7 +54,7 @@ module.exports = (product, originalBlingProduct, blingProductCode, blingStore, a
     blingProduct.class_fiscal = product.mpn[0]
   }
   if (product.gtin && product.gtin.length) {
-    blingProduct.gtin = product.gtin[0]
+    blingProduct.gtin = blingProduct.gtinEmbalagem = product.gtin[0]
     if (product.gtin[1]) {
       blingProduct.gtinEmbalagem = product.gtin[1]
     }
