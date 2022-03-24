@@ -165,7 +165,7 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
                   endpoint += `/variations/${variationId}`
                 }
                 endpoint += '/quantity.json'
-                console.log(`#${storeId} ${endpoint}`, { quantity, sku })
+                console.log(`#${storeId} ${endpoint}`, { quantity, sku, productId })
                 return appSdk.apiRequest(storeId, endpoint, 'PUT', { quantity }, auth)
               }
               return null
