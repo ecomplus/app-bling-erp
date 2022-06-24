@@ -12,11 +12,13 @@ module.exports = order => {
     case 'under_analysis':
     case 'unknown':
     case 'authorized':
+    case 'partially_paid':
       return 'em aberto'
     case 'voided':
     case 'refunded':
     case 'in_dispute':
     case 'unauthorized':
+    case 'partially_refunded':
       return 'cancelado'
   }
 
@@ -36,7 +38,7 @@ module.exports = order => {
       return ['entregue', 'atendido']
   }
 
-  if (financialStatus && financialStatus.endsWith('paid')) {
+  if (financialStatus && financialStatus === 'paid') {
     return ['aprovado', 'em aberto']
   }
   return 'em aberto'
