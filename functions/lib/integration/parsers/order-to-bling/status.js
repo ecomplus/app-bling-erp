@@ -13,7 +13,7 @@ module.exports = order => {
     case 'unknown':
     case 'authorized':
     case 'partially_paid':
-      return ['pendente', 'em aberto']
+      return 'em aberto'
     case 'voided':
     case 'refunded':
     case 'in_dispute':
