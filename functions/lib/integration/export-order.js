@@ -66,6 +66,7 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
           if (!originalBlingOrder) {
             if (appData.approved_orders_only) {
               switch (blingStatus) {
+                case 'pendente':
                 case 'em aberto':
                 case 'cancelado':
                   console.log(`${logHead}skipped with status "${blingStatus}"`)
