@@ -5,6 +5,8 @@ const { functionName, operatorToken } = require('./__env')
 const path = require('path')
 const recursiveReadDir = require('./lib/recursive-read-dir')
 
+const handleEventBling = require('./lib/pubsub/webhook-bling')
+
 // Firebase SDKs to setup cloud functions and access Firestore database
 const admin = require('firebase-admin')
 const functions = require('firebase-functions')
@@ -152,3 +154,6 @@ const clearOrderStates = require('./lib/integration/clear-order-states')
 const clearStatesCron = '56 13 * * *'
 exports.scheduledClear = functions.pubsub.schedule(clearStatesCron).onRun(clearOrderStates)
 console.log(`-- Sheduled clearing order stored states '${clearStatesCron}'`)
+
+exports.onBlingEvents = require('./lib/pubsub/create-topic')
+  .createEventsFunction('bling', handleEventBling)
