@@ -29,6 +29,7 @@ module.exports = async (
       return getAppData(appClient)
         .then(appData => {
           if (appData.bling_api_token !== blingToken) {
+            console.log(`> Ignoring Bling event with invalid token for #${storeId}`)
             return null
           }
           let { estoques, pedidos } = retorno
