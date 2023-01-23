@@ -29,6 +29,9 @@ exports.post = ({ appSdk, admin }, req, res) => {
     }
 
     if (retorno) {
+      if (Number(storeId) === 51331) {
+        console.log('Callback bling 51331', JSON.stringify(retorno))
+      }
       /*
       TODO: check Bling server IPs
       const clientIp = req.get('x-forwarded-for') || req.connection.remoteAddress
