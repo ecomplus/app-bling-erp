@@ -32,6 +32,7 @@ exports.post = ({ appSdk, admin }, req, res) => {
       if (Number(storeId) === 51331 && retorno.pedidos) {
         console.log('Callback pedidos 51331', JSON.stringify(retorno))
         if (Array.isArray(retorno.pedidos) && retorno.pedidos.length && retorno.pedidos[0].pedido && retorno.pedidos[0].pedido.tipoIntegracao && retorno.pedidos[0].pedido.tipoIntegracao.toLowerCase() !== 'api') {
+          console.log('Removendo da lista 51331', retorno.pedidos[0].pedido.numero, retorno.pedidos[0].pedido.tipoIntegracao)
           return res.sendStatus(200)
         }
       }
