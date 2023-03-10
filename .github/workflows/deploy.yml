@@ -21,12 +21,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '10.x'
+          node-version: '14.x'
 
       - name: Cache dependencies
         uses: actions/cache@v2
@@ -58,7 +58,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Write README with base URI
         env:
@@ -105,9 +105,9 @@ jobs:
 
       - name: Setup Node
         if: steps.pkg_version.outputs.publish == 1
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '12.x'
+          node-version: '14.x'
           registry-url: 'https://registry.npmjs.org/'
 
       - name: Cache dependencies
