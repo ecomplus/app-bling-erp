@@ -114,7 +114,8 @@ module.exports = (product, originalBlingProduct, blingProductCode, blingStore, a
         nome: '',
         codigo: variation.sku || `${product.sku}-${(i + 1)}`,
         vlr_unit: ecomUtils.price({ ...product, ...variation }),
-        estoque: variation.quantity || 0
+        estoque: variation.quantity || 0,
+        clonarDadosPai: 'S'
       }
 
       for (const gridId in variation.specifications) {
