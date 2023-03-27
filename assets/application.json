@@ -117,6 +117,24 @@
       },
       "hide": true
     },
+    "update_product_auto": {
+      "schema": {
+        "type": "boolean",
+        "default": false,
+        "title": "Sobrescrever produtos quando houver mudança de estoque",
+        "description": "Atualizar cadastro (não apenas estoque) de produtos importados já existentes na plataforma quando for enviado alteração de estoque"
+      },
+      "hide": true
+    },
+    "import_product": {
+      "schema": {
+        "type": "boolean",
+        "default": false,
+        "title": "Importar produto",
+        "description": "Ao receber callback de estoque, se o produto não existir na loja, criar"
+      },
+      "hide": true
+    },
     "import_quantity": {
       "schema": {
         "type": "boolean",
