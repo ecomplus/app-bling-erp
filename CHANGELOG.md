@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/ecomplus/application-starter/compare/v1.4.4...v1.5.0) (2023-03-27)
+
+
+### Features
+
+* **import-product:** update all product or create when receive stock callback ([de76c91](https://github.com/ecomplus/application-starter/commit/de76c918d2ebb43d77030616336ef2c931a667ac))
+
+
+### Bug Fixes
+
+* avoid to send partially paid as paid ([ba9d002](https://github.com/ecomplus/application-starter/commit/ba9d002cefe7412d90ec569c87b2046460312a06))
+* **bling-callback:** prevent retries for app without auth error [[#74](https://github.com/ecomplus/application-starter/issues/74)] ([a2d5148](https://github.com/ecomplus/application-starter/commit/a2d514853e0bb6e04fd6359b715cfec2a9c2226f))
+* cannot access productId ([4d700e2](https://github.com/ecomplus/application-starter/commit/4d700e22f22dec8bf21c98f6a952468babfeac09))
+* **deps:** update all non-major dependencies ([#66](https://github.com/ecomplus/application-starter/issues/66)) ([ffe01fe](https://github.com/ecomplus/application-starter/commit/ffe01fedfb84a85fecef84fe1771a4664a447f5e))
+* **deps:** update all non-major dependencies ([#81](https://github.com/ecomplus/application-starter/issues/81)) ([02a4141](https://github.com/ecomplus/application-starter/commit/02a414125c073d60fe33447323fcc05d07795cc9))
+* **ecom-config:** remove procedure trigger by order create (keep order + status only) ([#65](https://github.com/ecomplus/application-starter/issues/65)) ([e26a336](https://github.com/ecomplus/application-starter/commit/e26a3365c38057a811119be64e37ca4510dcc296))
+* **pub-sub:** add new deps for pubsub and create function pubsub ([93f0327](https://github.com/ecomplus/application-starter/commit/93f03279f597ffcddb3c9b704a9ecb5c378a4d21))
+* **pub-sub:** add pubsub in webhook) ([e8c2d5a](https://github.com/ecomplus/application-starter/commit/e8c2d5a86739e2dc23b2576c02e06443b9a40fd1))
+* **pub-sub:** create pubsub in bling webhook ([509bedc](https://github.com/ecomplus/application-starter/commit/509bedce28225af8b346a3bc99aed6cfa5276272))
+* **pub-sub:** do not throw error (no retry) when bling token ir wrong ([c5f8bfa](https://github.com/ecomplus/application-starter/commit/c5f8bfa30825199b0a28edb9920b19419138168d))
+* remove _id to show only quantity and sku ([fec3afb](https://github.com/ecomplus/application-starter/commit/fec3afbf363df5a19f3aa6b2301db5bff8adc4c9))
+
 ### [1.4.4](https://github.com/ecomplus/application-starter/compare/v1.4.3...v1.4.4) (2021-10-11)
 
 
