@@ -114,7 +114,7 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
 
         .then(payload => {
           const dispatchNullJob = () => handleJob({ appSdk, storeId }, queueEntry, Promise.resolve(null))
-          if (!payload) {
+          if (!payload && !appData.import_product) {
             console.log(`#${storeId} not found ${sku}`)
             dispatchNullJob()
             return payload
@@ -122,7 +122,7 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
           const { product, variationId, hasVariations } = payload
           const bling = new Bling(blingToken)
 
-          if (!product && (isHiddenQueue || productId)) {
+          if (!product && (isHiddenQueue || productId) && !appData.import_product) {
             dispatchNullJob()
             console.log(`#${storeId} skipping ${sku} / ${productId}`)
             return
@@ -192,7 +192,7 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
 
           console.log(`#${storeId} ${JSON.stringify({ sku, productId, hasVariations, variationId })}`)
           let job
-          if (blingStockUpdate && isHiddenQueue) {
+          if (blingStockUpdate && isHiddenQueue && !appData.update_product_auto) {
             job = handleBlingStock(blingStockUpdate, true)
           } else {
             job = bling.get(`/produto/${blingProductCode}`, {
