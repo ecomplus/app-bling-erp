@@ -34,7 +34,7 @@ module.exports = async (
           }
           let { estoques, pedidos } = retorno
           if (Number(storeId) === 35519 && estoques) {
-            console.log(JSON.stringify(estoques))
+            console.log('35519 envio', JSON.stringify(estoques))
           }
           if (Array.isArray(estoques)) {
             if (Array.isArray(estoques[0])) {
