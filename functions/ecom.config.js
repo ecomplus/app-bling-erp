@@ -219,6 +219,14 @@ const app = {
       },
       hide: true
     },
+    non_update_description: {
+      schema: {
+        type: 'boolean',
+        default: false,
+        title: 'Desabilitar envio de descrição'
+      },
+      hide: true
+    },
     import_product: {
       schema: {
         type: 'boolean',

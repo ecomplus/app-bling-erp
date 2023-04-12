@@ -75,7 +75,7 @@ const tryImageUpload = (storeId, auth, originImgUrl, product) => new Promise(res
   return picture
 })
 
-module.exports = (blingProduct, variations, storeId, auth, isNew = true) => new Promise((resolve, reject) => {
+module.exports = (blingProduct, variations, storeId, auth, isNew = true, appData) => new Promise((resolve, reject) => {
   const sku = blingProduct.codigo
   const name = (blingProduct.descricao || sku).trim()
   const validateStock = (product) => {
@@ -90,13 +90,16 @@ module.exports = (blingProduct, variations, storeId, auth, isNew = true) => new 
     cost_price: blingProduct.preco_custo
   }
 
-  if (blingProduct.descricaoComplementar && blingProduct.descricaoCurta) {
-    product.short_description = String(blingProduct.descricaoCurta.slice(0, 255))
-    product.body_html = String(blingProduct.descricaoComplementar)
-  } else if (blingProduct.descricaoComplementar) {
-    product.body_html = String(blingProduct.descricaoComplementar)
-  } else if (blingProduct.descricaoCurta) {
-    product.body_html = String(blingProduct.descricaoCurta)
+  const isDisableDescription = appData && appData.non_update_description
+  if (!isDisableDescription) {
+    if (blingProduct.descricaoComplementar && blingProduct.descricaoCurta) {
+      product.short_description = String(blingProduct.descricaoCurta.slice(0, 255))
+      product.body_html = String(blingProduct.descricaoComplementar)
+    } else if (blingProduct.descricaoComplementar) {
+      product.body_html = String(blingProduct.descricaoComplementar)
+    } else if (blingProduct.descricaoCurta) {
+      product.body_html = String(blingProduct.descricaoCurta)
+    }
   }
 
   const { produtoLoja } = blingProduct

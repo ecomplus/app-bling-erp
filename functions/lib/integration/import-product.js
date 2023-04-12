@@ -180,7 +180,7 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
               method = 'POST'
               endpoint = '/products.json'
             }
-            return parseProduct(blingProduct, product && product.variations, storeId, auth, method === 'POST')
+            return parseProduct(blingProduct, product && product.variations, storeId, auth, method === 'POST', appData)
               .then(product => {
                 if (!isNaN(quantity)) {
                   product.quantity = quantity >= 0 ? quantity : 0
