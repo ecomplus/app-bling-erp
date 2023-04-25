@@ -192,6 +192,15 @@ const app = {
       },
       hide: true
     },
+    disable_order_number: {
+      schema: {
+        type: 'boolean',
+        default: false,
+        title: 'Desabilitar envio de número do pedido',
+        description: 'Número do pedido loja virtual pode ser repetido.'
+      },
+      hide: true
+    },
     new_products: {
       schema: {
         type: 'boolean',

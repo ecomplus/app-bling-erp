@@ -34,7 +34,7 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
     numero_loja: String(order.number),
     data: formatDate(new Date(order.opened_at || order.created_at))
   }
-  if (blingOrderNumber) {
+  if (blingOrderNumber && !appData.disable_order_number) {
     blingOrder.numero = String(blingOrderNumber)
   }
   if (blingStore) {
