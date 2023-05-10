@@ -93,8 +93,8 @@ module.exports = (blingProduct, variations, storeId, auth, isNew = true, appData
   const isDisableDescription = appData && appData.non_update_description
   if (!isDisableDescription) {
     if (blingProduct.descricaoComplementar && blingProduct.descricaoCurta) {
-      product.short_description = String(blingProduct.descricaoCurta.slice(0, 255))
-      product.body_html = String(blingProduct.descricaoComplementar)
+      product.short_description = String(blingProduct.descricaoComplementar.slice(0, 255))
+      product.body_html = String(blingProduct.descricaoCurta)
     } else if (blingProduct.descricaoComplementar) {
       product.body_html = String(blingProduct.descricaoComplementar)
     } else if (blingProduct.descricaoCurta) {
