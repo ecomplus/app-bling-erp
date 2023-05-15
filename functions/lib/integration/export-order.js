@@ -16,6 +16,9 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
         console.log(`${logHead}skipped with no financial status`)
         return null
       }
+      if (Number(storeId) === 51292) {
+        console.log(`Enviando pedido ${orderId} loja ${storeId}. O resultado foi ${order._id}`)
+      }
 
       let blingOrderNumber
       let { metafields } = order
@@ -28,7 +31,6 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
         }
       }
       const bling = new Bling(blingToken)
-
       const job = bling.get(`/pedido/${(blingOrderNumber || order.number)}`)
         .catch(err => {
           if (err.response && err.response.status === 404) {
@@ -40,6 +42,9 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
         .then(({ data }) => {
           const blingStatus = parseStatus(order)
           const hasFoundByNumber = Boolean(Array.isArray(data.pedidos) && data.pedidos.length)
+          if (Number(storeId) === 51292) {
+            console.log(`Enviando pedido loja ${storeId} - ${hasFoundByNumber}. O resultado da busca foi ${JSON.stringify(data)}`)
+          }
           let originalBlingOrder
           if (hasFoundByNumber) {
             originalBlingOrder = data.pedidos.find(({ pedido }) => {
