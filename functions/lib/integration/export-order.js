@@ -7,7 +7,9 @@ const handleJob = require('./handle-job')
 
 module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposit, queueEntry, appData, canCreateNew) => {
   const orderId = queueEntry.nextId
-
+  if (Number(storeId) === 51292) {
+    console.log(`Enviando pedido ${orderId} loja ${storeId}. Antes de buscar pedido`)
+  }
   return appSdk.apiRequest(storeId, `/orders/${orderId}.json`, 'GET', null, auth)
     .then(({ response }) => {
       const order = response.data
