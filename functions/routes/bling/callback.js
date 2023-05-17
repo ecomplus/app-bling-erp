@@ -29,10 +29,13 @@ exports.post = ({ appSdk, admin }, req, res) => {
     }
 
     if (retorno) {
-      if (retorno.pedidos) {
+      /* if (retorno.pedidos) {
         if (Array.isArray(retorno.pedidos) && retorno.pedidos.length && retorno.pedidos[0].pedido && retorno.pedidos[0].pedido.tipoIntegracao && retorno.pedidos[0].pedido.tipoIntegracao.toLowerCase() !== 'api') {
           return res.sendStatus(200)
         }
+      } */
+      if (Number(storeId) === 35519) {
+        console.log('Retorno pedidos #35519', JSON.stringify(retorno.pedidos))
       }
       /*
       TODO: check Bling server IPs
