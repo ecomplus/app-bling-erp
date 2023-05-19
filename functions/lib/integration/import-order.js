@@ -54,7 +54,7 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
             }
             const order = result[0]
 
-            return parseOrder(blingOrder, order.shipping_lines, bling).then(partialOrder => {
+            return parseOrder(blingOrder, order.shipping_lines, bling, storeId).then(partialOrder => {
               const promises = []
               if (partialOrder && Object.keys(partialOrder).length) {
                 promises.push(appSdk
