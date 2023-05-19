@@ -6,6 +6,7 @@ module.exports = situacao => {
       financialStatus = 'paid'
       break
     case 'em andamento':
+    case 'em separação':
       fulfillmentStatus = 'in_separation'
       break
     case 'faturado':
