@@ -1,11 +1,9 @@
-module.exports = (blingOrder, shippingLines, bling, storeId) => new Promise((resolve, reject) => {
+module.exports = (blingOrder, shippingLines, bling) => new Promise((resolve, reject) => {
   const partialOrder = {}
   if (blingOrder.observacaointerna) {
     partialOrder.staff_notes = blingOrder.observacaointerna
   }
-  if (Number(storeId) === 1137) {
-    console.log('Pedido a importar informações #1137', JSON.stringify(blingOrder))
-  }
+  console.log('Pedido a importar informações #1137', JSON.stringify(blingOrder))
   if (shippingLines && shippingLines.length) {
     const checkTrackingCodes = ({ codigosRastreamento, transporte }) => {
       const addTrackingCode = (shippingLine, volume) => {
