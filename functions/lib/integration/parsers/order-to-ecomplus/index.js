@@ -3,9 +3,6 @@ module.exports = (blingOrder, shippingLines, bling, storeId) => new Promise((res
   if (blingOrder.observacaointerna) {
     partialOrder.staff_notes = blingOrder.observacaointerna
   }
-  if (blingOrder.situacao && (blingOrder.situacao.toLowerCase() === 'atendido')) {
-    console.log(`Pedido a importar informações de nota ${storeId}`, JSON.stringify(blingOrder))
-  }
   if (shippingLines && shippingLines.length) {
     const checkTrackingCodes = ({ codigosRastreamento, transporte }) => {
       const addTrackingCode = (shippingLine, volume) => {
@@ -72,6 +69,9 @@ module.exports = (blingOrder, shippingLines, bling, storeId) => new Promise((res
       if (nota.serie) {
         return bling.get(`/notafiscal/${nota.numero}/${nota.serie}`)
           .then(({ data }) => {
+            if (data && data.notasfiscais) {
+              console.log(`Nota fiscal ${storeId}`, JSON.stringify(data.notasfiscais))
+            }
             let blingInvoice
             if (Array.isArray(data.notasfiscais)) {
               blingInvoice = data.notasfiscais.find(fiscal => {
