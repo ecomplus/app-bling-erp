@@ -32,7 +32,9 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
       const situacao = typeof blingOrder.situacao === 'string'
         ? blingOrder.situacao.toLowerCase()
         : null
-
+      if (Number(storeId) === 35519) {
+        console.log(`#35519 import order status:`, situacao)
+      }
       const documentRef = firestore().doc(`bling_orders/${storeId}_${blingOrderNumber}`)
       return documentRef.get().then(documentSnapshot => {
         if (
