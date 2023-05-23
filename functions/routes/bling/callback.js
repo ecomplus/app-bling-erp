@@ -29,12 +29,12 @@ exports.post = ({ appSdk, admin }, req, res) => {
     }
 
     if (retorno) {
+      /*
       if (retorno.pedidos) {
         if (Array.isArray(retorno.pedidos) && retorno.pedidos.length && retorno.pedidos[0].pedido && retorno.pedidos[0].pedido.tipoIntegracao && retorno.pedidos[0].pedido.tipoIntegracao.toLowerCase() !== 'api') {
           return res.sendStatus(200)
         }
       }
-      /*
       TODO: check Bling server IPs
       const clientIp = req.get('x-forwarded-for') || req.connection.remoteAddress
       */
