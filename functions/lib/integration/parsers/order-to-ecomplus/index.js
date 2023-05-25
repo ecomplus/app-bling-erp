@@ -45,6 +45,9 @@ module.exports = (blingOrder, shippingLines, bling, storeId) => new Promise((res
       let invoiceIndex = shippingLine.invoices.findIndex(({ number }) => {
         return number === String(nota.numero)
       })
+      if (invoiceIndex) {
+        console.log(`Nota fiscal com invoice já ${storeId}`, JSON.stringify(blingOrder))
+      }
       if (invoiceIndex === -1) {
         const invoice = {
           number: String(nota.numero)
@@ -69,9 +72,6 @@ module.exports = (blingOrder, shippingLines, bling, storeId) => new Promise((res
       if (nota.serie) {
         return bling.get(`/notafiscal/${nota.numero}/${nota.serie}`)
           .then(({ data }) => {
-            if (data && data.notasfiscais) {
-              console.log(`Nota fiscal ${storeId}`, JSON.stringify(data.notasfiscais))
-            }
             let blingInvoice
             if (Array.isArray(data.notasfiscais)) {
               blingInvoice = data.notasfiscais.find(fiscal => {
