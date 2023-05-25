@@ -32,9 +32,7 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
       const situacao = typeof blingOrder.situacao === 'string'
         ? blingOrder.situacao.toLowerCase()
         : null
-      if (Number(storeId) === 35519) {
-        console.log(`#35519 import order status:`, situacao)
-      }
+
       const documentRef = firestore().doc(`bling_orders/${storeId}_${blingOrderNumber}`)
       return documentRef.get().then(documentSnapshot => {
         if (
@@ -55,7 +53,9 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
               return null
             }
             const order = result[0]
-
+            if (Number(storeId) == 1137) {
+              console.log(`Import order 1137`, JSON.stringify(blingOrder))
+            }
             return parseOrder(blingOrder, order.shipping_lines, bling, storeId).then(partialOrder => {
               const promises = []
               if (partialOrder && Object.keys(partialOrder).length) {

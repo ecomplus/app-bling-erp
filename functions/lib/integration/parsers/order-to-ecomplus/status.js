@@ -7,6 +7,7 @@ module.exports = situacao => {
       break
     case 'em andamento':
     case 'em separação':
+    case 'em separacao':
       fulfillmentStatus = 'in_separation'
       break
     case 'faturado':
