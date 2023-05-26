@@ -195,7 +195,7 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
 
           console.log(`#${storeId} ${JSON.stringify({ sku, productId, hasVariations, variationId })}`)
           let job
-          if (blingStockUpdate && isHiddenQueue && !appData.update_product_auto) {
+          if (blingStockUpdate && isHiddenQueue && !appData.update_product_auto && !appData.import_product) {
             job = handleBlingStock(blingStockUpdate, true)
           } else {
             job = bling.get(`/produto/${blingProductCode}`, {
