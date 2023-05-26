@@ -186,9 +186,7 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
                   product.quantity = quantity >= 0 ? quantity : 0
                 }
                 console.log(`#${storeId} ${method} ${endpoint}`)
-                if (Number(storeId) === 51395) {
-                  console.log('Importando produto', JSON.stringify(product))
-                }
+                
                 return appSdk.apiRequest(storeId, endpoint, method, product, auth)
               })
           }
