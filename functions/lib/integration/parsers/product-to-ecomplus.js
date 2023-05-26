@@ -237,8 +237,5 @@ module.exports = (blingProduct, variations, storeId, auth, isNew = true, appData
     })
     return Promise.all(promises).then(() => resolve(product))
   }
-  if (Number(storeId) === 2230) {
-    console.log('Sobrescrevendo produto', JSON.stringify(product))
-  }
   resolve(product)
 })
