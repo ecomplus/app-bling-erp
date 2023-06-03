@@ -251,9 +251,6 @@ exports.post = ({ appSdk, admin }, req, res) => {
                 }
               }
             }
-            if (Number(storeId) === 51292) {
-              console.log('> Skip webhook: #51292, appdata:', JSON.stringify(appData), 'webhook:', JSON.stringify(trigger), 'auth', JSON.stringify(auth))
-            }
             uncountRequest()
             // nothing to do
             return {}
