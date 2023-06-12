@@ -153,6 +153,9 @@ exports.post = ({ appSdk, admin }, req, res) => {
             const blingToken = appData.bling_api_token
             const blingStore = appData.bling_store
             const blingDeposit = appData.bling_deposit
+            if (storeId == 51292 && trigger.resource === 'orders') {
+              console.log('Try to export order #51292 with token', typeof blingToken === 'string' && blingToken)
+            }
             if (typeof blingToken === 'string' && blingToken) {
               let integrationConfig
               let canCreateNew = false
@@ -163,12 +166,21 @@ exports.post = ({ appSdk, admin }, req, res) => {
               } else if (trigger.authentication_id !== auth.myId) {
                 switch (trigger.resource) {
                   case 'orders':
+                    if (storeId == 51292) {
+                      console.log('Try to export order #51292', resourceId)
+                    }
                     if (trigger.body) {
+                      if (storeId == 51292) {
+                        console.log('Try to export order #51292 with trigger', resourceId)
+                      }
                       canCreateNew = appData.new_orders ? undefined : false
                       integrationConfig = {
                         _exportation: {
                           order_ids: [resourceId]
                         }
+                      }
+                      if (storeId == 51292) {
+                        console.log('Try to export order #51292 with exportation', JSON.stringify(integrationConfig))
                       }
                     }
                     break
@@ -195,7 +207,9 @@ exports.post = ({ appSdk, admin }, req, res) => {
                     break
                 }
               }
-
+              if (storeId == 51292 && trigger.resource === 'orders') {
+                console.log('Try to export order #51292 with set config', JSON.stringify(integrationConfig))
+              }
               if (integrationConfig) {
                 const actions = Object.keys(integrationHandlers)
                 actions.forEach(action => {
