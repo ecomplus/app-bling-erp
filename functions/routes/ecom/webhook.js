@@ -207,9 +207,6 @@ exports.post = ({ appSdk, admin }, req, res) => {
                     break
                 }
               }
-              if (storeId == 51292 && trigger.resource === 'orders') {
-                console.log('Try to export order #51292 with set config', JSON.stringify(integrationConfig))
-              }
               if (integrationConfig) {
                 const actions = Object.keys(integrationHandlers)
                 actions.forEach(action => {
@@ -240,6 +237,9 @@ exports.post = ({ appSdk, admin }, req, res) => {
                           const timestamp = Date.now()
                           const documentSnapshot = validateDocSnapshot()
                           if (!documentSnapshot || timestamp - documentSnapshot.get(key) < 20000) {
+                            if (storeId == 51292 && trigger.resource === 'orders') {
+                              console.log('Try to export order #51292 with set config', nextId)
+                            }
                             break
                           }
                           const debugFlag = `#${storeId} ${action}/${queue}/${nextId}`
