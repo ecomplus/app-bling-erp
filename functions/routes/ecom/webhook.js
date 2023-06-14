@@ -170,17 +170,11 @@ exports.post = ({ appSdk, admin }, req, res) => {
                       console.log('Try to export order #51292', resourceId)
                     }
                     if (trigger.body) {
-                      if (storeId == 51292) {
-                        console.log('Try to export order #51292 with trigger', resourceId)
-                      }
                       canCreateNew = appData.new_orders ? undefined : false
                       integrationConfig = {
                         _exportation: {
                           order_ids: [resourceId]
                         }
-                      }
-                      if (storeId == 51292) {
-                        console.log('Try to export order #51292 with exportation', JSON.stringify(integrationConfig))
                       }
                     }
                     break
@@ -238,7 +232,9 @@ exports.post = ({ appSdk, admin }, req, res) => {
                           const documentSnapshot = validateDocSnapshot()
                           if (!documentSnapshot || timestamp - documentSnapshot.get(key) < 20000) {
                             if (storeId == 51292 && trigger.resource === 'orders') {
-                              console.log('Try to export order #51292 with set config', nextId)
+                              if (documentSnapshot) {
+                                console.log('Try to export order #51292 with set config', nextId, timestamp - documentSnapshot.get(key),  timestamp - documentSnapshot.get(key) < 20000)
+                              }
                             }
                             break
                           }
