@@ -7,7 +7,7 @@ module.exports = (blingOrder, shippingLines, bling, storeId) => new Promise((res
     const checkTrackingCodes = ({ codigosRastreamento, transporte }) => {
       const addTrackingCode = (shippingLine, volume) => {
         if ((Number(storeId) === 51395)) {
-          console.log(`Import order ${storeId}`, JSON.stringify(shippingLine), JSON.stringify(volume))
+          console.log(`Import order tracking #${storeId}`, JSON.stringify(shippingLine), JSON.stringify(volume))
         }
         let tracking
         if (
@@ -36,9 +36,6 @@ module.exports = (blingOrder, shippingLines, bling, storeId) => new Promise((res
         }
       }
 
-      if (codigosRastreamento) {
-        addTrackingCode(shippingLines[0], codigosRastreamento[0] || codigosRastreamento)
-      }
       if (transporte && transporte.volumes) {
         const { volumes } = transporte
         for (let i = 0; i < volumes.length && i < shippingLines.length; i++) {
@@ -46,6 +43,10 @@ module.exports = (blingOrder, shippingLines, bling, storeId) => new Promise((res
           const shippingLine = shippingLines[i]
           addTrackingCode(shippingLine, volume)
         }
+      }
+
+      if (codigosRastreamento) {
+        addTrackingCode(shippingLines[0], codigosRastreamento[0] || codigosRastreamento)
       }
     }
     checkTrackingCodes(blingOrder)
