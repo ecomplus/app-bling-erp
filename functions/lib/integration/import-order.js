@@ -52,13 +52,13 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
             if (!result.length) {
               return null
             }
-            const order = result[0]
-            if (situacao !== 'em aberto' && situacao !== 'venda agenciada' && situacao !== 'em andamento' && situacao !== 'cancelado') {
-              console.log(`Import order ${storeId}`, JSON.stringify(blingOrder))
-            }  
+            const order = result[0] 
             return parseOrder(blingOrder, order.shipping_lines, bling, storeId).then(partialOrder => {
               const promises = []
-              if (partialOrder && Object.keys(partialOrder).length) {
+              if (situacao !== 'em aberto' && situacao !== 'venda agenciada' && situacao !== 'em andamento' && situacao !== 'cancelado' && (Number(storeId) === 51395)) {
+                console.log(`Import order ${storeId}`, JSON.stringify(partialOrder))
+              }
+              if (partialOrder && Object.keys(partialOrder).length) { 
                 promises.push(appSdk
                   .apiRequest(storeId, `/orders/${order._id}.json`, 'PATCH', partialOrder, auth))
               }

@@ -6,15 +6,27 @@ module.exports = (blingOrder, shippingLines, bling, storeId) => new Promise((res
   if (shippingLines && shippingLines.length) {
     const checkTrackingCodes = ({ codigosRastreamento, transporte }) => {
       const addTrackingCode = (shippingLine, volume) => {
+        let tracking
         if (
           volume &&
           volume.codigoRastreamento &&
           (!shippingLine.tracking_codes || !shippingLine.tracking_codes.length)
         ) {
-          const tracking = {
+          tracking = {
             code: String(volume.codigoRastreamento),
             link: volume.urlRastreamento ||
               `https://www.melhorrastreio.com.br/rastreio/${volume.codigoRastreamento}`
+          }
+          shippingLine.tracking_codes = [tracking]
+          partialOrder.shipping_lines = shippingLines
+        } else if (
+          volume &&
+          volume.urlRastreamento &&
+          (!shippingLine.tracking_codes || !shippingLine.tracking_codes.length)
+        ) {
+          tracking = {
+            code: 'Sem codigo | Consultar no link',
+            link: volume.urlRastreamento
           }
           shippingLine.tracking_codes = [tracking]
           partialOrder.shipping_lines = shippingLines
@@ -45,9 +57,6 @@ module.exports = (blingOrder, shippingLines, bling, storeId) => new Promise((res
       let invoiceIndex = shippingLine.invoices.findIndex(({ number }) => {
         return number === String(nota.numero)
       })
-      if (invoiceIndex) {
-        console.log(`Nota fiscal com invoice já ${storeId}`, JSON.stringify(blingOrder))
-      }
       if (invoiceIndex === -1) {
         const invoice = {
           number: String(nota.numero)
@@ -67,6 +76,10 @@ module.exports = (blingOrder, shippingLines, bling, storeId) => new Promise((res
         shippingLine.invoices.push(invoice)
         invoiceIndex = shippingLine.invoices.length - 1
         partialOrder.shipping_lines = shippingLines
+      } else if (invoiceIndex) {
+        if (nota.chaveAcesso) {
+          shippingLine.invoices[invoiceIndex].access_key = String(nota.chaveAcesso)
+        }
       }
 
       if (nota.serie) {
@@ -92,6 +105,9 @@ module.exports = (blingOrder, shippingLines, bling, storeId) => new Promise((res
                   partialOrder.shipping_lines = shippingLines
                 }
               })
+            }
+            if (storeId == 1137 && blingOrder.situacao !== 'em aberto' && blingOrder.situacao !== 'venda agenciada' && blingOrder.situacao !== 'em andamento' && blingOrder.situacao !== 'cancelado') {
+              console.log('#1137 import nfe and track', JSON.stringify(partialOrder))
             }
             resolve(partialOrder)
           })
