@@ -6,9 +6,6 @@ module.exports = (blingOrder, shippingLines, bling, storeId) => new Promise((res
   if (shippingLines && shippingLines.length) {
     const checkTrackingCodes = ({ codigosRastreamento, transporte }) => {
       const addTrackingCode = (shippingLine, volume) => {
-        if ((Number(storeId) === 51395)) {
-          console.log(`Import order tracking #${storeId}`, JSON.stringify(shippingLine), JSON.stringify(volume))
-        }
         let tracking
         if (
           volume &&
