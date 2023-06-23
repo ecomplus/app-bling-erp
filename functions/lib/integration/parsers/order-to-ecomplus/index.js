@@ -107,7 +107,7 @@ module.exports = (blingOrder, shippingLines, bling, storeId) => new Promise((res
                 }
               })
             }
-            if (storeId == 1137 && blingOrder.situacao !== 'em aberto' && blingOrder.situacao !== 'venda agenciada' && blingOrder.situacao !== 'em andamento' && blingOrder.situacao !== 'cancelado') {
+            if (storeId == 1137) {
               console.log('#1137 import nfe and track', JSON.stringify(partialOrder))
             }
             resolve(partialOrder)
