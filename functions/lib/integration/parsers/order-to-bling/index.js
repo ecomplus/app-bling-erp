@@ -142,6 +142,9 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
           }
         }
       }
+      if (!blingOrder.transporte.servico_correios && shippingLine.app.label) {
+        blingOrder.transporte.servico_correios = shippingLine.app.label
+      }
       if (!blingOrder.transporte.transportadora && shippingLine.app.label) {
         blingOrder.transporte.transportadora = shippingLine.app.label
       }
