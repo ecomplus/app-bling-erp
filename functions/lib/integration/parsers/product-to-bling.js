@@ -116,6 +116,13 @@ module.exports = (product, originalBlingProduct, blingProductCode, blingStore, a
         vlr_unit: ecomUtils.price({ ...product, ...variation }),
         estoque: variation.quantity || 0
       }
+      if (appData.bling_deposit) {
+        blingVariation.deposito = {
+          id: appData.bling_deposit,
+          estoque: variation.quantity || 0
+        }
+        delete blingVariation.estoque
+      }
 
       for (const gridId in variation.specifications) {
         const gridOptions = variation.specifications[gridId]
