@@ -10,6 +10,7 @@ const handleEventBling = require('./lib/pubsub/webhook-bling')
 // Firebase SDKs to setup cloud functions and access Firestore database
 const admin = require('firebase-admin')
 const functions = require('firebase-functions')
+const { onRequest } = require('firebase-functions/v2/https')
 admin.initializeApp()
 
 // web server with Express
@@ -132,6 +133,7 @@ server.use(router)
 server.use(express.static('public'))
 
 exports[functionName] = functions.https.onRequest(server)
+exports[`${functionName}v2`] = onRequest({ memory: '512MiB', maxInstances: 10 }, server)
 console.log(`-- Starting '${app.title}' E-Com Plus app with Function '${functionName}'`)
 
 // schedule update tokens job
