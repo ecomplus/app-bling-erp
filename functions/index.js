@@ -133,7 +133,7 @@ server.use(router)
 server.use(express.static('public'))
 
 exports[functionName] = functions.https.onRequest(server)
-exports[`${functionName}v2`] = onRequest({ memory: '512MiB', maxInstances: 10 }, server)
+exports[`${functionName}v2`] = onRequest({ memory: '512MiB' }, server)
 console.log(`-- Starting '${app.title}' E-Com Plus app with Function '${functionName}'`)
 
 // schedule update tokens job
