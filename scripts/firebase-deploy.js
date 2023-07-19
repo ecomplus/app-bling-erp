@@ -1,10 +1,8 @@
 require('dotenv').config()
+const path = require('path')
+const fs = require('fs')
 
-const {
-  FIREBASE_TOKEN,
-  SERVER_OPERATOR_TOKEN,
-  SERVER_BASE_URI
-} = process.env
+const { FIREBASE_TOKEN, SERVER_OPERATOR_TOKEN } = process.env
 
 require('./scripts-minification')
 
@@ -17,9 +15,15 @@ const config = [
   `pkg.name=${name}`,
   `server.operator_token=${SERVER_OPERATOR_TOKEN}`
 ]
-if (SERVER_BASE_URI) {
-  config.push(`server.base_uri=${SERVER_BASE_URI}`)
+if (baseUri) {
+  config.push(`server.base_uri=${baseUri}`)
 }
+
+fs.writeFileSync(path.resolve(__dirname, '../functions/.env'), `
+NAME=${name}
+VERSION=${version}
+SERVER_OPERATOR_TOKEN=${SERVER_OPERATOR_TOKEN}
+SERVER_BASE_URI=${baseUri}`)
 
 client.functions.config.set(config, { project })
   .then(() => client.deploy({
