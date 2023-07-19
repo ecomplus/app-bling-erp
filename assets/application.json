@@ -320,6 +320,6 @@
       "hide": true
     }
   },
-  "auth_callback_uri": "https://us-central1-ecom-bling.cloudfunctions.net/app//ecom/auth-callback",
+  "auth_callback_uri": "https://appv2-jtydkm3a2a-uc.a.run.app/ecom/auth-callback",
   "version": "1.5.0"
 }
