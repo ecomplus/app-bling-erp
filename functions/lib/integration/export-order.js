@@ -7,9 +7,6 @@ const handleJob = require('./handle-job')
 
 module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposit, queueEntry, appData, canCreateNew) => {
   const orderId = queueEntry.nextId
-  if (Number(storeId) === 51292) {
-    console.log(`Enviando pedido ${orderId} loja ${storeId}. Antes de buscar pedido`)
-  }
   return appSdk.apiRequest(storeId, `/orders/${orderId}.json`, 'GET', null, auth)
     .then(({ response }) => {
       const order = response.data
@@ -17,9 +14,6 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
       if (!order.financial_status) {
         console.log(`${logHead}skipped with no financial status`)
         return null
-      }
-      if (Number(storeId) === 51292) {
-        console.log(`Enviando pedido ${orderId} loja ${storeId}. O resultado foi ${order._id}`)
       }
 
       let blingOrderNumber
@@ -44,9 +38,6 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
         .then(({ data }) => {
           const blingStatus = parseStatus(order)
           const hasFoundByNumber = Boolean(Array.isArray(data.pedidos) && data.pedidos.length)
-          if (Number(storeId) === 51292) {
-            console.log(`Enviando pedido loja ${storeId} - ${hasFoundByNumber}. O resultado da busca foi ${JSON.stringify(data)}`)
-          }
           let originalBlingOrder
           if (hasFoundByNumber) {
             originalBlingOrder = data.pedidos.find(({ pedido }) => {
@@ -87,7 +78,6 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
             }
 
             const blingOrder = parseOrder(order, blingOrderNumber, blingStore, appData, storeId)
-            console.log(`${logHead}${JSON.stringify(blingOrder)}`)
             return bling.post('/pedido', { pedido: blingOrder })
 
               .then(({ data }) => {

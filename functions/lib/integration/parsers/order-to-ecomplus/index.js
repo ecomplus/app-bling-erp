@@ -107,9 +107,6 @@ module.exports = (blingOrder, shippingLines, bling, storeId) => new Promise((res
                 }
               })
             }
-            if (storeId == 1137) {
-              console.log('#1137 import nfe and track', JSON.stringify(partialOrder))
-            }
             resolve(partialOrder)
           })
           .catch(e => {

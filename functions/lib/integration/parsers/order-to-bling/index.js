@@ -80,7 +80,7 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
       nome: `Comprador de #${order.number}`
     }
   }
-
+  let notesForCustomization = ''
   if (order.items && order.items.length) {
     blingOrder.itens = []
     order.items.forEach(item => {
@@ -95,6 +95,11 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
             vlr_unit: ecomUtils.price(item)
           }
         })
+        if (item.customizations && item.customizations.length) {
+          item.customizations.forEach(customization => {
+            notesForCustomization += `${customization.label} ${customization.option && customization.option.text} - ${item.sku}`
+          })
+        }
       }
     })
   }
@@ -180,7 +185,12 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
   }
 
   if (order.notes) {
-    blingOrder.obs = order.notes.substring(0, 250)
+    blingOrder.obs = order.notes 
+  }
+  if (!blingOrder.obs && notesForCustomization.length) {
+    blingOrder.obs = notesForCustomization
+  } else if (blingOrder.obs && notesForCustomization.length) {
+    blingOrder.obs += ` ${notesForCustomization}`
   }
   if (order.staff_notes) {
     blingOrder.obs_internas = order.staff_notes.substring(0, 250)
