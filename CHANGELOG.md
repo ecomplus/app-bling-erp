@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/ecomplus/application-starter/compare/v1.5.0...v1.6.0) (2023-08-09)
+
+
+### Features
+
+* **export-order:** skip integration with order metafield `bling:numero=skip` ([02a69e1](https://github.com/ecomplus/application-starter/commit/02a69e1190432144075579689cf47bd0abf8c16b))
+
+
+### Bug Fixes
+
+* **export-order:** parse date with correct timezone ([a68df65](https://github.com/ecomplus/application-starter/commit/a68df6567a30d441ac1048b766144a7a258a258d))
+* **max instance:** remove maxinstance parameter and update node to 16 ([92fbf4a](https://github.com/ecomplus/application-starter/commit/92fbf4a3c681e5d0611180a8554f38dd2765b45f))
+
 ## [1.5.0](https://github.com/ecomplus/application-starter/compare/v1.4.4...v1.5.0) (2023-03-27)
 
 
