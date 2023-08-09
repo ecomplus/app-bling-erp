@@ -1,3 +1,5 @@
+/* eslint-disable promise/no-nesting */
+
 const ecomUtils = require('@ecomplus/utils')
 const errorHandling = require('../store-api/error-handling')
 const Bling = require('../bling/constructor')
@@ -23,6 +25,10 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
         const metafield = metafields.find(({ field }) => field === 'bling:numero')
         if (metafield) {
           blingOrderNumber = metafield.value
+          if (blingOrderNumber === 'skip') {
+            console.log(`${logHead}skipped by metafield`)
+            return null
+          }
           hasCreatedBlingOrder = Boolean(blingOrderNumber)
         }
       }
