@@ -114,7 +114,8 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
     blingOrder.parcelas = []
     if (transaction.installments) {
       const { number } = transaction.installments
-      const vlr = amount.total / number
+      let vlr
+      const vlr = (amount.total - (amount.extra || 0)) / number
       for (let i = 0; i < number; i++) {
         blingOrder.parcelas.push({
           parcela: {
