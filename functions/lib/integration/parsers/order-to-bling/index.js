@@ -114,7 +114,6 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
     blingOrder.parcelas = []
     if (transaction.installments) {
       const { number } = transaction.installments
-      let vlr
       const extra = amount.extra || 0
       const vlr = (amount.total - extra) / number
       for (let i = 0; i < number; i++) {
@@ -177,9 +176,6 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
     blingOrder.vlr_frete = amount.freight
     if (amount.tax) {
       blingOrder.vlr_frete += amount.tax
-    }
-    if (amount.extra) {
-      blingOrder.vlr_frete += amount.extra
     }
   }
   if (amount.discount) {
