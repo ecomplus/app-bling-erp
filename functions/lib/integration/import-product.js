@@ -180,6 +180,10 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
               method = 'POST'
               endpoint = '/products.json'
             }
+            if (method === 'POST' && blingProduct.codigoPai) {
+              console.log(`#${storeId} skipping ${sku} - is a variation`)
+              return
+            }
             return parseProduct(blingProduct, product && product.variations, storeId, auth, method === 'POST', appData)
               .then(product => {
                 if (!isNaN(quantity)) {
