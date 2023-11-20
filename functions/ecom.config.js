@@ -201,6 +201,15 @@ const app = {
       },
       hide: true
     },
+    has_stock_reserve: {
+      schema: {
+        type: 'boolean',
+        default: false,
+        title: 'Ativou reserva de estoque no Bling?',
+        description: 'Ativar, caso a opção considerar situações de vendas para obter o saldo atual estiver habilitada'
+      },
+      hide: true
+    },
     new_products: {
       schema: {
         type: 'boolean',
