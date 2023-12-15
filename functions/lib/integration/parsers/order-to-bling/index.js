@@ -191,7 +191,7 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
     blingOrder.obs += ` ${notesForCustomization}`
   }
   if (order.staff_notes) {
-    blingOrder.obs_internas = order.staff_notes.substring(0, 250)
+    blingOrder.obs_internas = order.staff_notes.substring(0, 250) && blingAddress.complemento
   }
 
   if (appData.bling_order_data) {
