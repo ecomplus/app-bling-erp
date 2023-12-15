@@ -7,7 +7,7 @@ const formatDate = date => {
     d.getFullYear()
 }
 
-const parseAddress = (address, blingAddress, blingCityField = 'cidade') => {
+const parseAddress = (address, blingAddress, blingCityField = 'cidade', blingOrder) => {
   if (address) {
     ;[
       ['name', 'nome', 120],
@@ -21,6 +21,8 @@ const parseAddress = (address, blingAddress, blingCityField = 'cidade') => {
     ].forEach(([addressField, blingAddressField, maxLength]) => {
       if (address[addressField] && !blingAddress[blingAddressField]) {
         blingAddress[blingAddressField] = String(address[addressField]).substring(0, maxLength)
+      } else if (address['near_to'] && blingOrder) {
+        blingOrder.obs_internas = address['near_to'].substring(0, 50)
       }
     })
     if (blingAddress.cep && /[0-9]{7,8}/.test(blingAddress.cep)) {
@@ -73,7 +75,7 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
         }
       })
     }
-    parseAddress(billingAddress || shippingAddress, blingCustomer)
+    parseAddress(billingAddress || shippingAddress, blingCustomer, 'cidade', blingOrder)
     blingOrder.cliente = blingCustomer
   } else {
     blingOrder.cliente = {
@@ -168,7 +170,7 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
     }
     if (shippingAddress) {
       blingOrder.transporte.dados_etiqueta = {}
-      parseAddress(shippingAddress, blingOrder.transporte.dados_etiqueta, 'municipio')
+      parseAddress(shippingAddress, blingOrder.transporte.dados_etiqueta, 'municipio', blingOrder)
     }
   }
 
