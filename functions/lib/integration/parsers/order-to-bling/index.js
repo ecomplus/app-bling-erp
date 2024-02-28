@@ -215,7 +215,7 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
     }
   }
 
-  if (order.utm && order.utm.source && order.utm.campaign && order.utm.source.toLowerCase === 'atendimento' && storeId == '51405') {
+  if (order.utm && order.utm.source && order.utm.campaign && order.utm.source.toLowerCase() === 'atendimento' && storeId == '51405') {
     blingOrder['vendedor'] = order.utm.campaign
   }
 
