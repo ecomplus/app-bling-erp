@@ -136,6 +136,10 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
     }
   }
 
+  if (storeId == 51292 && order.payment_method_label === 'Bazicash') {
+    blingOrder.parcelas[0].parcela.vlr = 0
+  }
+
   if (shippingLine) {
     blingOrder.transporte = {}
     if (shippingLine.app) {
