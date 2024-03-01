@@ -20,7 +20,7 @@ const parseAddress = (address, blingAddress, blingCityField = 'cidade') => {
       ['province_code', 'uf', 30]
     ].forEach(([addressField, blingAddressField, maxLength]) => {
       if (address[addressField] && !blingAddress[blingAddressField]) {
-        blingAddress[blingAddressField] = String(address[addressField]).substring(0, maxLength)
+        blingAddress[blingAddressField] = String(address[addressField]).substring(0, maxLength).replace(/�/g, 'a')
       }
     })
     if (blingAddress.cep && /[0-9]{7,8}/.test(blingAddress.cep)) {
