@@ -115,7 +115,8 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
     if (transaction.installments) {
       const { number } = transaction.installments
       const extra = amount.extra || 0
-      const vlr = (amount.total - extra) / number
+      const balance = amount.balance || 0
+      const vlr = (amount.total - extra - balance) / number
       for (let i = 0; i < number; i++) {
         blingOrder.parcelas.push({
           parcela: {
@@ -129,7 +130,7 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
       blingOrder.parcelas.push({
         parcela: {
           data: blingOrder.data,
-          vlr: amount.total,
+          vlr: amount.total - (amount.balance || 0),
           obs: `${blingPaymentLabel} (1/1)`
         }
       })
