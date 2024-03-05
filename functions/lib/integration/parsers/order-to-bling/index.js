@@ -130,7 +130,7 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
       blingOrder.parcelas.push({
         parcela: {
           data: blingOrder.data,
-          vlr: amount.total - (amount.balance || 0),
+          vlr: amount.total,
           obs: `${blingPaymentLabel} (1/1)`
         }
       })
