@@ -136,9 +136,7 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
       })
     }
   }
-  console.log(storeId, 'before changing bazicash', JSON.stringify(blingOrder))
   if (storeId == 51292 && order.payment_method_label === 'Bazicash') {
-    console.log('entrei')
     blingOrder.parcelas[0].parcela.vlr = 0
   }
 
@@ -186,6 +184,9 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
   }
   if (amount.discount) {
     blingOrder.vlr_desconto = amount.discount
+  }
+  if (storeId == 51292 && order.payment_method_label === 'Bazicash') {
+    blingOrder.vlr_desconto = amount.total
   }
 
   if (order.notes) {
