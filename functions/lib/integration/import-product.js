@@ -7,6 +7,10 @@ const handleJob = require('./handle-job')
 module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposit, queueEntry, appData, _, isHiddenQueue) => {
   const [sku, productId] = String(queueEntry.nextId).split(';:')
   let blingProductCode = sku
+  const importProduct = appData.import_product
+  const searchQuery = importProduct 
+  ? { must: { term: { skus: sku } }, should: [ { term: { visible: true } }, { term: { available: true } } ]}
+  : { must: [ { term: { skus: sku } }, { term: { available: true } } ] }
 
   return new Promise((resolve, reject) => {
     if (queueEntry.blingStockUpdate) {
@@ -58,16 +62,7 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
           data: {
             size: 1,
             query: {
-              bool: {
-                must: [
-                  {
-                  	term: { skus: sku }
-                  },
-                  {
-                  	term: { available: true }
-                  }
-                ]
-              }
+              bool: searchQuery
             }
           }
         }).then(({ data }) => {
