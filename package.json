@@ -2,7 +2,7 @@
   "name": "@ecomplus/application-starter",
   "engines": {
     "node": "16",
-    "npm": "^8.19.0"
+    "npm": "^8.19.4"
   },
   "private": true,
   "version": "1.6.0",
@@ -40,7 +40,7 @@
   "homepage": "https://github.com/ecomplus/application-starter#readme",
   "dependencies": {
     "dotenv": "^10.0.0",
-    "firebase-tools": "^12.4.4",
+    "firebase-tools": "^12.9.1",
     "uglify-js": "^3.17.4"
   },
   "devDependencies": {
