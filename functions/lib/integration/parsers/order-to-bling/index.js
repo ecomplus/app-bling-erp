@@ -116,7 +116,7 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
       const { number } = transaction.installments
       const extra = amount.extra || 0
       const balance = amount.balance || 0
-      const vlr = (amount.total - extra - balance) / number
+      const vlr = (transaction.amount || (amount.total - extra - balance)) / number
       for (let i = 0; i < number; i++) {
         blingOrder.parcelas.push({
           parcela: {
@@ -130,7 +130,7 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
       blingOrder.parcelas.push({
         parcela: {
           data: blingOrder.data,
-          vlr: amount.total,
+          vlr: transaction.amount || amount.total,
           obs: `${blingPaymentLabel} (1/1)`
         }
       })
@@ -184,6 +184,11 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
   }
   if (amount.discount) {
     blingOrder.vlr_desconto = amount.discount
+    if (transaction.amount !== amount.total) {
+      blingOrder.vlr_desconto += (amount.total - transaction.amount)
+    }
+  } else if (transaction.amount !== amount.total) {
+    blingOrder.vlr_desconto = amount.total - transaction.amount
   }
   if (storeId == 51292 && order.payment_method_label === 'Bazicash') {
     blingOrder.vlr_desconto = amount.total
