@@ -184,11 +184,12 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
   }
   if (amount.discount) {
     blingOrder.vlr_desconto = amount.discount
-    if (transaction.amount !== amount.total) {
-      blingOrder.vlr_desconto += (amount.total - transaction.amount)
+  }
+  if (amount.balance) {
+    if (!blingOrder.vlr_desconto) {
+      blingOrder.vlr_desconto = 0
     }
-  } else if (transaction.amount !== amount.total) {
-    blingOrder.vlr_desconto = amount.total - transaction.amount
+    blingOrder.vlr_desconto += amount.balance
   }
   if (storeId == 51292 && order.payment_method_label === 'Bazicash') {
     blingOrder.vlr_desconto = amount.total
