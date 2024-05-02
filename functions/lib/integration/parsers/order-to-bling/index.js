@@ -177,11 +177,11 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
   }
 
   if (storeId == 51292 && order.shipping_method_label === 'Entrega própria') {
-    blingOrder.transporte.volumes = {
+    blingOrder.transporte.volumes = [{
       volume: {
         servico: 'Homem Raio'
       }
-    }
+    }]
   }
 
   if (typeof amount.freight === 'number') {
@@ -240,5 +240,8 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
     blingOrder['vendedor'] = order.utm.campaign
   }
 
+  if (storeId == 51292) {
+    console.log('pedido', JSON.stringify(blingOrder))
+  }
   return blingOrder
 }
