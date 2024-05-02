@@ -235,6 +235,8 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
   if (order.utm && order.utm.source && order.utm.campaign && order.utm.source.toLowerCase() === 'atendimento' && storeId == '51405') {
     blingOrder['vendedor'] = order.utm.campaign
   }
-
+  if (storeId == 51292) {
+    console.log('Pedido', JSON.stringify(blingOrder))
+  }
   return blingOrder
 }
