@@ -179,9 +179,11 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
   if (storeId == 51292 && order.shipping_method_label === 'Entrega própria') {
     blingOrder.transporte.volumes = [{
       volume: {
-        servico: 'Homem Raio'
+        servico: 'Homem Raio',
+        idServico: '14894744949'
       }
     }]
+    blingOrder.transporte.qtde_volumes = '1'
   }
 
   if (typeof amount.freight === 'number') {
