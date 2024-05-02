@@ -176,9 +176,13 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
     }
   }
 
- /*  if (storeId == 51292 && order.shipping_method_label === 'Entrega própria') {
-    blingOrder.transporte.servico_correios = 'Homem Raio'
-  } */
+  if (storeId == 51292 && order.shipping_method_label === 'Entrega própria') {
+    blingOrder.transporte.volumes = {
+      volume: {
+        servico: 'Homem Raio'
+      }
+    }
+  }
 
   if (typeof amount.freight === 'number') {
     blingOrder.vlr_frete = amount.freight
@@ -235,8 +239,6 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
   if (order.utm && order.utm.source && order.utm.campaign && order.utm.source.toLowerCase() === 'atendimento' && storeId == '51405') {
     blingOrder['vendedor'] = order.utm.campaign
   }
-  if (storeId == 51292) {
-    console.log('Pedido', JSON.stringify(blingOrder))
-  }
+
   return blingOrder
 }
