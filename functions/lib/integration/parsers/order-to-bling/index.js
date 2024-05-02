@@ -176,6 +176,10 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
     }
   }
 
+  if (storeId == 51292 && order.shipping_method_label === 'Entrega própria') {
+    blingOrder.transporte.servico_correios = 'Homem Raio'
+  }
+
   if (typeof amount.freight === 'number') {
     blingOrder.vlr_frete = amount.freight
     if (amount.tax) {
