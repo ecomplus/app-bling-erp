@@ -17,6 +17,15 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
       resolve(queueEntry.blingStockUpdate)
       return
     }
+    if (storeId == 51292) {
+      if (sku === '0002') {
+        return
+      } else if (sku === '0003') {
+        return
+      } else if (sku === '0004') {
+        return
+      }
+    }
 
     firestore().collection('bling_stock_updates')
       .where('ref', '==', `${storeId}_${blingToken}_${sku}`)
