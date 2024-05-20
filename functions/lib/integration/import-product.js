@@ -157,10 +157,6 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
             }
             let quantity = Number(blingProduct.estoqueAtual)
             if (product && (isStockOnly === true || !appData.update_product || variationId)) {
-              if (storeId == 51292 && product._id === '636eac9a73321213f8d6f75a') {
-                console.log('break quantity', variationId)
-                return
-              }
               if (!isNaN(quantity)) {
                 if (quantity < 0) {
                   quantity = 0
