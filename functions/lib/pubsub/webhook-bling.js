@@ -79,6 +79,7 @@ module.exports = async (
           }
 
           if (Array.isArray(pedidos)) {
+            console.log(`> Bling callback order: #${storeId} => ${JSON.stringify(pedidos)}`)
             let orderNumbers = appData.___importation && appData.___importation.order_numbers
             if (!Array.isArray(orderNumbers)) {
               orderNumbers = []
