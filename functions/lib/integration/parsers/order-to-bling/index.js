@@ -127,17 +127,30 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
         })
       }
     } else {
-      blingOrder.parcelas.push({
+      const parcela = {
         parcela: {
           data: blingOrder.data,
           vlr: transaction.amount || amount.total,
           obs: `${blingPaymentLabel} (1/1)`
         }
-      })
+      }
+      if (storeId == 51292 && order.payment_method_label === 'Cartão de crédito') {
+        parcela.parcela.forma_pagamento = {
+          "id": "2322188"
+        }
+      } else if (storeId == 51292 && order.payment_method_label === 'Pix') {
+        parcela.parcela.forma_pagamento = {
+          "id": "2322190"
+        }
+      }
+      blingOrder.parcelas.push(parcela)
     }
   }
   if (storeId == 51292 && order.payment_method_label === 'Bazicash') {
     blingOrder.parcelas[0].parcela.vlr = 0
+    blingOrder.parcelas[0].parcela.forma_pagamento = {
+      "id": "4035696"
+    }
   }
 
   if (shippingLine) {
