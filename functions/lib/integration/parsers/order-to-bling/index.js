@@ -118,13 +118,19 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
       const balance = amount.balance || 0
       const vlr = (transaction.amount || (amount.total - extra - balance)) / number
       for (let i = 0; i < number; i++) {
-        blingOrder.parcelas.push({
+        const parcela = {
           parcela: {
             dias: (i * 30) || 1,
             vlr,
             obs: `${blingPaymentLabel} (${(i + 1)}/${number})`
           }
-        })
+        }
+        if (storeId == 51292 && order.payment_method_label === 'Cartão de crédito') {
+          parcela.parcela.forma_pagamento = {
+            "id": "2322188"
+          }
+        }
+        blingOrder.parcelas.push(parcela)
       }
     } else {
       const parcela = {
@@ -134,11 +140,7 @@ module.exports = (order, blingOrderNumber, blingStore, appData, storeId) => {
           obs: `${blingPaymentLabel} (1/1)`
         }
       }
-      if (storeId == 51292 && order.payment_method_label === 'Cartão de crédito') {
-        parcela.parcela.forma_pagamento = {
-          "id": "2322188"
-        }
-      } else if (storeId == 51292 && order.payment_method_label === 'Pix') {
+      if (storeId == 51292 && order.payment_method_label === 'Pix') {
         parcela.parcela.forma_pagamento = {
           "id": "2322190"
         }
