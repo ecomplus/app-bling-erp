@@ -1,4 +1,3 @@
-
 const PubSub = require('@google-cloud/pubsub').PubSub
 const getPubSubTopic = require('../../lib/pubsub/create-topic').getPubSubTopic
 
@@ -8,7 +7,7 @@ const sendMessageTopic = async (eventName, json) => {
     .topic(topicName)
     .publishMessage({ json })
 
-  console.log('>> MessageId: ', messageId, ' Topic: ', topicName)
+  console.log('>> MessageId: ', messageId, ' Topic: ', topicName, ' storeId: ', json?.storeId)
 
   return Promise.resolve(200)
 }

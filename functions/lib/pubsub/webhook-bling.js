@@ -20,7 +20,7 @@ module.exports = async (
   },
   context
 ) => {
-  console.log('>> Exec Event ', context.eventId)
+  console.log('>> Exec Event ', context.eventId, ' storeId: ', storeId)
   const appSdk = await getAppSdk(admin)
 
   return appSdk.getAuth(storeId)
