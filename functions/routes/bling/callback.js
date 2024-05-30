@@ -17,6 +17,9 @@ exports.post = ({ appSdk, admin }, req, res) => {
   const blingToken = req.query.token
   const storeId = parseInt(req.query.store_id, 10)
 
+  if (!req.query || storeId === 1073) {
+    console.log('>> try webhook 1073 => ', JSON.stringify(req.body))
+  }
   if (storeId > 100 && typeof blingToken === 'string' && blingToken && req.body) {
     let { retorno } = req.body
     if (!retorno && typeof req.body.data === 'string') {
