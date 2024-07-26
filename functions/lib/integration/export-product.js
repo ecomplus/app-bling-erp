@@ -53,8 +53,8 @@ module.exports = ({ appSdk, storeId }, blingToken, blingStore, blingDeposit, que
             if (blingProduct) {
               const data = { produto: blingProduct }
               let endpoint = originalBlingProduct ? `/produto/${blingProductCode}` : '/produto'
-              if (storeId === 1445) {
-                console.log('Produto export #1445', JSON.stringify(data))
+              if (storeId === 45114) {
+                console.log('Produto export #45114', JSON.stringify(data))
                 endpoint = '/produto'
               }
               return bling.post(endpoint, data)
