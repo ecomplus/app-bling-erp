@@ -1,4 +1,4 @@
-module.exports = situacao => {
+module.exports = (situacao, blingOrder) => {
   let financialStatus, fulfillmentStatus
   switch (situacao) {
     case 'venda agenciada':
@@ -12,7 +12,9 @@ module.exports = situacao => {
       break
     case 'faturado':
     case 'atendido':
-      fulfillmentStatus = 'invoice_issued'
+      fulfillmentStatus = blingOrder?.codigosRastreamento?.codigoRastreamento
+        ? 'shipped'
+        : 'invoice_issued'
       break
     case 'pronto para envio':
       fulfillmentStatus = 'ready_for_shipping'
