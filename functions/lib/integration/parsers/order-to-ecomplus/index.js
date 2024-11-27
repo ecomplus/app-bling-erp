@@ -19,17 +19,6 @@ module.exports = (blingOrder, shippingLines, bling, storeId) => new Promise((res
           }
           shippingLine.tracking_codes = [tracking]
           partialOrder.shipping_lines = shippingLines
-        } else if (
-          volume &&
-          volume.urlRastreamento &&
-          (!shippingLine.tracking_codes || !shippingLine.tracking_codes.length)
-        ) {
-          tracking = {
-            code: 'Sem codigo | Consultar no link',
-            link: volume.urlRastreamento
-          }
-          shippingLine.tracking_codes = [tracking]
-          partialOrder.shipping_lines = shippingLines
         }
       }
 
