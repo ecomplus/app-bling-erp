@@ -60,7 +60,7 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
                   .apiRequest(storeId, `/orders/${order._id}.json`, 'PATCH', partialOrder, auth))
               }
 
-              const { fulfillmentStatus, financialStatus } = parseStatus(situacao)
+              const { fulfillmentStatus, financialStatus } = parseStatus(situacao, blingOrder)
               const data = {
                 date_time: new Date().toISOString(),
                 flags: ['from-bling']
