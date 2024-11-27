@@ -7,13 +7,12 @@ module.exports = (blingOrder, shippingLines, bling, storeId) => new Promise((res
     const checkTrackingCodes = ({ codigosRastreamento, transporte }) => {
       const addTrackingCode = (shippingLine, volume) => {
         let tracking
-        if (
-          volume &&
-          volume.codigoRastreamento &&
-          (!shippingLine.tracking_codes || !shippingLine.tracking_codes.length)
-        ) {
+        const hasTrackingCode = shippingLine.tracking_codes && shippingLine.tracking_codes.some(({ code }) => {
+          return !code.includes('Sem ')
+        })
+        if (volume && (volume.urlRastreamento || volume.codigoRastreamento) && !hasTrackingCode) {
           tracking = {
-            code: String(volume.codigoRastreamento),
+            code: volume.codigoRastreamento ? String(volume.codigoRastreamento) : 'Sem código | Consultar no link',
             link: volume.urlRastreamento ||
               `https://www.melhorrastreio.com.br/rastreio/${volume.codigoRastreamento}`
           }
