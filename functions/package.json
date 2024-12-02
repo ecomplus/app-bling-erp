@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@ecomplus/application-sdk": "^22.0.0-firestore.1.15.7",
-    "@google-cloud/firestore": "^4.15.1",
+    "@google-cloud/firestore": "^6.0.0",
     "@google-cloud/pubsub": "^3.4.1",
     "axios": "^0.27.2",
     "express": "^4.18.2",
