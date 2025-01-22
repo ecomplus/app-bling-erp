@@ -8,9 +8,20 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
   const [sku, productId] = String(queueEntry.nextId).split(';:')
   let blingProductCode = sku
   const importProduct = appData.import_product
-  const searchQuery = importProduct 
-  ? { must: { term: { skus: sku } }, should: [ { term: { visible: true } }, { term: { available: true } } ]}
-  : { must: [ { term: { skus: sku } }, { term: { available: true } } ] }
+  const searchQuery = importProduct
+    ? {
+        must: { term: { skus: sku } },
+        should: [
+          { term: { visible: true } },
+          { term: { available: true } }
+        ]
+      }
+    : {
+        must: [
+          { term: { skus: sku } },
+          { term: { available: true } }
+        ]
+      }
 
   return new Promise((resolve, reject) => {
     if (queueEntry.blingStockUpdate) {
@@ -157,16 +168,44 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
             }
             let quantity = Number(blingProduct.estoqueAtual)
             if (product && (isStockOnly === true || !appData.update_product || variationId)) {
+              let inventoryQnt = 0
+              let inventory = {}
+              if (blingProduct.depositos?.length) {
+                blingProduct.depositos.forEach(({ deposito }) => {
+                  if (
+                    deposito?.id &&
+                    deposito.desconsiderar === 'N' &&
+                    deposito.saldo >= 0
+                  ) {
+                    let qnt = Number(deposito.saldoVirtual)
+                    if (isNaN(qnt)) qnt = Number(deposito.saldo)
+                    if (qnt < 0) qnt = 0
+                    inventory[`${deposito.id}`] = qnt
+                    inventoryQnt += qnt
+                  }
+                })
+              }
+              if (inventoryQnt > 0) {
+                quantity = inventoryQnt
+              }
               if (!isNaN(quantity)) {
                 if (quantity < 0) {
                   quantity = 0
                 }
-                let endpoint = `/products/${product._id}`
+                let resourceAndId = `/products/${product._id}`
                 if (variationId) {
-                  endpoint += `/variations/${variationId}`
+                  resourceAndId += `/variations/${variationId}`
                 }
-                endpoint += '/quantity.json'
-                console.log(`#${storeId} ${endpoint}`, { quantity, sku })
+                console.log(`#${storeId} ${resourceAndId}`, { quantity, inventory, sku })
+                if (Object.keys(inventory).length) {
+                  if (quantity > 0 && !inventoryQnt) {
+                    inventory = {}
+                  }
+                  const endpoint = `${resourceAndId}.json`
+                  const body = { inventory, quantity }
+                  return appSdk.apiRequest(storeId, endpoint, 'PATCH', body, auth)
+                }
+                const endpoint = `${resourceAndId}/quantity.json`
                 return appSdk.apiRequest(storeId, endpoint, 'PUT', { quantity }, auth)
               }
               return null
@@ -191,7 +230,6 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
                   product.quantity = quantity >= 0 ? quantity : 0
                 }
                 console.log(`#${storeId} ${method} ${endpoint}`)
-                
                 return appSdk.apiRequest(storeId, endpoint, method, product, auth)
               })
           }

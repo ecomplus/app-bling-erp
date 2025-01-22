@@ -9,75 +9,74 @@ const removeAccents = str => str.replace(/áàãâÁÀÃÂ/g, 'a')
   .replace(/úÚ/g, 'u')
   .replace(/çÇ/g, 'c')
 
-  const hexaColors = color => {
-    const lowerCaseColor = removeAccents(color.toLowerCase());
-  
-    switch (lowerCaseColor) {
-      case 'azulclaro':
-        return '#add8e6';
-      case 'branco':
-      case 'branca':
-        return '#ffffff';
-      case 'cinza':
-        return '#808080';
-      case 'vermelho':
-      case 'vermelha':
-        return '#ff0000';
-      case 'amarelo':
-      case 'amarela':
-        return '#ffff00';
-      case 'verde':
-        return '#008000';
-      case 'preto':
-      case 'preta':
-        return '#000000';
-      case 'azul':
-        return '#0000ff';
-      case 'petroleo':
-        return '#006666';
-      case 'verde limao':
-        return '#32cd32';
-      case 'rosa':
-      case 'pink':
-        return '#ffc0cb';
-      case 'roxo':
-        return '#800080';
-      case 'laranja':
-      case 'laranjao':
-        return '#ffa500';
-      case 'marrom':
-        return '#a52a2a';
-      case 'areia':
-        return '#f0e68c';
-      case 'vinho':
-      case 'vinha':
-        return '#800000';
-      case 'ciano':
-        return '#00ffff';
-      case 'prata':
-        return '#c0c0c0';
-      case 'grafite':
-        return '#808080';
-      case 'magento':
-        return '#ff00ff';
-      case 'dourado':
-        return '#ffd700';
-      case 'turquesa':
-        return '#40e0d0';
-      case 'chocolatebranco':
-        return '#d2691e';
-      case 'verde oliva':
-        return '#6b8e23';
-      case 'caqui':
-        return '#f0e68c';
-      case 'pessego':
-        return '#ffe5b4';
-      case 'indigo':
-        return '#4b0082';
-      default:
-        return '#ffffff'; // White (default)
-    }
-  };
+const hexaColors = color => {
+  const lowerCaseColor = removeAccents(color.toLowerCase())
+  switch (lowerCaseColor) {
+    case 'azulclaro':
+      return '#add8e6'
+    case 'branco':
+    case 'branca':
+      return '#ffffff'
+    case 'cinza':
+      return '#808080'
+    case 'vermelho':
+    case 'vermelha':
+      return '#ff0000'
+    case 'amarelo':
+    case 'amarela':
+      return '#ffff00'
+    case 'verde':
+      return '#008000'
+    case 'preto':
+    case 'preta':
+      return '#000000'
+    case 'azul':
+      return '#0000ff'
+    case 'petroleo':
+      return '#006666'
+    case 'verde limao':
+      return '#32cd32'
+    case 'rosa':
+    case 'pink':
+      return '#ffc0cb'
+    case 'roxo':
+      return '#800080'
+    case 'laranja':
+    case 'laranjao':
+      return '#ffa500'
+    case 'marrom':
+      return '#a52a2a'
+    case 'areia':
+      return '#f0e68c'
+    case 'vinho':
+    case 'vinha':
+      return '#800000'
+    case 'ciano':
+      return '#00ffff'
+    case 'prata':
+      return '#c0c0c0'
+    case 'grafite':
+      return '#808080'
+    case 'magento':
+      return '#ff00ff'
+    case 'dourado':
+      return '#ffd700'
+    case 'turquesa':
+      return '#40e0d0'
+    case 'chocolatebranco':
+      return '#d2691e'
+    case 'verde oliva':
+      return '#6b8e23'
+    case 'caqui':
+      return '#f0e68c'
+    case 'pessego':
+      return '#ffe5b4'
+    case 'indigo':
+      return '#4b0082'
+    default:
+      return '#ffffff'
+  }
+}
 
 const tryImageUpload = (storeId, auth, originImgUrl, product) => new Promise(resolve => {
   axios.get(originImgUrl, {
