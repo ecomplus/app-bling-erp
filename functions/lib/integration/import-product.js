@@ -198,7 +198,7 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
                 }
                 console.log(`#${storeId} ${resourceAndId}`, { quantity, inventory, sku })
                 if (Object.keys(inventory).length) {
-                  if (quantity > 0 && !inventoryQnt) {
+                  if (quantity > 0 && (!inventoryQnt || Object.keys(inventory).length === 1)) {
                     inventory = {}
                   }
                   const endpoint = `${resourceAndId}.json`
