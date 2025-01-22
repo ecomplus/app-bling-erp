@@ -196,16 +196,17 @@ module.exports = ({ appSdk, storeId, auth }, blingToken, blingStore, blingDeposi
                 if (variationId) {
                   resourceAndId += `/variations/${variationId}`
                 }
-                console.log(`#${storeId} ${resourceAndId}`, { quantity, inventory, sku })
                 if (Object.keys(inventory).length) {
                   if ((quantity > 0 && !inventoryQnt) || Object.keys(inventory).length === 1) {
                     inventory = {}
                   }
                   const endpoint = `${resourceAndId}.json`
                   const body = { inventory, quantity }
+                  console.log(`#${storeId} ${endpoint}`, { quantity, inventory, sku })
                   return appSdk.apiRequest(storeId, endpoint, 'PATCH', body, auth)
                 }
                 const endpoint = `${resourceAndId}/quantity.json`
+                console.log(`#${storeId} ${endpoint}`, { quantity, sku })
                 return appSdk.apiRequest(storeId, endpoint, 'PUT', { quantity }, auth)
               }
               return null
