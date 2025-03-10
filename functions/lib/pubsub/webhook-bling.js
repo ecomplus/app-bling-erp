@@ -145,9 +145,9 @@ module.exports = async (
     })
     .catch((err) => {
       if (err.appWithoutAuth) {
-        console.error(err)
-      } else {
-        throw err
+        console.warn(err)
+        return null
       }
+      throw err
     })
 }
