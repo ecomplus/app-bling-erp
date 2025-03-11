@@ -10,17 +10,17 @@
     "logs": "firebase functions:log"
   },
   "engines": {
-    "node": "18"
+    "node": "18.20.7"
   },
   "dependencies": {
     "@ecomplus/application-sdk": "^22.0.0-firestore.1.15.7",
     "@google-cloud/firestore": "^4.15.1",
-    "@google-cloud/pubsub": "^3.4.1",
+    "@google-cloud/pubsub": "^3.7.5",
     "axios": "^0.27.2",
     "express": "^4.18.2",
-    "firebase-admin": "^11.10.0",
-    "firebase-functions": "^4.4.1",
-    "form-data": "^3.0.1",
+    "firebase-admin": "^11.11.1",
+    "firebase-functions": "^4.9.0",
+    "form-data": "^3.0.3",
     "js2xmlparser": "^4.0.2",
     "querystring": "^0.2.1"
   },
