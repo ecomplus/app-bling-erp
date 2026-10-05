@@ -1,8 +1,8 @@
 {
   "name": "@ecomplus/application-starter",
   "engines": {
-    "node": "16",
-    "npm": "^8.19.0"
+    "node": "16.20.2",
+    "npm": "^8.19.4"
   },
   "private": true,
   "version": "1.6.0",
@@ -41,7 +41,7 @@
   "dependencies": {
     "dotenv": "^10.0.0",
     "firebase-tools": "^12.4.4",
-    "uglify-js": "^3.17.4"
+    "uglify-js": "^3.19.3"
   },
   "devDependencies": {
     "@commitlint/cli": "^13.2.1",
